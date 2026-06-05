@@ -1,0 +1,26 @@
+package gerenciador.suporte;
+
+import java.util.ArrayList;
+import gerenciador.operacoes.*;
+
+public class Tag {
+    private String nome;
+    HistoricoTransacoes transacoes;
+
+    public Tag(String nome){
+        this.nome = nome;
+        this.transacoes = new HistoricoTransacoes();
+    }
+
+    public String getNome(){
+        return this.nome;
+    }
+
+    public ArrayList<Transacao> getTransacoesAssociadas(){
+        return this.transacoes.getHistorico(this);
+    }
+
+    public void adicionarTransacao(Transacao transacao){
+        this.transacoes.getHistorico(this).add(transacao);
+    }
+}
