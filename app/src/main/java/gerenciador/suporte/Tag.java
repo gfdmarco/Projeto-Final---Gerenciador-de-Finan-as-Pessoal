@@ -1,7 +1,6 @@
 package gerenciador.suporte;
 
 import java.util.ArrayList;
-import gerenciador.operacoes.*;
 import gerenciador.operacoes.movimentacoes.Transacao;
 
 public class Tag {
