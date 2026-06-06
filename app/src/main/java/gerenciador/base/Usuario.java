@@ -1,9 +1,12 @@
 package gerenciador.base;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
-import gerenciador.suporte.Conta;
-import gerenciador.suporte.HistoricoTransacoes;
+import gerenciador.operacoes.Meta;
+import gerenciador.operacoes.movimentacoes.Transacao;
+import gerenciador.operacoes.reservas.Fundo;
+import gerenciador.suporte.*;
 
 public class Usuario {
     //
@@ -17,7 +20,7 @@ public class Usuario {
     private ArrayList<Conta> contas;
     private ArrayList<Meta> metas;
     private ArrayList<Fundo> fundos;
-    private HistoricoTransacoes historicoGeral;
+    private HistoricoTransacoes transacoes;
 
     public Usuario(String nome, String login, String senhaHasheada){
             this.nome = nome;
@@ -28,7 +31,11 @@ public class Usuario {
             this.contas = new ArrayList<>();
             this.metas = new ArrayList<>();
             this.fundos = new ArrayList<>();
-            this.historicoGeral = new HistoricoTransacoes();
+            this.transacoes = new HistoricoTransacoes();
+    }
+
+    public String getNome(){
+        return this.nome;
     }
 
     public String getLogin(){
@@ -44,7 +51,12 @@ public class Usuario {
         for (Conta conta: contas){
             saldo += conta.getMontante();
         }
+        this.saldo = saldo;
         return this.saldo;
+    }
+
+    public double getSalario(){
+        return this.salario;
     }
 
     public ArrayList<Conta> getContas(){
@@ -58,18 +70,94 @@ public class Usuario {
     }
 
     public HistoricoTransacoes getHistorico(){
-        return this.historicoGeral;
+        for (Conta conta : this.contas){
+            for (Transacao transacao : conta.getTransacoesAssociadas()){
+                this.transacoes.getHistorico().add(transacao);
+            }
+        }
+        return this.transacoes;
     }
 
-    void gerarRelatorio(){
+    public void gerarRelatorio(){
         //a fazer depois
     }
 
-    void criarMeta(){
+    public void criarMeta(){
         //fazer depois
     }
 
-    void registrarSalario(double valor){
+    public void registrarSalario(double valor){
         this.salario = valor;
+    }
+
+    public void adicionarTransacao(Transacao transacao){
+        this.transacoes.getHistorico().add(transacao);
+    }
+
+    public void removerTransacao(String id){
+       for (Transacao transacao : transacoes.getHistorico()){
+            if (transacao.getID().equals(id)){
+                //remoção da transação em todas as instâncias que ela existe
+                transacao.getCategoria().getTransacoesAssociadas().remove(transacao);
+                transacao.getConta().getTransacoesAssociadas().remove(transacao);
+                for (Tag tag : transacao.getTags()){
+                    tag.getTransacoesAssociadas().remove(transacao);
+                }
+                this.transacoes.getHistorico().remove(transacao);
+            }
+       }
+
+    }
+
+    public ArrayList<Transacao> buscarTransacao(LocalDate data){
+        ArrayList<Transacao> encontradas = new ArrayList<>();
+        for (Transacao transacao : transacoes.getHistorico()){
+            if (transacao.getData().equals(data)){
+                encontradas.add(transacao);
+            }
+        }
+        return encontradas;
+    }
+
+    public ArrayList<Transacao> buscarTransacao(Categoria categoria){
+        ArrayList<Transacao> encontradas = new ArrayList<>();
+        for (Transacao transacao : transacoes.getHistorico()){
+            if (transacao.getCategoria().equals(categoria)){
+                encontradas.add(transacao);
+            }
+        }
+        return encontradas;
+    }
+
+    public ArrayList<Transacao> buscarTransacao(Tag tag){
+        ArrayList<Transacao> encontradas = new ArrayList<>();
+        for (Transacao transacao : transacoes.getHistorico()){
+            for (Tag tagTransacao : transacao.getTags()){
+                if (tagTransacao.equals(tag)){
+                    encontradas.add(transacao);
+                }
+            }
+        }
+        return encontradas;
+    }
+
+    public ArrayList<Transacao> buscarTransacao(Conta conta){
+        ArrayList<Transacao> encontradas = new ArrayList<>();
+        for (Transacao transacao : transacoes.getHistorico()){
+            if (transacao.getConta().equals(conta)){
+                encontradas.add(transacao);
+            }
+        }
+        return encontradas;
+    }
+
+    public ArrayList<Transacao> buscarTransacao(double valor){
+        ArrayList<Transacao> encontradas = new ArrayList<>();
+        for (Transacao transacao : transacoes.getHistorico()){
+            if (transacao.getValor() == valor){
+                encontradas.add(transacao);
+            }
+        }
+        return encontradas;
     }
 }

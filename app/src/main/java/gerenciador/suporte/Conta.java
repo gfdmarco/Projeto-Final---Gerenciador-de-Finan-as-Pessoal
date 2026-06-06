@@ -3,7 +3,7 @@ package gerenciador.suporte;
 import java.util.ArrayList;
 
 import gerenciador.exceptions.SaldoInsuficienteException;
-import gerenciador.operacoes.Transacao;
+import gerenciador.operacoes.movimentacoes.Transacao;
 
 public class Conta {
     private String banco;
@@ -26,8 +26,8 @@ public class Conta {
         return this.id;
     }
 
-    public ArrayList<Transacao> getTransacoesAssociadas(){
-        return this.transacoes.getHistorico(this);
+    public double getMontante(){
+        return this.montante;
     }
 
     public void debitar(double valor){
@@ -41,5 +41,13 @@ public class Conta {
 
     public void creditar(double valor){
         this.montante += valor;
+    }
+
+    public ArrayList<Transacao> getTransacoesAssociadas(){
+        return this.transacoes.getHistorico(this);
+    }
+
+    public void adicionarTransacao(Transacao transacao){
+        this.transacoes.getHistorico(this).add(transacao);
     }
 }

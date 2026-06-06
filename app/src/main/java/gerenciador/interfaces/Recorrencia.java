@@ -1,7 +1,7 @@
 package gerenciador.interfaces;
 
 import java.time.LocalDate;
-import gerenciador.operacoes.*;
+import gerenciador.operacoes.movimentacoes.Transacao;
 
 public interface Recorrencia {
     String getRecorrencia();
