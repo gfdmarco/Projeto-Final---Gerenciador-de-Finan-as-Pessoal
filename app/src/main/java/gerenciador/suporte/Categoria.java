@@ -2,7 +2,7 @@ package gerenciador.suporte;
 
 import java.util.ArrayList;
 
-import gerenciador.operacoes.Transacao;
+import gerenciador.operacoes.movimentacoes.Transacao;
 
 public class Categoria {
     private String nome;
@@ -15,16 +15,16 @@ public class Categoria {
         this.transacoes = new HistoricoTransacoes();
     }
 
-    public ArrayList<Transacao> getTransacoesAssociadas(){
-        return this.transacoes.getHistorico(this);
-    }
-
     public String getNome(){
         return this.nome;
     }
 
     public double getOrcamento(){
         return this.orcamento;
+    }
+
+    public ArrayList<Transacao> getTransacoesAssociadas(){
+        return this.transacoes.getHistorico(this);
     }
 
     public void adicionarTransacao(Transacao transacao){

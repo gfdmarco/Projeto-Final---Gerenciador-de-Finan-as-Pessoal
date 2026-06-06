@@ -3,7 +3,8 @@ package gerenciador.suporte;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import gerenciador.operacoes.Transacao;
+
+import gerenciador.operacoes.movimentacoes.Transacao;
 
 public class HistoricoTransacoes {
     private ArrayList<Transacao> transacoes;
@@ -12,7 +13,7 @@ public class HistoricoTransacoes {
         this.transacoes = new ArrayList<>();
     }
 
-    public ArrayList<Transacao> getExtrato(){
+    public ArrayList<Transacao> getHistorico(){
         return transacoes;
     }
 

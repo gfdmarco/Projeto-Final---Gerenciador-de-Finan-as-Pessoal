@@ -1,4 +1,4 @@
-package gerenciador.operacoes;
+package gerenciador.operacoes.movimentacoes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
