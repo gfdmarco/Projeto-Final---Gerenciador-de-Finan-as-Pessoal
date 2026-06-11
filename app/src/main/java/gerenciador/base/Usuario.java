@@ -7,6 +7,8 @@ import gerenciador.operacoes.*;
 import gerenciador.operacoes.movimentacoes.*;
 import gerenciador.operacoes.reservas.*;
 import gerenciador.suporte.*;
+import gerenciador.interfaces.Relatorio;
+import gerenciador.enums.*;
 
 public class Usuario {
     //
@@ -15,7 +17,7 @@ public class Usuario {
     private String nome;
     private String login;
     private String senhaHasheada;
-    private double salario;
+    private ReceitaRecorrente salario;
     private ArrayList<Conta> contas;
     private ArrayList<Meta> metas;
     private ArrayList<Fundo> fundos;
@@ -26,7 +28,7 @@ public class Usuario {
             this.nome = nome;
             this.login = login;
             this.senhaHasheada = senhaHasheada;
-            this.salario = 0.0;
+            //this.salario = 0.0; ARRUMAR ISSO DAQUI
             this.contas = new ArrayList<>();
             this.metas = new ArrayList<>();
             this.fundos = new ArrayList<>();
@@ -47,7 +49,7 @@ public class Usuario {
     }
 
     public double getSalario(){
-        return this.salario;
+        return this.salario.getValor();
     }
 
     public ArrayList<Conta> getContas(){
@@ -72,16 +74,17 @@ public class Usuario {
         return saldo;
     }
 
-    public void gerarRelatorio(){
-        //a fazer
+    public void gerarRelatorio(Relatorio relatorio){
+        relatorio.gerar(this.transacoes.getHistorico(), this);
     }
 
-    public void criarMeta(){
-        //a fazer depois
+    public void criarMeta(TipoMeta tipo, double objetivo, LocalDate prazo){
+        Meta novaMeta = new Meta(tipo, objetivo, prazo);
+        this.metas.add(novaMeta);
     }
 
     public void registrarSalario(double valor){
-        this.salario = valor;
+        this.salario = valor; //usar setValor()
     }
 
     public void adicionarTransacao(Transacao transacao){

@@ -2,9 +2,10 @@ package gerenciador.interfaces;
 
 import java.time.LocalDate;
 import gerenciador.operacoes.movimentacoes.Transacao;
+import gerenciador.enums.*;
 
 public interface Recorrencia {
-    String getRecorrencia();
+    Frequencia getRecorrencia();
     LocalDate getDataInicio();
     Transacao gerarRecorrencia(LocalDate data);
     boolean isAtivo();
