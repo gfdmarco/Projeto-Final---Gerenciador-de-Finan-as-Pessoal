@@ -9,12 +9,11 @@ public class FundoEmergencia extends Fundo implements GastoMensalListener {
     private int mesesDeCoberturaIdeal;
     private double valorObjetivo;
 
-    public FundoEmergencia(String nome, TipoFundo tipo, double taxaDeValorizacao, LocalDate dataInicio, 
-                            double depositoInicial, double objetivoInicial, int mesesDeCoberturaIdeal){
+    public FundoEmergencia(String nome, TipoFundo tipo, double valorObjetivo, double taxaDeValorizacao, LocalDate dataInicio, 
+        int mesesDeCoberturaIdeal){
 
-        super(nome, tipo, taxaDeValorizacao, dataInicio, depositoInicial);
+        super(nome, tipo, valorObjetivo, taxaDeValorizacao, dataInicio);
         this.mesesDeCoberturaIdeal = mesesDeCoberturaIdeal;
-        this.valorObjetivo = objetivoInicial;
     }
 
     public int coberturaMeses(){

@@ -13,8 +13,8 @@ public class ReceitaRecorrente extends Receita implements Recorrencia {
     private boolean ativo;
     private Frequencia frequencia;
 
-    public ReceitaRecorrente(String nome, String id, double valor, ArrayList<Tag> tags, Categoria categoria, LocalDate data, Conta conta, String fonte, Frequencia frequencia, LocalDate dataInicio) {
-        super(nome, id, valor, tags, categoria, data, conta, fonte);
+    public ReceitaRecorrente(String nome, String id, double valor, ArrayList<Tag> tags, Categoria categoria, LocalDate data, Conta conta, Frequencia frequencia, LocalDate dataInicio) {
+        super(nome, id, valor, tags, categoria, data, conta);
         this.dataInicio = dataInicio;
         this.ativo = true;
         this.frequencia = frequencia;
@@ -33,6 +33,6 @@ public class ReceitaRecorrente extends Receita implements Recorrencia {
     }
 
     public Transacao gerarTransacaoRecorrente(LocalDate data) {
-        return new Despesa(nome, id, valor, tags, categoria, data, contaAtrelada);
+        return new Receita(this.getNome(), this.getID(), this.getValor(), this.getTags(), this.getCategoria(), this.getData(), this.getConta());
     }
 }
