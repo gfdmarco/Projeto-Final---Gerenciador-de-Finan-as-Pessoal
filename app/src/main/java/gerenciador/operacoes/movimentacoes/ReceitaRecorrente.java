@@ -33,6 +33,6 @@ public class ReceitaRecorrente extends Receita implements Recorrencia {
     }
 
     public Transacao gerarTransacaoRecorrente(LocalDate data) {
-        return new Receita(this.getNome(), this.getID(), this.getValor(), this.getTags(), this.getCategoria(), this.getData(), this.getConta());
+        return new Receita(this.getNome(), this.getID(), this.getValor(), this.getTags(), this.getCategoria(), data, this.getConta());
     }
 }

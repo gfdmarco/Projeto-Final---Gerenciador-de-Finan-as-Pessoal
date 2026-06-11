@@ -68,7 +68,7 @@ public class HistoricoTransacoes {
         return transacoesTag;
     }
 
-    void adicionarTransacao(Transacao transacao, Conta conta){
+    void adicionarTransacao(Transacao transacao){
         transacoes.add(transacao);
     }
 }
