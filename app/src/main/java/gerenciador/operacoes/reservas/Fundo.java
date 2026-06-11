@@ -7,16 +7,17 @@ import gerenciador.enums.TipoFundo;
 public abstract class Fundo {
     private String nome;
     private TipoFundo tipo;
-    private double valorObjetivo;
     private double taxaDeValorizacao;
+    private double valorAtual;
     private LocalDate dataInicio;
+    
 
-    public Fundo(String nome, TipoFundo tipo, double valorObjetivo, double taxaDeValorizacao, LocalDate dataInicio) {
+    public Fundo(String nome, TipoFundo tipo, double taxaDeValorizacao, LocalDate dataInicio, double depositoInicial) {
         this.nome = nome;
         this.tipo = tipo;
-        this.valorObjetivo = valorObjetivo;
         this.taxaDeValorizacao = taxaDeValorizacao;
         this.dataInicio = dataInicio;
+        this.valorAtual = depositoInicial;
     }
 
     public String getNome() {
@@ -27,10 +28,6 @@ public abstract class Fundo {
         return this.tipo;
     }
 
-    public double getObjetivo() {
-        return this.valorObjetivo;
-    }
-
     public double getTaxaValorizacao() {
         return this.taxaDeValorizacao;
     }
@@ -39,7 +36,13 @@ public abstract class Fundo {
         return this.dataInicio;
     }
 
-    public void setValorObjetivo(double novoValorObjetivo) {
-        this.valorObjetivo = novoValorObjetivo;
+    public void atualizarValorFundo() {
+        valorAtual *= taxaDeValorizacao;
+        //Possivelmente utilizar padrão observer para notificar se passou um mês, e assim atualizar o valor.
+        //Quando definirmos a maneira de guardar a data atual, podemos implementar isso.
+    }
+
+    public double getValorAtual() {
+        return this.valorAtual;
     }
 }
