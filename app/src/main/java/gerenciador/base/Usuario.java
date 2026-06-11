@@ -2,7 +2,9 @@ package gerenciador.base;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
+import gerenciador.interfaces.GastoMensalListener;
 import gerenciador.operacoes.*;
 import gerenciador.operacoes.movimentacoes.*;
 import gerenciador.operacoes.reservas.*;
@@ -23,6 +25,7 @@ public class Usuario {
     private ArrayList<Fundo> fundos;
     private HistoricoTransacoes transacoes;
     private ArrayList<DespesaRecorrente> despesasRecorrentes; //para construir o custo de vida mensal do usuario
+    private List<GastoMensalListener> gastoMensalListeners;
 
     public Usuario(String nome, String login, String senhaHasheada){
             this.nome = nome;
@@ -34,6 +37,7 @@ public class Usuario {
             this.fundos = new ArrayList<>();
             this.transacoes = new HistoricoTransacoes();
             this.despesasRecorrentes = new ArrayList<>();
+            this.gastoMensalListeners = new ArrayList<>();
     }
 
     public String getNome(){
@@ -83,12 +87,59 @@ public class Usuario {
         this.metas.add(novaMeta);
     }
 
-    public void registrarSalario(double valor){
-        this.salario = valor; //usar setValor()
+    public void registrarSalario(Conta conta, double valor){
+        Categoria categoria = new Categoria("Salário", valor);
+        this.salario = new ReceitaRecorrente("Salário", "00", valor, new ArrayList<>(), categoria, LocalDate.now(), conta, Frequencia.MENSAL, LocalDate.now());;
     }
 
     public void adicionarTransacao(Transacao transacao){
         this.transacoes.getHistorico().add(transacao);
+    }
+
+    public void adicionarDespesaRecorrente(DespesaRecorrente despesaRecorrente) {
+        this.despesasRecorrentes.add(despesaRecorrente);
+        notificarGastoMensalListeners();
+    }
+
+    public void adicionarGastoMensalListener(GastoMensalListener listener) {
+        this.gastoMensalListeners.add(listener);
+    }
+
+    private double calcularGastoMensal() {
+        double gastoMensal = 0;
+
+        for(DespesaRecorrente despesaRecorrente : despesasRecorrentes) {
+            switch (despesaRecorrente.getRecorrencia()) {
+                case SEMANAL:
+                    gastoMensal += 4 * despesaRecorrente.getValor();
+                    break;
+                case QUINZENAL:
+                    gastoMensal += 2 * despesaRecorrente.getValor();
+                    break;
+                case MENSAL:
+                    gastoMensal += despesaRecorrente.getValor();
+                    break;
+                case TRIMESTRAL:
+                    gastoMensal += 0.34 * despesaRecorrente.getValor();
+                    break;
+                case SEMESTRAL:
+                    gastoMensal += 0.167 * despesaRecorrente.getValor();
+                    break;
+                case ANUAL:
+                    gastoMensal += 0.083 * despesaRecorrente.getValor();
+                    break;
+                default:
+                    break;
+            }
+        }
+        return gastoMensal;
+    }
+
+    public void notificarGastoMensalListeners() {
+        double novoGastoMensal = calcularGastoMensal();
+        for (GastoMensalListener gastoMensalListener : gastoMensalListeners) {
+            gastoMensalListener.updateGastoMensal(novoGastoMensal);
+        }
     }
 
     public void removerTransacao(String id){
