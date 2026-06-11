@@ -24,10 +24,10 @@ public class Categoria {
     }
 
     public ArrayList<Transacao> getTransacoesAssociadas(){
-        return this.transacoes.getHistorico(this);
+        return this.transacoes.getHistorico();
     }
 
     public void adicionarTransacao(Transacao transacao){
-        this.transacoes.getHistorico(this).add(transacao);
+        this.transacoes.getHistorico().add(transacao);
     }
 }

@@ -33,23 +33,18 @@ public class RelatorioPeriodo implements Relatorio{
             }
         }
         //2a parte: as 3 maiores despesas
+        //ERRO: se a lista tiver menos de 3 membros vai dar acesso invalido
         transacoesPeriodo.sort(Comparator.comparing(Transacao::getValor));
-        Transacao primeira = transacoesPeriodo.get(0);
-        Transacao segunda = transacoesPeriodo.get(1);
-        Transacao terceira = transacoesPeriodo.get(2);
+        Transacao primeira = transacoesPeriodo.get(transacoesPeriodo.size() - 1);
+        Transacao segunda = transacoesPeriodo.get(transacoesPeriodo.size() - 2);
+        Transacao terceira = transacoesPeriodo.get(transacoesPeriodo.size() - 3);
 
         //3a parte: construção da evolução do saldo
         long diferencaDias = ChronoUnit.DAYS.between(this.inicioPeriodo, this.fimPeriodo);
         double receitas = 0.0;
         double despesas = 0.0;
         for (Transacao transacaoP : transacoesPeriodo){
-            if (transacaoP instanceof Despesa){
-                despesas += transacaoP.getValor();
-            }
-            else if (transacaoP instanceof Receita){
-                receitas += transacaoP.getValor();
-            }
-            else if (transacaoP instanceof DespesaRecorrente){
+            if (transacaoP instanceof DespesaRecorrente){
                 DespesaRecorrente despesa = (DespesaRecorrente) transacaoP;
                 Frequencia freq = despesa.getRecorrencia();
                 switch(freq){
@@ -97,20 +92,26 @@ public class RelatorioPeriodo implements Relatorio{
                         break;
                 }
             }
+            else if (transacaoP instanceof Despesa){
+                despesas += transacaoP.getValor();
+            }
+            else if (transacaoP instanceof Receita){
+                receitas += transacaoP.getValor();
+            }
         }
         //4a parte: feedback de metas
         int qtdMetas = 0;
         int qtdAtingidas = 0;
         for (Meta meta : usuario.getMetas()){
             qtdMetas++;
-            if (meta.isAtingida()){
+            if (meta.isAtingida(usuario)){
                 qtdAtingidas++;
             }
         }
         double circulacao = receitas - despesas;
         String conteudoExibir = 
                 "Período: " + inicioPeriodo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " até " 
-                + inicioPeriodo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n"
+                + fimPeriodo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n"
                 + "Receitas: R$ " + receitas + "\n"
                 + "Despesas: R$ " + despesas + "\n"
                 + "Evolução de Saldo: R$ " + circulacao + "\n"

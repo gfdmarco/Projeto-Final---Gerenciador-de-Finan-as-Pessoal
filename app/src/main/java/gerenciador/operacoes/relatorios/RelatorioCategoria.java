@@ -34,9 +34,10 @@ public class RelatorioCategoria implements Relatorio{
         }
         //2a parte: as 3 maiores despesas
         transacoesCategoria.sort(Comparator.comparing(Transacao::getValor));
-        Transacao primeira = transacoesCategoria.get(0);
-        Transacao segunda = transacoesCategoria.get(1);
-        Transacao terceira = transacoesCategoria.get(2);
+        //ERRO: se a lista tiver menos de 3 membros vai dar acesso invalido
+        Transacao primeira = transacoesCategoria.get(transacoesCategoria.size() - 1);
+        Transacao segunda = transacoesCategoria.get(transacoesCategoria.size() - 2);
+        Transacao terceira = transacoesCategoria.get(transacoesCategoria.size() - 3);
 
         //3a parte: construção da evolução do saldo
         double receitas = 0.0;
@@ -54,7 +55,7 @@ public class RelatorioCategoria implements Relatorio{
         int qtdAtingidas = 0;
         for (Meta meta : usuario.getMetas()){
             qtdMetas++;
-            if (meta.isAtingida()){
+            if (meta.isAtingida(usuario)){
                 qtdAtingidas++;
             }
         }
