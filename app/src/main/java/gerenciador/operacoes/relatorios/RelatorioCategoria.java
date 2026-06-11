@@ -34,10 +34,25 @@ public class RelatorioCategoria implements Relatorio{
         }
         //2a parte: as 3 maiores despesas
         transacoesCategoria.sort(Comparator.comparing(Transacao::getValor));
-        //ERRO: se a lista tiver menos de 3 membros vai dar acesso invalido
-        Transacao primeira = transacoesCategoria.get(transacoesCategoria.size() - 1);
-        Transacao segunda = transacoesCategoria.get(transacoesCategoria.size() - 2);
-        Transacao terceira = transacoesCategoria.get(transacoesCategoria.size() - 3);
+
+        int tamanho_lista = transacoesCategoria.size();
+
+        int qtd_disponivel = Math.min(3, tamanho_lista);
+        //se tiver menos que 3 transacoes ele vai pegar o maximo disponivel
+        Transacao primeira = null;
+        Transacao segunda = null;
+        Transacao terceira = null;
+        if (qtd_disponivel >= 1){
+            primeira = transacoesCategoria.get(transacoesCategoria.size() - 1);
+        }
+        if (qtd_disponivel >= 2){
+            segunda = transacoesCategoria.get(transacoesCategoria.size() - 2);
+        }
+        if (qtd_disponivel >= 3){
+            terceira = transacoesCategoria.get(transacoesCategoria.size() - 3);
+        }
+        //transacoes que nao foram preenchidas ficam como null
+
 
         //3a parte: construção da evolução do saldo
         double receitas = 0.0;
