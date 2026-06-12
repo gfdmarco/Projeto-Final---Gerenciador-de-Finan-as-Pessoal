@@ -12,7 +12,6 @@ public class Meta {
     private double valorObjetivo;
     private LocalDate prazo;
 
-    //MELHORAR: TALVEZ TENHA ERROS DE LOGICA
     public Meta(TipoMeta tipo, double valorObjetivo, LocalDate prazo){
         this.tipo = tipo;
         this.valorObjetivo = valorObjetivo;
@@ -32,8 +31,8 @@ public class Meta {
         }
         else if (this.tipo.equals(TipoMeta.INVESTIMENTO)){
             for (Fundo fundo : usuario.getFundos()){
-                if (fundo.getTipo().equals(TipoFundo.INVESTIMENTO)){
-                    valorAcumulado += fundo.getSaldo();
+                if (fundo.getTipoFundo().equals(TipoFundo.INVESTIMENTO)){
+                    valorAcumulado += fundo.getValorAtual();
                 }
             }
         }
@@ -45,9 +44,16 @@ public class Meta {
     }
 
     public String getProgresso(Usuario usuario){
-        double progressoNum = this.getValorAcumulado(usuario) / this.valorObjetivo;
-        String progresso = ((100 * progressoNum) + "%");
-        return progresso;
+        if(this.valorObjetivo == 0){//nao divide por zero
+            return "Sem valor objetivo definido ainda";
+        }
+        else{
+            double progressoNum = Math.min(1.0, this.getValorAcumulado(usuario) / this.valorObjetivo);
+            //limita a 100% 
+            String progresso = String.format("%.2f%%", 100 * progressoNum);
+            //o format evita que fique algo estranho aqui
+            return progresso;
+        }
     }
 
     public boolean isAtingida(Usuario usuario){
@@ -55,6 +61,7 @@ public class Meta {
     }
 
     public boolean expirou(Usuario usuario){
-        return (!this.isAtingida(usuario) && this.prazo.isBefore(LocalDate.now()));
+        return (!this.isAtingida(usuario) && !this.prazo.isAfter(LocalDate.now()));
+        //pequena mudanca que inclui o proprio dia de prazo como valido
     }
 }
