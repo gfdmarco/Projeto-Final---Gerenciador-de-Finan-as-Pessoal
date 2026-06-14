@@ -7,7 +7,7 @@ import gerenciador.operacoes.movimentacoes.Transacao;
 public class Categoria {
     private String nome;
     private double orcamento;
-    HistoricoTransacoes transacoes;
+    private HistoricoTransacoes transacoes;
 
     public Categoria(String nome, double orcamento){
         this.nome = nome;

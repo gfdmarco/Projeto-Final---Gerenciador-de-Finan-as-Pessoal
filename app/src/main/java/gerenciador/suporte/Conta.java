@@ -7,9 +7,9 @@ import gerenciador.operacoes.movimentacoes.Transacao;
 
 public class Conta {
     private String banco;
-    String id;
-    double montante; 
-    HistoricoTransacoes transacoes;
+    private String id;
+    private double montante; 
+    private HistoricoTransacoes transacoes;
 
     public Conta(String banco, String id, double montante){
         this.banco = banco;

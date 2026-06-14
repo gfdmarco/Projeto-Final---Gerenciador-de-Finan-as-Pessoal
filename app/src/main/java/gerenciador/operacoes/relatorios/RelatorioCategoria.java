@@ -1,7 +1,6 @@
 package gerenciador.operacoes.relatorios;
 
 import gerenciador.base.Usuario;
-import gerenciador.enums.Frequencia;
 import gerenciador.interfaces.Relatorio;
 
 import java.io.FileWriter;
@@ -13,8 +12,6 @@ import java.util.Comparator;
 import gerenciador.operacoes.Meta;
 import gerenciador.operacoes.movimentacoes.*;
 import gerenciador.suporte.Categoria;
-import gerenciador.base.*;
-import gerenciador.interfaces.Relatorio;
 
 public class RelatorioCategoria implements Relatorio{
     private Categoria categoria;
@@ -74,6 +71,7 @@ public class RelatorioCategoria implements Relatorio{
                 qtdAtingidas++;
             }
         }
+        //ERRO DE NULL NA EXIBICAO TALVEZ
         double circulacao = receitas - despesas;
         String conteudoExibir = 
                 "Categoria: " + this.categoria.getNome() + "\n"

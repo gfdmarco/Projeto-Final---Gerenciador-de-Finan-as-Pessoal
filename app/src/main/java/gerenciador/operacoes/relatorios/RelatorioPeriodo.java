@@ -123,6 +123,7 @@ public class RelatorioPeriodo implements Relatorio{
                 qtdAtingidas++;
             }
         }
+        //ERRO DE NULL NA EXIBICAO TALVEZ
         double circulacao = receitas - despesas;
         String conteudoExibir = 
                 "Período: " + inicioPeriodo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " até " 
