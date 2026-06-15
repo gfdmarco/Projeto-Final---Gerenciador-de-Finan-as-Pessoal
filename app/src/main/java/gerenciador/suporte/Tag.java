@@ -5,7 +5,7 @@ import gerenciador.operacoes.movimentacoes.Transacao;
 
 public class Tag {
     private String nome;
-    HistoricoTransacoes transacoes;
+    private HistoricoTransacoes transacoes;
 
     public Tag(String nome){
         this.nome = nome;

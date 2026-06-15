@@ -31,8 +31,8 @@ public class Meta {
         }
         else if (this.tipo.equals(TipoMeta.INVESTIMENTO)){
             for (Fundo fundo : usuario.getFundos()){
-                if (fundo.getTipoFundo().equals(TipoFundo.INVESTIMENTO)){
-                    valorAcumulado += fundo.getValorAtual();
+                if (fundo.getTipo().equals(TipoFundo.INVESTIMENTO)){
+                    valorAcumulado += fundo.getSaldo();
                 }
             }
         }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="922.0" prefWidth="1155.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.TransacoesController">
+   <children>
+      <AnchorPane prefHeight="925.0" prefWidth="1155.0">
+         <children>
+            <TableView layoutX="14.0" layoutY="228.0" prefHeight="679.0" prefWidth="1126.0">
+              <columns>
+                <TableColumn prefWidth="89.0" text="Nome" />
+                <TableColumn prefWidth="61.0" text="ID" />
+                  <TableColumn prefWidth="85.0" text="Valor" />
+                  <TableColumn prefWidth="490.0" text="Tags" />
+                  <TableColumn minWidth="8.0" prefWidth="139.0" text="Categoria" />
+                  <TableColumn prefWidth="122.0" text="Data" />
+                  <TableColumn prefWidth="139.0" text="Conta Atrelada" />
+              </columns>
+            </TableView>
+            <Label layoutX="459.0" layoutY="24.0" text="Acões em Transacões">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <Button layoutX="542.0" layoutY="168.0" mnemonicParsing="false" text="Buscar" />
+            <Button layoutX="534.0" layoutY="72.0" mnemonicParsing="false" text="Adicionar" />
+            <Button layoutX="536.0" layoutY="120.0" mnemonicParsing="false" text="Remover" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

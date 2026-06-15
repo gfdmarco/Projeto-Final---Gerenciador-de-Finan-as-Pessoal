@@ -53,6 +53,7 @@ public class Usuario {
     }
 
     public double getSalario(){
+        //ERRO: verificar registro de salário antes
         return this.salario.getValor();
     }
 
@@ -70,13 +71,15 @@ public class Usuario {
         return this.transacoes.getHistorico();
     }
 
-    public double saldoGeral(){
+    public double getSaldoGeral(){
         double saldo = 0;
         for (Conta conta: contas){
             saldo += conta.getMontante();
         }
         return saldo;
     }
+
+    //FALTA UM MÉTODO PARA PROJETAR SALDO FUTURO BASEADO NAS DESPESAS RECORRENTES ATUAIS
 
     public void gerarRelatorio(Relatorio relatorio){
         relatorio.gerar(this.transacoes.getHistorico(), this);
