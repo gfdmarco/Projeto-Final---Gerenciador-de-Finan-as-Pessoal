@@ -14,7 +14,7 @@ import gerenciador.enums.*;
 
 public class Usuario {
     //
-    //MUITAS FUNCOES PRA ADICIONAR AINDA
+    //MUITAS FUNCOES PRA ADICIONAR AINDA -> OBS: talvez seja interessante substituir arrays por conjuntos(sets) em alguns atributos
     //
     private String nome;
     private String login;
@@ -79,7 +79,25 @@ public class Usuario {
         return saldo;
     }
 
-    //FALTA UM MÉTODO PARA PROJETAR SALDO FUTURO BASEADO NAS DESPESAS RECORRENTES ATUAIS
+    public void setSalario(){
+        //criar receita recorrente e atribuir ao atributo salário
+    }
+
+    public double projetarSaldoFuturo(){
+        //PROJETAR SALDO FUTURO BASEADO NAS DESPESAS RECORRENTES ATUAIS
+    }
+
+    public criarFundo(){
+        //criar fundo que nem tem a criar meta
+    }
+
+    public abrirConta(){
+        // criar conta e associar ao usuario
+    }
+
+    public categoriasSistema() {
+        // retornar lista de todas as categorias existentes no sistema. percorre as transacoes do usuário e armazena as categorias num conjunto (set) de categorias
+    }
 
     public void gerarRelatorio(Relatorio relatorio){
         relatorio.gerar(this.transacoes.getHistorico(), this);

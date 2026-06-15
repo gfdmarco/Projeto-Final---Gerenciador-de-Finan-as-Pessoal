@@ -30,4 +30,8 @@ public class Categoria {
     public void adicionarTransacao(Transacao transacao){
         this.transacoes.getHistorico().add(transacao);
     }
+
+    public void editarOrcamento(){
+        //opção de editar orçamento
+    }
 }
