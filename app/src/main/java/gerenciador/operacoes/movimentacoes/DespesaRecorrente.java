@@ -32,7 +32,7 @@ public class DespesaRecorrente extends Despesa implements Recorrencia {
         return frequencia;
     }
 
-    public Transacao gerarTransacaoRecorrente(LocalDate data) {
+    public Transacao gerarDespesaRecorrente(LocalDate data) {
         return new Despesa(nome, id, valor, tags, categoria, data, contaAtrelada);
     }
 }

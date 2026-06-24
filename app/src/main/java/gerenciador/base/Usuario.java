@@ -2,7 +2,9 @@ package gerenciador.base;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import gerenciador.interfaces.GastoMensalListener;
 import gerenciador.operacoes.*;
@@ -53,7 +55,9 @@ public class Usuario {
     }
 
     public double getSalario(){
-        //ERRO: verificar registro de salário antes
+        if(this.salario == null){
+            return 0.0;
+        }
         return this.salario.getValor();
     }
 
@@ -79,24 +83,39 @@ public class Usuario {
         return saldo;
     }
 
-    public void setSalario(){
-        //criar receita recorrente e atribuir ao atributo salário
+    public double GanhoLiquidoMensal(){
+        double receitaMensal = (salario != null) ? salario.getValor() : 0.0;
+        double gastoMensal = calcularGastoMensal();
+        return receitaMensal - gastoMensal;
     }
 
-    public double projetarSaldoFuturo(){
-        //PROJETAR SALDO FUTURO BASEADO NAS DESPESAS RECORRENTES ATUAIS
+    public double projetarSaldoFuturo(int meses) {
+    double saldoAtual = getSaldoGeral();
+    double saldoLiquidoMensal = GanhoLiquidoMensal(); // receitaMensal - gastoMensal
+    return saldoAtual + (saldoLiquidoMensal * meses);
     }
 
-    public criarFundo(){
-        //criar fundo que nem tem a criar meta
+    public Fundo criarFundo(String nome, double objetivo, double taxaDeValorizacao, LocalDate depositoInicial, Conta conta){
+        Fundo novoFundo = new Fundo(nome, objetivo, taxaDeValorizacao, LocalDate.now(), depositoInicial);
+        this.fundos.add(novoFundo);
+        return novoFundo;
     }
 
-    public abrirConta(){
+    public Conta abrirConta(String banco,String id, double montanteInicial){
         // criar conta e associar ao usuario
+        Conta novaConta = new Conta(banco, id, montanteInicial);
+        this.contas.add(novaConta);
+        return novaConta;
     }
 
-    public categoriasSistema() {
-        // retornar lista de todas as categorias existentes no sistema. percorre as transacoes do usuário e armazena as categorias num conjunto (set) de categorias
+    public Set<Categoria> categoriasSistema() {
+    Set<Categoria> categorias = new HashSet<>();
+    for (Transacao transacao : transacoes.getHistorico()) {
+        if (transacao.getCategoria() != null) {
+            categorias.add(transacao.getCategoria());
+        }
+    }
+    return categorias;
     }
 
     public void gerarRelatorio(Relatorio relatorio){
