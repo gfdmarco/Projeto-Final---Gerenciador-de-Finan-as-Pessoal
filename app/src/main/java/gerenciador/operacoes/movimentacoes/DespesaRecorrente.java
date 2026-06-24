@@ -13,11 +13,11 @@ public class DespesaRecorrente extends Despesa implements Recorrencia {
     private boolean ativo;
     private Frequencia frequencia;
 
-    public DespesaRecorrente(String nome, String id, double valor, ArrayList<Tag> tags, Categoria categoria, LocalDate data, Conta conta, String fonte, Frequencia frequencia, LocalDate dataInicio) {
+    public DespesaRecorrente(String nome, String id, double valor, ArrayList<Tag> tags, Categoria categoria, LocalDate data, Conta conta, Frequencia frequencia, LocalDate dataInicio) {
         super(nome, id, valor, tags, categoria, data, conta);
         this.dataInicio = dataInicio;
         this.ativo = true;
-        this.frequencia = frequencia;
+        this.frequencia = frequencia;//ERRO DE NULL NA EXIBICAO TALVEZ
     }
 
     public boolean isAtivo() {
@@ -27,12 +27,13 @@ public class DespesaRecorrente extends Despesa implements Recorrencia {
     public LocalDate getDataInicio() {
         return this.dataInicio;
     }
-    
+
     public Frequencia getRecorrencia() {
         return frequencia;
     }
 
-    public Transacao gerarDespesaRecorrente(LocalDate data) {
-        return new Despesa(nome, id, valor, tags, categoria, data, contaAtrelada);
+    @Override
+    public Transacao gerarTransacaoRecorrente(LocalDate data) {
+        return new Despesa(this.getNome(), this.getID(), this.getValor(), this.getTags(), this.getCategoria(), this.getData(), this.getConta());
     }
 }

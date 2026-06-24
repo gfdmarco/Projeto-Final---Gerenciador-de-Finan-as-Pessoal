@@ -8,13 +8,13 @@ import gerenciador.suporte.Conta;
 import gerenciador.suporte.Tag;
 
 public abstract class Transacao {
-    private String nome;
-    private String id;
-    private double valor;
-    private ArrayList<Tag> tags;
-    private Categoria categoria;
-    private LocalDate data;
-    private Conta contaAtrelada;
+    protected String nome;
+    protected String id;
+    protected double valor;
+    protected ArrayList<Tag> tags;
+    protected Categoria categoria;
+    protected LocalDate data;
+    protected Conta contaAtrelada;
 
     public Transacao(String nome, String id, double valor, ArrayList<Tag> tags, Categoria categoria, LocalDate data, Conta conta){
         this.nome = nome;

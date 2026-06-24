@@ -1,64 +1,89 @@
 package gerenciador.sistema;
 
-import java.util.ArrayList;
-
+import gerenciador.base.PersistenciaJSON;
 import gerenciador.base.Usuario;
 import gerenciador.interfaces.UsuarioNecessario;
-import gerenciador.suporte.Conta;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 
-public class DashboardController implements UsuarioNecessario{
+public class DashboardController implements UsuarioNecessario {
+
     private Usuario usuarioAtual;
-    @FXML Label labelSaldoGeral;
-    @FXML TableView<Conta> tabelaContas;
-    @FXML TableView<Conta, String> colunaNome;
-    @FXML TableView<Conta, Double> colunaSaldo;
+    @FXML private Label labelSaldoGeral;
+    @FXML private Label labelNome;
+    @FXML private Label labelErro;
 
     @Override
     public void setUsuario(Usuario usuario){
         this.usuarioAtual = usuario;
-        
+        labelNome.setText("Olá, " + usuarioAtual.getNome() + "! Seja bem-vindo ao menu do seu Gerenciador de Finanças Pessoais!");
+        labelSaldoGeral.setText("Seu saldo geral: R$ " + String.format("%.2f", usuario.getSaldoGeral()));
     }
 
     @FXML
-    public void exibir(){
-        // SALDO GERAL
-        labelSaldoGeral.setText(String.valueOf(usuarioAtual.getSaldoGeral()));
-
-        // SALDO DAS CONTAS
-        ArrayList<Conta> contas = this.usuarioAtual.getContas();
-
-        colunaNome.setCellValueFactory(new PropertyValueFactory<>("Nome"));
-        colunaSaldo.setCellValueFactory(new PropertyValueFactory<>("Saldo"));
-
-        tabelaContas.setItems(contas);
+    void onDadosPessoais(){
+        try {
+            App.trocarTela("dadosPessoais", this.usuarioAtual);
+        }
+        catch (Exception e){
+            labelErro.setText("Erro ao trocar de tela");
+        }
     }
 
     @FXML
-    public void onTransacoes(){
-        App.trocarTela("transacoes", this.usuarioAtual);
+    void onTransacoes(){
+        try {
+            App.trocarTela("transacoes", this.usuarioAtual);
+        }
+        catch (Exception e){
+            labelErro.setText("Erro ao trocar de tela");
+        }
     }
 
     @FXML
-    public void onMetas(){
-        App.trocarTela("metas", this.usuarioAtual);
+    void onMetas(){
+        try {
+            App.trocarTela("metas", this.usuarioAtual);
+        }
+        catch (Exception e){
+            labelErro.setText("Erro ao trocar de tela");
+        }
     }
 
     @FXML
-    public void onCategorias(){
-        App.trocarTela("categorias", this.usuarioAtual);
+    void onCategorias(){
+        try {
+            App.trocarTela("categorias", this.usuarioAtual);
+        }
+        catch (Exception e){
+            labelErro.setText("Erro ao trocar de tela");
+        }
     }
 
     @FXML
-    public void onRelatorios(){
-        App.trocarTela("relatorios", this.usuarioAtual);
+    void onRelatorios(){
+        try {
+            App.trocarTela("relatorios", this.usuarioAtual);
+        }
+        catch (Exception e){
+            labelErro.setText("Erro ao trocar de tela");
+        }
     }
 
     @FXML
-    public void onFundos(){
-        App.trocarTela("fundos", this.usuarioAtual);
+    void onFundos(){
+        try {
+            App.trocarTela("fundos", this.usuarioAtual);
+        }
+        catch (Exception e){
+            labelErro.setText("Erro ao trocar de tela");
+        }
+    }
+
+    @FXML
+    void onSair(){
+        PersistenciaJSON.salvar(this.usuarioAtual);
+        Platform.exit();
     }
 }

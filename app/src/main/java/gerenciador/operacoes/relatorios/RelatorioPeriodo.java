@@ -9,7 +9,6 @@ import java.time.temporal.ChronoUnit;
 import gerenciador.base.Usuario;
 import gerenciador.enums.Frequencia;
 import gerenciador.interfaces.Relatorio;
-import gerenciador.operacoes.Meta;
 import gerenciador.operacoes.movimentacoes.*;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -114,15 +113,6 @@ public class RelatorioPeriodo implements Relatorio{
                 receitas += transacaoP.getValor();
             }
         }
-        //4a parte: feedback de metas
-        int qtdMetas = 0;
-        int qtdAtingidas = 0;
-        for (Meta meta : usuario.getMetas()){
-            qtdMetas++;
-            if (meta.isAtingida(usuario)){
-                qtdAtingidas++;
-            }
-        }
         //ERRO DE NULL NA EXIBICAO TALVEZ
         double circulacao = receitas - despesas;
         String conteudoExibir = 
@@ -130,8 +120,7 @@ public class RelatorioPeriodo implements Relatorio{
                 + fimPeriodo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n"
                 + "Receitas: R$ " + receitas + "\n"
                 + "Despesas: R$ " + despesas + "\n"
-                + "Evolução de Saldo: R$ " + circulacao + "\n"
-                + "Feedback de Metas: " + qtdAtingidas + "/" + qtdMetas + "foram atingidas \n \n"
+                + "Evolução de Saldo: R$ " + circulacao + "\n \n"
                 + "Três maiores movimentações: \n"
                 + "1ª) Nome: " + primeira.getNome() + "\n" 
                 + "Valor:" + primeira.getValor() + "\n"

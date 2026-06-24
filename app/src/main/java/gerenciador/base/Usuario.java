@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 import gerenciador.interfaces.GastoMensalListener;
-import gerenciador.operacoes.*;
 import gerenciador.operacoes.movimentacoes.*;
 import gerenciador.operacoes.reservas.*;
 import gerenciador.suporte.*;
 import gerenciador.interfaces.Relatorio;
 import gerenciador.enums.*;
+import java.util.UUID;
 
 public class Usuario {
     //
@@ -23,7 +23,6 @@ public class Usuario {
     private String senhaHasheada;
     private ReceitaRecorrente salario;
     private ArrayList<Conta> contas;
-    private ArrayList<Meta> metas;
     private ArrayList<Fundo> fundos;
     private HistoricoTransacoes transacoes;
     private ArrayList<DespesaRecorrente> despesasRecorrentes; //para construir o custo de vida mensal do usuario
@@ -33,9 +32,7 @@ public class Usuario {
             this.nome = nome;
             this.login = login;
             this.senhaHasheada = senhaHasheada;
-            //this.salario = 0.0; ARRUMAR ISSO DAQUI
             this.contas = new ArrayList<>();
-            this.metas = new ArrayList<>();
             this.fundos = new ArrayList<>();
             this.transacoes = new HistoricoTransacoes();
             this.despesasRecorrentes = new ArrayList<>();
@@ -64,9 +61,7 @@ public class Usuario {
     public ArrayList<Conta> getContas(){
         return this.contas;
     }
-    public ArrayList<Meta> getMetas(){
-        return this.metas;
-    }
+    
     public ArrayList<Fundo> getFundos(){
         return this.fundos;
     }
@@ -95,11 +90,12 @@ public class Usuario {
     return saldoAtual + (saldoLiquidoMensal * meses);
     }
 
-    public Fundo criarFundo(String nome, double objetivo, double taxaDeValorizacao, LocalDate depositoInicial, Conta conta){
-        Fundo novoFundo = new Fundo(nome, objetivo, taxaDeValorizacao, LocalDate.now(), depositoInicial);
+    /* public Fundo criarFundo(String nome, double objetivo, double taxaDeValorizacao, LocalDate depositoInicial, Conta conta){
+        Fundo novoFundo = new Fundo(nome, objetivo, taxaDeValorizacao, LocalDate.now(), depositoInicial); //NAO PODE INSTANCIAR FUNDO
         this.fundos.add(novoFundo);
         return novoFundo;
     }
+        */
 
     public Conta abrirConta(String banco,String id, double montanteInicial){
         // criar conta e associar ao usuario
@@ -109,27 +105,23 @@ public class Usuario {
     }
 
     public Set<Categoria> categoriasSistema() {
-    Set<Categoria> categorias = new HashSet<>();
-    for (Transacao transacao : transacoes.getHistorico()) {
-        if (transacao.getCategoria() != null) {
-            categorias.add(transacao.getCategoria());
+        Set<Categoria> categorias = new HashSet<>();
+        for (Transacao transacao : transacoes.getHistorico()) {
+            if (transacao.getCategoria() != null) {
+                categorias.add(transacao.getCategoria());
+            }
         }
-    }
-    return categorias;
+        return categorias;
     }
 
     public void gerarRelatorio(Relatorio relatorio){
         relatorio.gerar(this.transacoes.getHistorico(), this);
     }
 
-    public void criarMeta(TipoMeta tipo, double objetivo, LocalDate prazo){
-        Meta novaMeta = new Meta(tipo, objetivo, prazo);
-        this.metas.add(novaMeta);
-    }
-
     public void registrarSalario(Conta conta, double valor){
         Categoria categoria = new Categoria("Salário", valor);
-        this.salario = new ReceitaRecorrente("Salário", "00", valor, new ArrayList<>(), categoria, LocalDate.now(), conta, Frequencia.MENSAL, LocalDate.now());;
+        String id = UUID.randomUUID().toString();
+        this.salario = new ReceitaRecorrente("Salário", id, valor, new ArrayList<>(), categoria, LocalDate.now(), conta, Frequencia.MENSAL, LocalDate.now());;
     }
 
     public void adicionarTransacao(Transacao transacao){

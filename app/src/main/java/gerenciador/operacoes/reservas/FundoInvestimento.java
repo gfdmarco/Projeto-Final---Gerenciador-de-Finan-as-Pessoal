@@ -9,9 +9,9 @@ public class FundoInvestimento extends Fundo {
     private String tipoInvestimento;
 
     //Fundo de investimento não tem valor objetivo definido
-    public FundoInvestimento (String nome, TipoFundo tipo, double taxaDeValorizacao, LocalDate dataInicio, double depositoInicial, String tipoInvestimento) 
+    public FundoInvestimento (String nome, TipoFundo tipo, double taxaDeValorizacao, LocalDate dataInicio, String tipoInvestimento) 
     {
-        super(nome, tipo, taxaDeValorizacao, dataInicio, depositoInicial);
+        super(nome, tipo, 0, taxaDeValorizacao, dataInicio);
         this.tipoInvestimento = tipoInvestimento;
     }
 

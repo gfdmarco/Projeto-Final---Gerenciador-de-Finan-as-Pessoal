@@ -14,15 +14,19 @@ public class LoginController {
     @FXML private PasswordField campoSenha;
     @FXML private Label labelErro;
 
-    private GerenciadorUsuarios gerenciador = new GerenciadorUsuarios();
 
     //chamado para executar a ação de login a partir de quando o usuário aperta o botão correspondente
-    @FXML 
+    @FXML
     void onLogin(){
         try {
             labelErro.setText("");
-            Usuario u = gerenciador.autenticar(campoLogin.getText(), campoSenha.getText());
-            App.trocarTela("dashboard", u);
+            Usuario u = GerenciadorUsuarios.autenticar(campoLogin.getText(), campoSenha.getText());
+            try {
+                App.trocarTela("dashboard", u);
+            }
+            catch (Exception e){
+                labelErro.setText("Erro ao trocar de tela");
+            }
         }
         catch (LoginInvalidoException e){
             labelErro.setText(e.getMessage());
@@ -31,7 +35,12 @@ public class LoginController {
 
     //possibilidade de troca de tela com uso de botao para a tela de cadastro
     @FXML
-    void onTelaCadastro() {
-        App.trocarTela("cadastro"); //talvez precise passar o usuário
+    void onCadastrar() {
+        try {
+            App.trocarTela("cadastro");
+            }
+        catch (Exception e){
+            labelErro.setText("Erro ao trocar de tela");
+        }
     }
 }
