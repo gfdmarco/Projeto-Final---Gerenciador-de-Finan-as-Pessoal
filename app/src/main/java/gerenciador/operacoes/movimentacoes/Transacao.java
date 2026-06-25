@@ -27,7 +27,7 @@ public abstract class Transacao {
     protected LocalDate data;
     protected Conta contaAtrelada;
 
-    //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
+    //JSON precisa de um construtor padrão para conseguir construir os objetos quando carregar
     protected Transacao(){
         this.tags = new ArrayList<>();
     }
