@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import gerenciador.interfaces.GastoMensalListener;
 import gerenciador.operacoes.movimentacoes.*;
 import gerenciador.operacoes.reservas.*;
@@ -26,7 +28,18 @@ public class Usuario {
     private ArrayList<Fundo> fundos;
     private HistoricoTransacoes transacoes;
     private ArrayList<DespesaRecorrente> despesasRecorrentes; //para construir o custo de vida mensal do usuario
+    //JSON ignora esta serialização por não conter estado em si do usuário, mas ação durante a aplicação
+    @JsonIgnore
     private List<GastoMensalListener> gastoMensalListeners;
+
+    //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
+    public Usuario(){
+            this.contas = new ArrayList<>();
+            this.fundos = new ArrayList<>();
+            this.transacoes = new HistoricoTransacoes();
+            this.despesasRecorrentes = new ArrayList<>();
+            this.gastoMensalListeners = new ArrayList<>();
+    }
 
     public Usuario(String nome, String login, String senhaHasheada){
             this.nome = nome;
@@ -121,11 +134,29 @@ public class Usuario {
     public void registrarSalario(Conta conta, double valor){
         Categoria categoria = new Categoria("Salário", valor);
         String id = UUID.randomUUID().toString();
-        this.salario = new ReceitaRecorrente("Salário", id, valor, new ArrayList<>(), categoria, LocalDate.now(), conta, Frequencia.MENSAL, LocalDate.now());;
+        this.salario = new ReceitaRecorrente("Salário", id, valor, new ArrayList<>(), categoria, LocalDate.now(), conta, Frequencia.MENSAL, LocalDate.now());
+        conta.creditar(valor);
+        this.getHistorico().add(this.salario);
     }
 
     public void adicionarTransacao(Transacao transacao){
+        transacao.realizarTransacao();
         this.transacoes.getHistorico().add(transacao);
+        if (transacao.getConta() != null){
+            transacao.getConta().adicionarTransacao(transacao);
+        }
+        if (transacao.getCategoria() != null){
+            transacao.getCategoria().adicionarTransacao(transacao);
+        }
+        if (transacao.getTags() != null){
+            for (Tag t : transacao.getTags()){
+                t.adicionarTransacao(transacao);
+            }
+        }
+        if (transacao instanceof DespesaRecorrente){
+            despesasRecorrentes.add((DespesaRecorrente) transacao);
+            notificarGastoMensalListeners();
+        }
     }
 
     public void adicionarDespesaRecorrente(DespesaRecorrente despesaRecorrente) {
@@ -134,6 +165,9 @@ public class Usuario {
     }
 
     public void adicionarGastoMensalListener(GastoMensalListener listener) {
+        if (this.gastoMensalListeners == null){
+            this.gastoMensalListeners = new ArrayList<>();
+        }
         this.gastoMensalListeners.add(listener);
     }
 
@@ -169,6 +203,9 @@ public class Usuario {
 
     public void notificarGastoMensalListeners() {
         double novoGastoMensal = calcularGastoMensal();
+        if (gastoMensalListeners == null){
+            return;
+        }
         for (GastoMensalListener gastoMensalListener : gastoMensalListeners) {
             gastoMensalListener.updateGastoMensal(novoGastoMensal);
         }
@@ -184,6 +221,18 @@ public class Usuario {
             }
         }
         this.transacoes.getHistorico().removeAll(aRemoverGeral);
+        for (Transacao t : aRemoverGeral){
+            for (Conta c : this.getContas()){
+                if (t instanceof Despesa){
+                    c.creditar(t.getValor());
+                }
+                else if (t instanceof Receita){
+                    c.debitar(t.getValor());
+                }
+            }
+        }
+
+        //falta remover dos historicos das contas, tags e categorias associadas
     }
 
     public ArrayList<Transacao> buscarTransacao(LocalDate data){

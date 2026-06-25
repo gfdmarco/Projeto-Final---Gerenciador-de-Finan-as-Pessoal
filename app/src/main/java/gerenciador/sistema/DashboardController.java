@@ -2,10 +2,15 @@ package gerenciador.sistema;
 
 import gerenciador.base.PersistenciaJSON;
 import gerenciador.base.Usuario;
+import gerenciador.suporte.Conta;
 import gerenciador.interfaces.UsuarioNecessario;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
 
 public class DashboardController implements UsuarioNecessario {
 
@@ -14,11 +19,25 @@ public class DashboardController implements UsuarioNecessario {
     @FXML private Label labelNome;
     @FXML private Label labelErro;
 
+    //parte da exibição das contas
+    @FXML private TableView<Conta> tabelaContas;
+    @FXML private TableColumn<Conta, String> colunaNome;
+    @FXML private TableColumn<Conta, Double> colunaMontante;
+    @FXML private TableColumn<Conta, String> colunaID;
+    @FXML private TableColumn<Conta, Integer> colunaTransacoes;
+
     @Override
     public void setUsuario(Usuario usuario){
         this.usuarioAtual = usuario;
         labelNome.setText("Olá, " + usuarioAtual.getNome() + "! Seja bem-vindo ao menu do seu Gerenciador de Finanças Pessoais!");
-        labelSaldoGeral.setText("Seu saldo geral: R$ " + String.format("%.2f", usuario.getSaldoGeral()));
+        labelSaldoGeral.setText("R$ " + String.format("%.2f", usuario.getSaldoGeral()));
+
+        colunaNome.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getBanco()));
+        colunaMontante.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getMontante()));
+        colunaID.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getID()));
+        colunaTransacoes.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getTransacoesAssociadas().size()));
+
+        tabelaContas.getItems().addAll(usuario.getContas());
     }
 
     @FXML
@@ -35,16 +54,6 @@ public class DashboardController implements UsuarioNecessario {
     void onTransacoes(){
         try {
             App.trocarTela("transacoes", this.usuarioAtual);
-        }
-        catch (Exception e){
-            labelErro.setText("Erro ao trocar de tela");
-        }
-    }
-
-    @FXML
-    void onMetas(){
-        try {
-            App.trocarTela("metas", this.usuarioAtual);
         }
         catch (Exception e){
             labelErro.setText("Erro ao trocar de tela");

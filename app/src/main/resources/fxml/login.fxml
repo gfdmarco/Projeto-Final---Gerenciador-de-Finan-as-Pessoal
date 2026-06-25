@@ -14,7 +14,7 @@
          <children>
             <TextField fx:id="campoLogin" layoutX="226.0" layoutY="130.0" />
             <PasswordField fx:id="campoSenha" layoutX="226.0" layoutY="194.0" />
-            <Label fx:id="labelErro" layoutX="287.0" layoutY="307.0" prefHeight="17.0" prefWidth="28.0" textFill="RED" />
+            <Label fx:id="labelErro" layoutX="4.0" layoutY="296.0" prefHeight="30.0" prefWidth="590.0" textAlignment="CENTER" textFill="RED" />
             <Button layoutX="277.0" layoutY="247.0" mnemonicParsing="false" onAction="#onLogin" text="Entrar" />
             <Button layoutX="211.0" layoutY="349.0" mnemonicParsing="false" onAction="#onCadastrar" text="Não possui conta? Cadastre-se" />
             <Label layoutX="236.0" layoutY="33.0" text="Ice Delthios">

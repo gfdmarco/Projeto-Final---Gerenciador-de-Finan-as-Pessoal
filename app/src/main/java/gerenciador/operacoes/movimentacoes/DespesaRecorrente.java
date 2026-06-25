@@ -13,6 +13,11 @@ public class DespesaRecorrente extends Despesa implements Recorrencia {
     private boolean ativo;
     private Frequencia frequencia;
 
+    //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
+    public DespesaRecorrente(){
+        super();
+    }
+
     public DespesaRecorrente(String nome, String id, double valor, ArrayList<Tag> tags, Categoria categoria, LocalDate data, Conta conta, Frequencia frequencia, LocalDate dataInicio) {
         super(nome, id, valor, tags, categoria, data, conta);
         this.dataInicio = dataInicio;
@@ -34,6 +39,6 @@ public class DespesaRecorrente extends Despesa implements Recorrencia {
 
     @Override
     public Transacao gerarTransacaoRecorrente(LocalDate data) {
-        return new Despesa(this.getNome(), this.getID(), this.getValor(), this.getTags(), this.getCategoria(), this.getData(), this.getConta());
+        return new Despesa(this.getNome(), this.getID(), this.getValor(), this.getTags(), this.getCategoria(), data, this.getConta());
     }
 }

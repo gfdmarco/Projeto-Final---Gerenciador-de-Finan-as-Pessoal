@@ -19,7 +19,7 @@ public class HistoricoTransacoes {
     public ArrayList<Transacao> getHistorico(LocalDate inicio, LocalDate fim){
         ArrayList<Transacao> transacoesPeriodo = new ArrayList<>();
         for (Transacao transacao : transacoes){
-            if (transacao.getData().isAfter(inicio) && transacao.getData().isBefore(fim)){
+            if (!transacao.getData().isBefore(inicio) && !transacao.getData().isAfter(fim)){
                 transacoesPeriodo.add(transacao);
             }
         }

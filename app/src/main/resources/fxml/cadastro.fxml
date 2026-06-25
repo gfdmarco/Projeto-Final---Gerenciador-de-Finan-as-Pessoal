@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.CadastroController">
    <children>
       <AnchorPane prefHeight="402.0" prefWidth="600.0">
@@ -25,7 +24,7 @@
             <Label layoutX="176.0" layoutY="179.0" text="Login:" />
             <Label layoutX="175.0" layoutY="233.0" text="Senha:" />
             <Button layoutX="267.0" layoutY="278.0" mnemonicParsing="false" onAction="#onCadastro" text="Cadastrar" />
-            <Label fx:id="labelErro" layoutX="287.0" layoutY="327.0" prefHeight="17.0" prefWidth="27.0" textFill="RED" />
+            <Label fx:id="labelErro" layoutX="5.0" layoutY="328.0" prefHeight="30.0" prefWidth="590.0" textAlignment="CENTER" textFill="RED" />
          </children>
       </AnchorPane>
    </children>
