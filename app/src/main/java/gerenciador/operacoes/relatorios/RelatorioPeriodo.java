@@ -11,7 +11,6 @@ import gerenciador.enums.Frequencia;
 import gerenciador.interfaces.Relatorio;
 import gerenciador.operacoes.movimentacoes.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class RelatorioPeriodo implements Relatorio{
     private LocalDate inicioPeriodo;
@@ -27,41 +26,21 @@ public class RelatorioPeriodo implements Relatorio{
         //1a parte: transações realizadas\
         ArrayList<Transacao> transacoesPeriodo = new ArrayList<>();
         for (Transacao transacao : transacoes){
-            if (transacao.getData().isAfter(inicioPeriodo) && transacao.getData().isBefore(fimPeriodo)){
+            boolean depoisOuNoInicio = !transacao.getData().isBefore(inicioPeriodo);
+            boolean antesOuNoFim = !transacao.getData().isAfter(fimPeriodo);
+            if (depoisOuNoInicio && antesOuNoFim){
                 transacoesPeriodo.add(transacao);
             }
         }
-        //2a parte: as 3 maiores despesas
-        transacoesPeriodo.sort(Comparator.comparing(Transacao::getValor));
 
-        int tamanho_lista = transacoesPeriodo.size();
-
-        int qtd_disponivel = Math.min(3, tamanho_lista);
-        //se tiver menos que 3 transacoes ele vai pegar o maximo disponivel
-        Transacao primeira = null;
-        Transacao segunda = null;
-        Transacao terceira = null;
-        if (qtd_disponivel >= 1){
-            primeira = transacoesPeriodo.get(transacoesPeriodo.size() - 1);
-        }
-        if (qtd_disponivel >= 2){
-            segunda = transacoesPeriodo.get(transacoesPeriodo.size() - 2);
-        }
-        if (qtd_disponivel >= 3){
-            terceira = transacoesPeriodo.get(transacoesPeriodo.size() - 3);
-        }
-
-        //transacoes que nao foram preenchidas ficam como null
-
-        //3a parte: construção da evolução do saldo
+        //2a parte: construção da evolução do saldo
         long diferencaDias = ChronoUnit.DAYS.between(this.inicioPeriodo, this.fimPeriodo);
         double receitas = 0.0;
         double despesas = 0.0;
         for (Transacao transacaoP : transacoesPeriodo){
             if (transacaoP instanceof DespesaRecorrente){
                 DespesaRecorrente despesa = (DespesaRecorrente) transacaoP;
-                Frequencia freq = despesa.getRecorrencia();
-                switch(freq){
+                switch(despesa.getRecorrencia()){
                     case SEMANAL:
                         despesas += despesa.getValor() * (diferencaDias / 7);
                         break;
@@ -84,8 +63,7 @@ public class RelatorioPeriodo implements Relatorio{
             }
             else if (transacaoP instanceof ReceitaRecorrente){
                 ReceitaRecorrente receita = (ReceitaRecorrente) transacaoP;
-                Frequencia freq = receita.getRecorrencia();
-                switch(freq){
+                switch(receita.getRecorrencia()){
                     case SEMANAL:
                         receitas += receita.getValor() * (diferencaDias / 7);
                         break;
@@ -115,28 +93,12 @@ public class RelatorioPeriodo implements Relatorio{
         }
         //ERRO DE NULL NA EXIBICAO TALVEZ
         double circulacao = receitas - despesas;
-        String conteudoExibir = 
+        String conteudoExibir =
                 "Período: " + inicioPeriodo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " até " 
                 + fimPeriodo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n"
                 + "Receitas: R$ " + receitas + "\n"
                 + "Despesas: R$ " + despesas + "\n"
-                + "Evolução de Saldo: R$ " + circulacao + "\n \n"
-                + "Três maiores movimentações: \n"
-                + "1ª) Nome: " + primeira.getNome() + "\n" 
-                + "Valor:" + primeira.getValor() + "\n"
-                + "Data: " + primeira.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n"
-                + "Conta: " + primeira.getConta() + "\n"
-                + "Categoria: " + primeira.getCategoria() + "\n \n"
-                + "2ª) Nome: " + segunda.getNome() + "\n" 
-                + "Valor:" + segunda.getValor() + "\n"
-                + "Data: " + segunda.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n"
-                + "Conta: " + segunda.getConta() + "\n"
-                + "Categoria: " + segunda.getCategoria() + "\n \n"
-                + "3ª) Nome: " + terceira.getNome() + "\n" 
-                + "Valor:" + terceira.getValor() + "\n"
-                + "Data: " + terceira.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n"
-                + "Conta: " + terceira.getConta() + "\n"
-                + "Categoria: " + terceira.getCategoria() + "\n \n";
+                + "Evolução de Saldo: R$ " + circulacao + "\n \n";
         return conteudoExibir;
     }
 

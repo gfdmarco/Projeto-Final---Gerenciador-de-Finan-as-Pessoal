@@ -31,6 +31,7 @@ public class DadosPessoaisController implements UsuarioNecessario{
         listaContas.getItems().addAll(usuario.getContas());
     }
 
+    @FXML
     void onRegistrarSalario(){
         String textoSalario = setaSalario.getText();
         try {

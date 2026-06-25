@@ -4,9 +4,18 @@ import gerenciador.enums.*;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import gerenciador.exceptions.*;
 import java.time.temporal.ChronoUnit;
 
+//PARTE NECESSÁRIA PARA IDENTIFICAR QUAL TIPO DE TRANSACAO ESTÁ SENDO SALVA E CONSEGUIR CARREGAR/SALVAR CORRETAMENTE
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "tipoFundoClasse")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = FundoEmergencia.class, name = "emergencia"),
+    @JsonSubTypes.Type(value = FundoInvestimento.class, name = "investimento")
+})
 public abstract class Fundo {
     private String nome;
     private TipoFundo tipo;
@@ -14,6 +23,10 @@ public abstract class Fundo {
     private double valorObjetivo;
     private double taxaDeValorizacao;
     private LocalDate dataInicio;
+
+    //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
+    protected Fundo(){
+    }
 
     public Fundo(String nome, TipoFundo tipo, double valorObjetivo, double taxaDeValorizacao, LocalDate dataInicio){
         this.nome = nome;
@@ -46,6 +59,10 @@ public abstract class Fundo {
 
     public double getObjetivo(){
         return this.valorObjetivo;
+    }
+
+    public void setObjetivo(double objetivo){
+        this.valorObjetivo = objetivo;
     }
 
     public String getProgresso(){

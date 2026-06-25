@@ -7,9 +7,13 @@ import gerenciador.interfaces.GastoMensalListener;
 
 public class FundoEmergencia extends Fundo implements GastoMensalListener {
     private int mesesDeCoberturaIdeal;
-    private double valorObjetivo;
 
-    public FundoEmergencia(String nome, TipoFundo tipo, double valorObjetivo, double taxaDeValorizacao, LocalDate dataInicio, 
+    //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
+    public FundoEmergencia(){
+        super();
+    }
+
+    public FundoEmergencia(String nome, TipoFundo tipo, double valorObjetivo, double taxaDeValorizacao, LocalDate dataInicio,
         int mesesDeCoberturaIdeal){
 
         super(nome, tipo, valorObjetivo, taxaDeValorizacao, dataInicio);
@@ -21,10 +25,10 @@ public class FundoEmergencia extends Fundo implements GastoMensalListener {
     }
 
     public void updateGastoMensal(double novoGastoMensal) {
-        this.valorObjetivo = coberturaMeses() * novoGastoMensal;
+        this.setObjetivo(coberturaMeses() * novoGastoMensal);
     }
 
     public double getValorObjetivo() {
-        return this.valorObjetivo;
+        return this.getObjetivo();
     }
 }

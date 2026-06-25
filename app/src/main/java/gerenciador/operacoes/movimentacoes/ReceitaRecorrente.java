@@ -13,6 +13,11 @@ public class ReceitaRecorrente extends Receita implements Recorrencia {
     private boolean ativo;
     private Frequencia frequencia;
 
+    //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
+    public ReceitaRecorrente(){
+        super();
+    }
+
     public ReceitaRecorrente(String nome, String id, double valor, ArrayList<Tag> tags, Categoria categoria, LocalDate data, Conta conta, Frequencia frequencia, LocalDate dataInicio) {
         super(nome, id, valor, tags, categoria, data, conta);
         this.dataInicio = dataInicio;
