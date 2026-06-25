@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.LoginController">
    <children>
       <AnchorPane prefHeight="403.0" prefWidth="600.0">
@@ -17,14 +16,15 @@
             <PasswordField fx:id="campoSenha" layoutX="226.0" layoutY="194.0" />
             <Label fx:id="labelErro" layoutX="287.0" layoutY="307.0" prefHeight="17.0" prefWidth="28.0" textFill="RED" />
             <Button layoutX="277.0" layoutY="247.0" mnemonicParsing="false" onAction="#onLogin" text="Entrar" />
-            <Button layoutX="211.0" layoutY="349.0" mnemonicParsing="false" onAction="#onTelaCadastro" text="Não possui conta? Cadastre-se" />
-            <Label layoutX="223.0" layoutY="34.0" text="Área de Login">
+            <Button layoutX="211.0" layoutY="349.0" mnemonicParsing="false" onAction="#onCadastrar" text="Não possui conta? Cadastre-se" />
+            <Label layoutX="236.0" layoutY="33.0" text="Ice Delthios">
                <font>
                   <Font size="25.0" />
                </font>
             </Label>
             <Label layoutX="178.0" layoutY="134.0" text="Login:" />
             <Label layoutX="178.0" layoutY="198.0" text="Senha:" />
+            <Label layoutX="212.0" layoutY="69.0" text="Gerenciador de Financas Pessoais" />
          </children>
       </AnchorPane>
    </children>

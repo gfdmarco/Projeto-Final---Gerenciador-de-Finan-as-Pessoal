@@ -1,7 +1,6 @@
 package gerenciador.sistema;
 
 import gerenciador.base.GerenciadorUsuarios;
-import gerenciador.base.Usuario;
 import gerenciador.exceptions.LoginExistenteException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,17 +14,30 @@ public class CadastroController {
     @FXML private PasswordField campoSenha;
     @FXML private Label labelErro;
 
-    private GerenciadorUsuarios gerenciador = new GerenciadorUsuarios();
-
     //chamado para executar a ação de cadastro a partir de quando o usuário aperta o botão correspondente
-    @FXML 
+    @FXML
     void onCadastro(){
         try {
-            Usuario u = gerenciador.cadastrarUsuario(campoNome.getText(), campoLogin.getText(), campoSenha.getText());
-            App.trocarTela("login", u);
+            GerenciadorUsuarios.cadastrarUsuario(campoNome.getText(), campoLogin.getText(), campoSenha.getText());
+            try {
+                App.trocarTela("login");
+            }
+            catch (Exception e){
+                labelErro.setText("Erro ao trocar de tela");
+            }
         }
         catch (LoginExistenteException e){
             labelErro.setText(e.getMessage());
+        }
+    }
+
+    @FXML
+    void onVoltar() {
+        try {
+            App.trocarTela("login");
+        }
+        catch (Exception e){
+            labelErro.setText("Erro ao trocar de tela");
         }
     }
 }

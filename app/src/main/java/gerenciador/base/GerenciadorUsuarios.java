@@ -1,11 +1,10 @@
 package gerenciador.base;
 
-import gerenciador.interfaces.Autenticavel;
 import gerenciador.exceptions.*;
 
-public class GerenciadorUsuarios implements Autenticavel {
+public class GerenciadorUsuarios{
 
-    public Usuario cadastrarUsuario(String nome, String login, String senha){
+    public static Usuario cadastrarUsuario(String nome, String login, String senha){
         if (PersistenciaJSON.usuarioExistente(login)){
             throw new LoginExistenteException(login);
         }
@@ -17,8 +16,7 @@ public class GerenciadorUsuarios implements Autenticavel {
         return u;
     }
 
-    @Override
-    public Usuario autenticar(String login, String senha){
+    public static Usuario autenticar(String login, String senha){
         if (!PersistenciaJSON.usuarioExistente(login)){
             throw new LoginInvalidoException(login, senha);
         }
