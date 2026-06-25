@@ -17,7 +17,7 @@ public class Despesa extends Transacao{
         super(nome, id, valor, tags, categoria, data, conta);
     }
 
-    @Override
+    @Override//cade minha banana viado 
     public void realizarTransacao(){
         //consertar isso aqui: preciso primeiro acumular o gasto total no mes, depois ver se o valor + o que ja foi gasto supera o orcamento
         if (this.getValor() > this.getCategoria().getOrcamento()){

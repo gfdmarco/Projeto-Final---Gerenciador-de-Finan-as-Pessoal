@@ -103,12 +103,14 @@ public class Usuario {
     return saldoAtual + (saldoLiquidoMensal * meses);
     }
 
-    /* public Fundo criarFundo(String nome, double objetivo, double taxaDeValorizacao, LocalDate depositoInicial, Conta conta){
-        Fundo novoFundo = new Fundo(nome, objetivo, taxaDeValorizacao, LocalDate.now(), depositoInicial); //NAO PODE INSTANCIAR FUNDO
+    public Fundo criarFundo(String nome, TipoFundo tipo, double objetivo, double taxaDeValorizacao, LocalDate depositoInicial, Conta conta){
+        Fundo novoFundo = switch (tipo){
+            case EMERGENCIA -> new FundoEmergencia(nome, TipoFundo.EMERGENCIA, objetivo, taxaDeValorizacao, LocalDate.now(), 6);
+            case INVESTIMENTO -> new FundoInvestimento(nome, TipoFundo.INVESTIMENTO, 0, taxaDeValorizacao, LocalDate.now());
+        };
         this.fundos.add(novoFundo);
         return novoFundo;
     }
-        */
 
     public Conta abrirConta(String banco,String id, double montanteInicial){
         // criar conta e associar ao usuario
