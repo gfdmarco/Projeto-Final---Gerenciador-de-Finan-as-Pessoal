@@ -17,14 +17,19 @@ public class Despesa extends Transacao{
         super(nome, id, valor, tags, categoria, data, conta);
     }
 
-    @Override//cade minha banana viado 
-    public void realizarTransacao(){
-        //consertar isso aqui: preciso primeiro acumular o gasto total no mes, depois ver se o valor + o que ja foi gasto supera o orcamento
-        if (this.getValor() > this.getCategoria().getOrcamento()){
-            throw new OrcamentoExcedidoException(this.getCategoria(), this.getValor());
+    public void realizarTransacao() {
+        //chama a função abaixo sem ignorar orçamento -> ato de ignorar: parte da lógica do front
+        realizarTransacao(false);
+    }
+
+    public void realizarTransacao(boolean ignorarOrcamento) {
+        double gastoAtual = this.getCategoria().gastoNoMes();
+        double orcamento = this.getCategoria().getOrcamento();
+
+        if (!ignorarOrcamento && orcamento > 0 && (gastoAtual + this.getValor()) > orcamento) {
+            throw new OrcamentoExcedidoException(this.getCategoria(), gastoAtual + this.getValor());
         }
-        else {
-            this.getConta().debitar(this.getValor());
-        }
+
+        this.getConta().debitar(this.getValor()); // ainda lança SaldoInsuficienteException normalmente
     }
 }

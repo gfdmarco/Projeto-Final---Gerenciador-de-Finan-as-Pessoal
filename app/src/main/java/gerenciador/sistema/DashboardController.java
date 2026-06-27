@@ -37,6 +37,7 @@ public class DashboardController implements UsuarioNecessario {
         colunaID.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getID()));
         colunaTransacoes.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getTransacoesAssociadas().size()));
 
+        tabelaContas.getItems().clear();
         tabelaContas.getItems().addAll(usuario.getContas());
     }
 
@@ -84,6 +85,26 @@ public class DashboardController implements UsuarioNecessario {
     void onFundos(){
         try {
             App.trocarTela("fundos", this.usuarioAtual);
+        }
+        catch (Exception e){
+            labelErro.setText("Erro ao trocar de tela");
+        }
+    }
+
+    @FXML
+    void onContas(){
+        try {
+            App.trocarTela("contas", this.usuarioAtual);
+        }
+        catch (Exception e){
+            labelErro.setText("Erro ao trocar de tela");
+        }
+    }
+
+    @FXML
+    void onTags(){
+        try {
+            App.trocarTela("tags", this.usuarioAtual);
         }
         catch (Exception e){
             labelErro.setText("Erro ao trocar de tela");

@@ -11,7 +11,7 @@ import gerenciador.operacoes.movimentacoes.Transacao;
 public class Conta {
     private String banco;
     private String id;
-    private double montante; 
+    private double montante;
     //JSON ignora esta serialização para não duplicar dados, salvando apenas o histórico geral do usuário
     @JsonIgnore
     private HistoricoTransacoes transacoes;

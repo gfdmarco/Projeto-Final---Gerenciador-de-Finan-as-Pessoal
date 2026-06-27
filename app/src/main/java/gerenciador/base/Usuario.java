@@ -26,6 +26,8 @@ public class Usuario {
     private ReceitaRecorrente salario;
     private ArrayList<Conta> contas;
     private ArrayList<Fundo> fundos;
+    private Set<Categoria> categorias;
+    private Set<Tag> tags;
     private HistoricoTransacoes transacoes;
     private ArrayList<DespesaRecorrente> despesasRecorrentes; //para construir o custo de vida mensal do usuario
     //JSON ignora esta serialização por não conter estado em si do usuário, mas ação durante a aplicação
@@ -97,10 +99,15 @@ public class Usuario {
         return receitaMensal - gastoMensal;
     }
 
+    public void transferirEntreContas(double valor, Conta c1, Conta c2){
+        //a fazer
+        //importante: mexer com os historicos (geral e de cada uma). nao apenas debitar e creditar
+    }
+
     public double projetarSaldoFuturo(int meses) {
-    double saldoAtual = getSaldoGeral();
-    double saldoLiquidoMensal = GanhoLiquidoMensal(); // receitaMensal - gastoMensal
-    return saldoAtual + (saldoLiquidoMensal * meses);
+        double saldoAtual = getSaldoGeral();
+        double saldoLiquidoMensal = GanhoLiquidoMensal(); // receitaMensal - gastoMensal
+        return saldoAtual + (saldoLiquidoMensal * meses);
     }
 
     public Fundo criarFundo(String nome, TipoFundo tipo, double objetivo, double taxaDeValorizacao, LocalDate depositoInicial, Conta conta){
@@ -119,14 +126,43 @@ public class Usuario {
         return novaConta;
     }
 
-    public Set<Categoria> categoriasSistema() {
+    public void setCategorias() {
         Set<Categoria> categorias = new HashSet<>();
         for (Transacao transacao : transacoes.getHistorico()) {
             if (transacao.getCategoria() != null) {
                 categorias.add(transacao.getCategoria());
             }
         }
-        return categorias;
+        this.categorias = categorias;
+    }
+
+    public void setTags() {
+        Set<Tag> tags = new HashSet<>();
+        for (Transacao transacao : transacoes.getHistorico()){
+            for (Tag t : transacao.getTags()){
+                if (t != null){
+                    tags.add(t);
+                }
+            }
+        }
+        this.tags = tags;
+    }
+
+    public Set<Categoria> categoriasSistema() {
+        return this.categorias;
+    }
+
+    public Set<Tag> tagsSistema() {
+        return this.tags;
+    }
+
+    public Categoria buscarCategoria(String nome){
+        for (Categoria c : this.categoriasSistema()){
+            if (c.getNome().equals(nome)){
+                return c;
+            }
+        }
+        return null; //não encontrado
     }
 
     public void gerarRelatorio(Relatorio relatorio){
@@ -138,6 +174,7 @@ public class Usuario {
         String id = UUID.randomUUID().toString();
         this.salario = new ReceitaRecorrente("Salário", id, valor, new ArrayList<>(), categoria, LocalDate.now(), conta, Frequencia.MENSAL, LocalDate.now());
         conta.creditar(valor);
+        conta.adicionarTransacao((Transacao) this.salario);
         this.getHistorico().add(this.salario);
     }
 
@@ -282,7 +319,7 @@ public class Usuario {
     public ArrayList<Transacao> buscarTransacao(double valor){
         ArrayList<Transacao> encontradas = new ArrayList<>();
         for (Transacao transacao : transacoes.getHistorico()){
-            if (Math.abs(transacao.getValor() - valor) < 0.001){ //double tem imprecisão de comparação e não pode usar equals com ele
+            if (Math.abs(transacao.getValor() - valor) < 0.00000000000001){ //double tem imprecisão de comparação e não pode usar equals com ele
                 encontradas.add(transacao);
             }
         }

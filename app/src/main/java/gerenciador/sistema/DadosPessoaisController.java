@@ -2,6 +2,7 @@ package gerenciador.sistema;
 
 import java.util.UUID;
 
+import gerenciador.base.PersistenciaJSON;
 import gerenciador.base.Usuario;
 import gerenciador.interfaces.UsuarioNecessario;
 import gerenciador.suporte.Conta;
@@ -27,7 +28,8 @@ public class DadosPessoaisController implements UsuarioNecessario{
         this.usuarioAtual = usuario;
         labelNome.setText(usuario.getNome());
         labelLogin.setText(usuario.getLogin());
-        labelSalario.setText(usuario.getSalario() != 0.0 ? "R$ " + usuario.getSalario() : "Não registrado");
+        labelSalario.setText(usuario.getSalario() > 0.0 ? "R$ " + usuario.getSalario() : "Não registrado");
+        listaContas.getItems().clear();
         listaContas.getItems().addAll(usuario.getContas());
     }
 
@@ -36,20 +38,22 @@ public class DadosPessoaisController implements UsuarioNecessario{
         String textoSalario = setaSalario.getText();
         try {
             double salario = Double.parseDouble(textoSalario);
-            Conta doSalario = null;
+            Conta contaDoSalario = null;
             for (Conta c : usuarioAtual.getContas()){
                 if (c.getBanco().equals(contaSalario.getText())){
-                    doSalario = c;
+                    contaDoSalario = c;
+                    break;
                 }
             }
-            if (doSalario != null){
-                usuarioAtual.registrarSalario(doSalario, salario);
-            }
-            else {
+            if (contaDoSalario == null){
                 String id = UUID.randomUUID().toString();
-                doSalario = new Conta(contaSalario.getText(), id, salario);
+                contaDoSalario = new Conta(contaSalario.getText(), id, salario);
+                usuarioAtual.getContas().add(contaDoSalario);
+                listaContas.getItems().add(contaDoSalario);
             }
-            labelSalario.setText(textoSalario);
+            usuarioAtual.registrarSalario(contaDoSalario, salario);
+            PersistenciaJSON.salvar(usuarioAtual);
+            labelSalario.setText("R$ " + String.format("%.2f", salario));
 
         }
         catch (NumberFormatException e){
