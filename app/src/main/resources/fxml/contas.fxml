@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="696.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.ContasController">
+   <children>
+      <AnchorPane prefHeight="707.0" prefWidth="987.0">
+         <children>
+            <Label layoutX="47.0" layoutY="26.0" text="Contas">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <Label layoutX="93.0" layoutY="76.0" text="Adicão de Conta">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoNomeCriar" layoutX="74.0" layoutY="152.0" />
+            <TextField fx:id="campoSaldoInicial" layoutX="74.0" layoutY="222.0" />
+            <Label layoutX="132.0" layoutY="125.0" text="Nome" />
+            <Label layoutX="116.0" layoutY="194.0" text="Saldo Inicial" />
+            <TableView fx:id="tabelaContas" layoutX="349.0" layoutY="134.0" prefHeight="499.0" prefWidth="576.0">
+              <columns>
+                <TableColumn fx:id="colunaNome" prefWidth="122.0" text="Nome" />
+                <TableColumn fx:id="colunaMontante" prefWidth="108.0" text="Montante" />
+                  <TableColumn fx:id="colunaID" prefWidth="131.0" text="ID" />
+                  <TableColumn fx:id="colunaTransacoes" prefWidth="214.0" text="Transacões Associadas" />
+              </columns>
+            </TableView>
+            <Label layoutX="62.0" layoutY="334.0" text="Transferência entre Contas">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="134.0" layoutY="375.0" text="Valor" />
+            <Label layoutX="86.0" layoutY="454.0" text="Conta Devedora (Envio)" />
+            <Label layoutX="85.0" layoutY="531.0" text="Conta Credora (Destino)" />
+            <TextField fx:id="campoValor" layoutX="75.0" layoutY="401.0" />
+            <TextField fx:id="campoNomeConta1" layoutX="75.0" layoutY="483.0" />
+            <TextField fx:id="campoNomeConta2" layoutX="74.0" layoutY="560.0" />
+            <Label layoutX="596.0" layoutY="76.0" text="Suas Contas">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Button layoutX="115.0" layoutY="277.0" mnemonicParsing="false" onAction="#onAdicionar" text="Adicionar" />
+            <Button layoutX="117.0" layoutY="608.0" mnemonicParsing="false" onAction="#onTransferir" text="Transferir" />
+            <Button layoutX="470.0" layoutY="650.0" mnemonicParsing="false" onAction="#onVoltar" text="Voltar" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

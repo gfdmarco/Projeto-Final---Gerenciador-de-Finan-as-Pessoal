@@ -42,9 +42,21 @@ public class Categoria {
         }
         this.transacoes.getHistorico().add(transacao);
     }
+    
+    public void editarOrcamento(double novoOrcamento){
+        this.orcamento = novoOrcamento;
+    }
 
-    public void editarOrcamento(){
-        //opção de editar orçamento
+    public double gastoNoMes(){
+        double gasto = 0;
+        for (Transacao t : this.getTransacoesAssociadas()){
+            gasto += t.getValor();
+        }
+        return gasto;
+    }
+
+    public double getPercentualUso() {
+        return this.gastoNoMes() / this.orcamento;
     }
 
     @Override

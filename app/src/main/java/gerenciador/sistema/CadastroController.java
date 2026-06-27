@@ -1,6 +1,8 @@
 package gerenciador.sistema;
 
 import gerenciador.base.GerenciadorUsuarios;
+import gerenciador.base.PersistenciaJSON;
+import gerenciador.base.Usuario;
 import gerenciador.exceptions.LoginExistenteException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -18,7 +20,8 @@ public class CadastroController {
     @FXML
     void onCadastro(){
         try {
-            GerenciadorUsuarios.cadastrarUsuario(campoNome.getText(), campoLogin.getText(), campoSenha.getText());
+            Usuario u = GerenciadorUsuarios.cadastrarUsuario(campoNome.getText(), campoLogin.getText(), campoSenha.getText());
+            PersistenciaJSON.salvar(u);
             try {
                 App.trocarTela("login");
             }
