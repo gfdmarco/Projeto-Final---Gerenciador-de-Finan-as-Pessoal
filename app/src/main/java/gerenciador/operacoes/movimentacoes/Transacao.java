@@ -10,7 +10,7 @@ import gerenciador.suporte.Categoria;
 import gerenciador.suporte.Conta;
 import gerenciador.suporte.Tag;
 
-//PARTE NECESSÁRIA PARA IDENTIFICAR QUAL TIPO DE TRANSACAO ESTÁ SENDO SALVA E CONSEGUIR CARREGAR/SALVAR CORRETAMENTE
+//PARTE NECESSARIA PARA IDENTIFICAR QUAL TIPO DE TRANSACAO ESTA SENDO SALVA E CONSEGUIR CARREGAR/SALVAR CORRETAMENTE
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "tipoTransacao")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Receita.class, name = "receita"),

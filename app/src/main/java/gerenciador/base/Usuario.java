@@ -38,6 +38,8 @@ public class Usuario {
     public Usuario(){
             this.contas = new ArrayList<>();
             this.fundos = new ArrayList<>();
+            this.categorias = new HashSet<>();
+            this.tags = new HashSet<>();
             this.transacoes = new HistoricoTransacoes();
             this.despesasRecorrentes = new ArrayList<>();
             this.gastoMensalListeners = new ArrayList<>();
@@ -49,6 +51,8 @@ public class Usuario {
             this.senhaHasheada = senhaHasheada;
             this.contas = new ArrayList<>();
             this.fundos = new ArrayList<>();
+            this.categorias = new HashSet<>();
+            this.tags = new HashSet<>();
             this.transacoes = new HistoricoTransacoes();
             this.despesasRecorrentes = new ArrayList<>();
             this.gastoMensalListeners = new ArrayList<>();
@@ -100,8 +104,25 @@ public class Usuario {
     }
 
     public void transferirEntreContas(double valor, Conta c1, Conta c2){
-        //a fazer
-        //importante: mexer com os historicos (geral e de cada uma). nao apenas debitar e creditar
+        if (valor <= 0){
+            throw new IllegalArgumentException("O valor da transferência deve ser positivo.");
+        }
+        if (c1 == null || c2 == null){
+            throw new IllegalArgumentException("Selecione duas contas válidas.");
+        }
+        if (!this.contas.contains(c1) || !this.contas.contains(c2)){
+            throw new IllegalArgumentException("As contas devem pertencer ao usuário.");
+        }
+        if (c1.getMontante() < valor){
+            throw new IllegalArgumentException("Saldo insuficiente na conta de origem.");
+        }
+
+        c1.debitar(valor);
+        c2.creditar(valor);
+
+        Transacao transferencia = new Receita("Transferência entre contas", UUID.randomUUID().toString(), valor, new ArrayList<>(), null, LocalDate.now(), c2);
+        this.transacoes.getHistorico().add(transferencia);
+        c2.adicionarTransacao(transferencia);
     }
 
     public double projetarSaldoFuturo(int meses) {
@@ -112,8 +133,8 @@ public class Usuario {
 
     public Fundo criarFundo(String nome, TipoFundo tipo, double objetivo, double taxaDeValorizacao, LocalDate depositoInicial, Conta conta){
         Fundo novoFundo = switch (tipo){
-            case EMERGENCIA -> new FundoEmergencia(nome, TipoFundo.EMERGENCIA, objetivo, taxaDeValorizacao, LocalDate.now(), 6);
-            case INVESTIMENTO -> new FundoInvestimento(nome, TipoFundo.INVESTIMENTO, 0, taxaDeValorizacao, LocalDate.now());
+            case EMERGENCIA -> new FundoEmergencia(nome, TipoFundo.EMERGENCIA, objetivo, taxaDeValorizacao, depositoInicial, 6);
+            case INVESTIMENTO -> new FundoInvestimento(nome, TipoFundo.INVESTIMENTO, objetivo, taxaDeValorizacao, depositoInicial);
         };
         this.fundos.add(novoFundo);
         return novoFundo;
@@ -127,25 +148,29 @@ public class Usuario {
     }
 
     public void setCategorias() {
-        Set<Categoria> categorias = new HashSet<>();
+        if (this.categorias == null) {
+            this.categorias = new HashSet<>();
+        }
         for (Transacao transacao : transacoes.getHistorico()) {
-            if (transacao.getCategoria() != null) {
-                categorias.add(transacao.getCategoria());
+            if (transacao != null && transacao.getCategoria() != null) {
+                this.categorias.add(transacao.getCategoria());
             }
         }
-        this.categorias = categorias;
     }
 
     public void setTags() {
-        Set<Tag> tags = new HashSet<>();
+        if (this.tags == null) {
+            this.tags = new HashSet<>();
+        }
         for (Transacao transacao : transacoes.getHistorico()){
-            for (Tag t : transacao.getTags()){
-                if (t != null){
-                    tags.add(t);
+            if (transacao != null && transacao.getTags() != null) {
+                for (Tag t : transacao.getTags()){
+                    if (t != null){
+                        this.tags.add(t);
+                    }
                 }
             }
         }
-        this.tags = tags;
     }
 
     public Set<Categoria> categoriasSistema() {
@@ -179,7 +204,6 @@ public class Usuario {
     }
 
     public void adicionarTransacao(Transacao transacao){
-        transacao.realizarTransacao();
         this.transacoes.getHistorico().add(transacao);
         if (transacao.getConta() != null){
             transacao.getConta().adicionarTransacao(transacao);
@@ -251,27 +275,40 @@ public class Usuario {
     }
 
     public void removerTransacao(String id){
-        //arrays abaixos utilizados para evitar remover durante iteração
+        if (id == null || id.isBlank()){
+            return;
+        }
+
         ArrayList<Transacao> aRemoverGeral = new ArrayList<>();
 
         for (Transacao transacao : transacoes.getHistorico()){
-            if (transacao.getID().equals(id)){
+            if (transacao != null && id.equals(transacao.getID())){
                 aRemoverGeral.add(transacao);
             }
         }
-        this.transacoes.getHistorico().removeAll(aRemoverGeral);
-        for (Transacao t : aRemoverGeral){
-            for (Conta c : this.getContas()){
-                if (t instanceof Despesa){
-                    c.creditar(t.getValor());
+
+        for (Transacao transacao : aRemoverGeral) {
+            if (transacao.getConta() != null) {
+                transacao.getConta().getTransacoesAssociadas().remove(transacao);
+            }
+            if (transacao.getCategoria() != null) {
+                transacao.getCategoria().getTransacoesAssociadas().remove(transacao);
+            }
+            if (transacao.getTags() != null) {
+                for (Tag tag : transacao.getTags()) {
+                    if (tag != null) {
+                        tag.getTransacoesAssociadas().remove(transacao);
+                    }
                 }
-                else if (t instanceof Receita){
-                    c.debitar(t.getValor());
-                }
+            }
+
+            if (transacao instanceof DespesaRecorrente) {
+                despesasRecorrentes.remove(transacao);
+                notificarGastoMensalListeners();
             }
         }
 
-        //falta remover dos historicos das contas, tags e categorias associadas
+        this.transacoes.getHistorico().removeAll(aRemoverGeral);
     }
 
     public ArrayList<Transacao> buscarTransacao(LocalDate data){

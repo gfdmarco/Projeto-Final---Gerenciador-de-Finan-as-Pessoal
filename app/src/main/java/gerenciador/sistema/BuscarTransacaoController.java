@@ -49,20 +49,23 @@ public class BuscarTransacaoController implements UsuarioNecessario{
         this.usuarioAtual.setCategorias();
         this.usuarioAtual.setTags();
 
+        comboCategoria.getItems().clear();
         comboCategoria.getItems().addAll(usuarioAtual.categoriasSistema());
+        comboConta.getItems().clear();
         comboConta.getItems().addAll(usuarioAtual.getContas());
 
         colunaNome.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
         colunaID.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getID()));
         colunaValor.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getValor()));
         //para as tags, exibimos concatenando a lista de tags em uma string que separa as tags por vírgula
-        colunaTags.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTags().stream().map(Tag::getNome)
-            .collect(Collectors.joining(", "))));
-        colunaCategoria.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCategoria().getNome()));
+        colunaTags.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTags() != null ? cell.getValue().getTags().stream().map(Tag::getNome)
+            .collect(Collectors.joining(", ")) : ""));
+        colunaCategoria.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCategoria() != null ? cell.getValue().getCategoria().getNome() : ""));
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("d/MMMM/yyyy");
-        colunaData.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getData().format(formatador)));
-        colunaConta.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getConta().getBanco()));
+        colunaData.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getData() != null ? cell.getValue().getData().format(formatador) : ""));
+        colunaConta.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getConta() != null ? cell.getValue().getConta().getBanco() : ""));
         
+        listaTags.getItems().clear();
         listaTags.getItems().addAll(usuarioAtual.tagsSistema());
         listaTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
@@ -72,6 +75,7 @@ public class BuscarTransacaoController implements UsuarioNecessario{
     void onBuscar(){
         ArrayList<Transacao> resultado = new ArrayList<>();
 
+        labelErro.setText("");
         if (campoData.getValue() != null){
             resultado = this.usuarioAtual.buscarTransacao(campoData.getValue());
         }
@@ -90,11 +94,24 @@ public class BuscarTransacaoController implements UsuarioNecessario{
         else if (comboConta.getValue() != null){
             resultado = this.usuarioAtual.buscarTransacao(comboConta.getValue());
         }
-        else if (listaTags.getSelectionModel().getSelectedItem() != null){
-            resultado = this.usuarioAtual.buscarTransacao(listaTags.getSelectionModel().getSelectedItem());
+        else if (!listaTags.getSelectionModel().getSelectedItems().isEmpty()){
+            var tagsSelecionadas = listaTags.getSelectionModel().getSelectedItems();
+            var conjuntoResultado = new java.util.LinkedHashSet<Transacao>();
+            for (Transacao transacao : this.usuarioAtual.getHistorico()){
+                if (transacao.getTags() == null){
+                    continue;
+                }
+                for (Tag tag : transacao.getTags()){
+                    if (tagsSelecionadas.contains(tag)){
+                        conjuntoResultado.add(transacao);
+                        break;
+                    }
+                }
+            }
+            resultado.addAll(conjuntoResultado);
         }
         else {
-            labelErro.setText("Não foram encontradas transações correspondentes.");
+            labelErro.setText("Selecione pelo menos um critério de busca ou deixe em branco para listar tudo.");
             resultado = this.usuarioAtual.getHistorico();
         }
 

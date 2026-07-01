@@ -38,35 +38,64 @@ public class CategoriasController implements UsuarioNecessario{
         this.usuarioAtual.setCategorias();
         this.usuarioAtual.setTags();
 
-        colunaNome.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
-        colunaOrcamento.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getOrcamento()));
-        colunaRelacao.setCellValueFactory(cell -> new SimpleDoubleProperty(cell.getValue().getPercentualUso()).asObject());
+        colunaNome.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue() != null ? cell.getValue().getNome() : ""));
+        colunaOrcamento.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue() != null ? cell.getValue().getOrcamento() : 0.0));
+        colunaRelacao.setCellValueFactory(cell -> new SimpleDoubleProperty(cell.getValue() != null ? cell.getValue().getPercentualUso() : 0.0).asObject());
         colunaRelacao.setCellFactory(ProgressBarTableCell.forTableColumn());
-        colunaTransacoes.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getTransacoesAssociadas().size()));
+        colunaTransacoes.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue() != null ? cell.getValue().getTransacoesAssociadas().size() : 0));
 
-        tabelaCategorias.getItems().addAll(usuario.categoriasSistema());
+        tabelaCategorias.getItems().clear();
+        tabelaCategorias.getItems().setAll(usuario.categoriasSistema());
     }
 
     @FXML
     void onCriar(){
         String nome = campoNomeCriar.getText();
-        double orcamento = Double.parseDouble(campoOrcamentoCriar.getText());
+        String orcamentoTexto = campoOrcamentoCriar.getText();
 
-        Categoria novaCategoria = new Categoria(nome, orcamento);
+        if (nome == null || nome.trim().isEmpty()) {
+            erroTroca.setText("Informe um nome de categoria válido.");
+            return;
+        }
+        double orcamento;
+        try {
+            orcamento = Double.parseDouble(orcamentoTexto.trim());
+        }
+        catch (NumberFormatException e) {
+            erroTroca.setText("Informe um valor de orçamento válido.");
+            return;
+        }
 
+        Categoria novaCategoria = new Categoria(nome.trim(), orcamento);
         usuarioAtual.categoriasSistema().add(novaCategoria);
         PersistenciaJSON.salvar(usuarioAtual);
+
+        tabelaCategorias.getItems().setAll(usuarioAtual.categoriasSistema());
+        campoNomeCriar.clear();
+        campoOrcamentoCriar.clear();
+        erroTroca.setText("Categoria criada com sucesso.");
     }
 
     @FXML
     void onEditar(){
-        String nome = campoNomeCriar.getText();
-        double novoOrcamento = Double.parseDouble(campoOrcamentoCriar.getText());
+        String nome = campoNomeProcurar.getText();
+        double novoOrcamento;
+        try {
+            novoOrcamento = Double.parseDouble(campoOrcamentoEditar.getText().trim());
+        }
+        catch (NumberFormatException e) {
+            erroTroca.setText("Informe um valor de orçamento válido.");
+            return;
+        }
 
         Categoria c = this.usuarioAtual.buscarCategoria(nome);
 
         if (c != null){
             c.editarOrcamento(novoOrcamento);
+            tabelaCategorias.getItems().setAll(usuarioAtual.categoriasSistema());
+            campoNomeProcurar.clear();
+            campoOrcamentoEditar.clear();
+            erroTroca.setText("Orçamento atualizado com sucesso.");
         }
         else {
             erroTroca.setText("Categoria não encontrada. Digite um nome válido.");

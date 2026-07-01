@@ -42,22 +42,22 @@ public class RelatorioPeriodo implements Relatorio{
                 DespesaRecorrente despesa = (DespesaRecorrente) transacaoP;
                 switch(despesa.getRecorrencia()){
                     case SEMANAL:
-                        despesas += despesa.getValor() * (diferencaDias / 7);
+                        despesas += despesa.getValor() * (diferencaDias / 7.0);
                         break;
                     case QUINZENAL:
-                        despesas += despesa.getValor() * (diferencaDias / 15);
+                        despesas += despesa.getValor() * (diferencaDias / 15.0);
                         break;
                     case MENSAL:
-                        despesas += despesa.getValor() * (diferencaDias / 30);
+                        despesas += despesa.getValor() * (diferencaDias / 30.0);
                         break;
                     case TRIMESTRAL:
-                        despesas += despesa.getValor() * (diferencaDias / 90);
+                        despesas += despesa.getValor() * (diferencaDias / 90.0);
                         break;
                     case SEMESTRAL:
-                        despesas += despesa.getValor() * (diferencaDias / 180);
+                        despesas += despesa.getValor() * (diferencaDias / 180.0);
                         break;
                     case ANUAL:
-                        despesas += despesa.getValor() * (diferencaDias / 360);
+                        despesas += despesa.getValor() * (diferencaDias / 360.0);
                         break;
                 }
             }
@@ -65,22 +65,22 @@ public class RelatorioPeriodo implements Relatorio{
                 ReceitaRecorrente receita = (ReceitaRecorrente) transacaoP;
                 switch(receita.getRecorrencia()){
                     case SEMANAL:
-                        receitas += receita.getValor() * (diferencaDias / 7);
+                        receitas += receita.getValor() * (diferencaDias / 7.0);
                         break;
                     case QUINZENAL:
-                        receitas += receita.getValor() * (diferencaDias / 15);
+                        receitas += receita.getValor() * (diferencaDias / 15.0);
                         break;
                     case MENSAL:
-                        receitas += receita.getValor() * (diferencaDias / 30);
+                        receitas += receita.getValor() * (diferencaDias / 30.0);
                         break;
                     case TRIMESTRAL:
-                        receitas += receita.getValor() * (diferencaDias / 90);
+                        receitas += receita.getValor() * (diferencaDias / 90.0);
                         break;
                     case SEMESTRAL:
-                        receitas += receita.getValor() * (diferencaDias / 180);
+                        receitas += receita.getValor() * (diferencaDias / 180.0);
                         break;
                     case ANUAL:
-                        receitas += receita.getValor() * (diferencaDias / 360);
+                        receitas += receita.getValor() * (diferencaDias / 360.0);
                         break;
                 }
             }

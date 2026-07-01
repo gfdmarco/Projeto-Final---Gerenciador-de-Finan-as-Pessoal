@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="697.0" prefWidth="1072.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.BuscarTransacaoController">
+   <children>
+      <AnchorPane prefHeight="716.0" prefWidth="1072.0">
+         <children>
+            <Label layoutX="26.0" layoutY="26.0" prefHeight="36.0" prefWidth="247.0" text="Buscar Transacoes">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <Label layoutX="26.0" layoutY="85.0" text="Em nosso sistema, possuímos cinco modos diferentes de busca, mas com um botão geral. Abaixo, escolha uma área e forneca as informacões necessárias:" />
+            <Label layoutX="70.0" layoutY="125.0" text="Busca por Data" />
+            <Label layoutX="57.0" layoutY="223.0" text="Busca por Categoria" />
+            <Label layoutX="573.0" layoutY="125.0" text="Busca por Tag" />
+            <Label layoutX="316.0" layoutY="125.0" text="Busca por Conta" />
+            <Label layoutX="318.0" layoutY="223.0" text="Busca por Valor" />
+            <Label layoutX="36.0" layoutY="332.0" text="Transacoes encontradas:" />
+            <TableView fx:id="listaTransacoes" layoutX="184.0" layoutY="332.0" prefHeight="328.0" prefWidth="862.0">
+              <columns>
+                <TableColumn fx:id="colunaNome" prefWidth="89.0" text="Nome" />
+                <TableColumn fx:id="colunaID" prefWidth="102.0" text="ID" />
+                  <TableColumn fx:id="colunaValor" prefWidth="101.0" text="Valor" />
+                  <TableColumn fx:id="colunaTags" prefWidth="133.0" text="Tags" />
+                  <TableColumn fx:id="colunaCategoria" prefWidth="138.0" text="Categoria" />
+                  <TableColumn fx:id="colunaData" prefWidth="106.0" text="Data" />
+                  <TableColumn fx:id="colunaConta" prefWidth="192.0" text="Conta Atrelada" />
+              </columns>
+            </TableView>
+            <DatePicker fx:id="campoData" layoutX="35.0" layoutY="165.0" prefHeight="25.0" prefWidth="150.0" />
+            <ComboBox fx:id="comboCategoria" layoutX="36.0" layoutY="269.0" prefWidth="150.0" />
+            <ComboBox fx:id="comboConta" layoutX="284.0" layoutY="165.0" prefWidth="150.0" />
+            <ListView fx:id="listaTags" layoutX="510.0" layoutY="159.0" prefHeight="146.0" prefWidth="200.0" />
+            <TextField fx:id="campoValor" layoutX="289.0" layoutY="269.0" />
+            <Button layoutX="838.0" layoutY="198.0" mnemonicParsing="false" onAction="#onBuscar" text="Buscar" />
+            <Button layoutX="57.0" layoutY="635.0" mnemonicParsing="false" onAction="#onVoltar" text="Voltar" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

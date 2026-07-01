@@ -32,10 +32,10 @@ public class DashboardController implements UsuarioNecessario {
         labelNome.setText("Olá, " + usuarioAtual.getNome() + "! Seja bem-vindo ao menu do seu Gerenciador de Finanças Pessoais!");
         labelSaldoGeral.setText("R$ " + String.format("%.2f", usuario.getSaldoGeral()));
 
-        colunaNome.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getBanco()));
-        colunaMontante.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getMontante()));
-        colunaID.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getID()));
-        colunaTransacoes.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getTransacoesAssociadas().size()));
+        colunaNome.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue() != null ? cell.getValue().getBanco() : ""));
+        colunaMontante.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue() != null ? cell.getValue().getMontante() : 0.0));
+        colunaID.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue() != null ? cell.getValue().getID() : ""));
+        colunaTransacoes.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue() != null ? cell.getValue().getTransacoesAssociadas().size() : 0));
 
         tabelaContas.getItems().clear();
         tabelaContas.getItems().addAll(usuario.getContas());

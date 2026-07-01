@@ -88,6 +88,11 @@ public class AdicionarTransacaoController implements UsuarioNecessario {
                 return;
             }
 
+            if (categoria == null || conta == null || data == null || nome == null || nome.isBlank()) {
+                labelErro.setText("Preencha nome, data, categoria e conta antes de salvar.");
+                return;
+            }
+
             if (radioDespesa.isSelected()) {
                 if (recorrente) {
                     novaTransacao = new DespesaRecorrente(nome, id, valor, tagsEscolhidas, categoria, data, conta, frequencia, data);
@@ -105,7 +110,6 @@ public class AdicionarTransacaoController implements UsuarioNecessario {
                 return; // sai do método sem fazer nada
             }
 
-            novaTransacao.realizarTransacao();
             usuarioAtual.adicionarTransacao(novaTransacao);
             PersistenciaJSON.salvar(usuarioAtual);
             try {

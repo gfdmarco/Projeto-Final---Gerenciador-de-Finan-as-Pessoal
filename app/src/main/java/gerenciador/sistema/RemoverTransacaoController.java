@@ -43,10 +43,10 @@ public class RemoverTransacaoController implements UsuarioNecessario {
         //para as tags, exibimos concatenando a lista de tags em uma string que separa as tags por vírgula
         colunaTags.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTags().stream().map(Tag::getNome)
             .collect(Collectors.joining(", "))));
-        colunaCategoria.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCategoria().getNome()));
+        colunaCategoria.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCategoria() != null ? cell.getValue().getCategoria().getNome() : ""));
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("d/MMMM/yyyy");
-        colunaData.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getData().format(formatador)));
-        colunaConta.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getConta().getBanco()));
+        colunaData.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getData() != null ? cell.getValue().getData().format(formatador) : ""));
+        colunaConta.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getConta() != null ? cell.getValue().getConta().getBanco() : ""));
 
         tabelaTransacoes.getItems().addAll(usuario.getHistorico());
 
