@@ -6,6 +6,7 @@ import gerenciador.enums.Frequencia;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ReceitaRecorrente extends Receita implements Recorrencia {
 
@@ -37,7 +38,8 @@ public class ReceitaRecorrente extends Receita implements Recorrencia {
         return frequencia;
     }
 
+    @Override
     public Transacao gerarTransacaoRecorrente(LocalDate data) {
-        return new Receita(this.getNome(), this.getID(), this.getValor(), this.getTags(), this.getCategoria(), data, this.getConta());
+        return new Receita(this.getNome(), UUID.randomUUID().toString(), this.getValor(), this.getTags(), this.getCategoria(), data, this.getConta());
     }
 }

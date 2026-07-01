@@ -12,7 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public class TagsController implements UsuarioNecessario { 
+public class TagsController implements UsuarioNecessario {
 
     @FXML private Label erroTroca;
     @FXML private TableView<Tag> tabelaTags;
@@ -33,17 +33,26 @@ public class TagsController implements UsuarioNecessario {
         colunaNome.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
         colunaTransacoes.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getTransacoesAssociadas().size()));
 
-        tabelaTags.getItems().addAll(usuario.tagsSistema());
+        tabelaTags.getItems().clear();
+        tabelaTags.getItems().setAll(usuario.tagsSistema());
     }
 
     @FXML
     void onCriar(){
         String nome = campoNomeCriar.getText();
 
-        Tag novaTag = new Tag(nome);
+        if (nome == null || nome.trim().isEmpty()) {
+            erroTroca.setText("Informe um nome de tag válido.");
+            return;
+        }
 
+        Tag novaTag = new Tag(nome.trim());
         usuarioAtual.tagsSistema().add(novaTag);
         PersistenciaJSON.salvar(usuarioAtual);
+
+        tabelaTags.getItems().setAll(usuarioAtual.tagsSistema());
+        campoNomeCriar.clear();
+        erroTroca.setText("Tag criada com sucesso.");
     }
 
     @FXML

@@ -45,24 +45,74 @@ public class ContasController implements UsuarioNecessario{
         colunaID.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getID()));
         colunaTransacoes.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getTransacoesAssociadas().size()));
 
-        tabelaContas.getItems().addAll(usuario.getContas());
+        tabelaContas.getItems().clear();
+        tabelaContas.getItems().setAll(usuario.getContas());
     }
 
     @FXML
     void onAdicionar(){
         String nome = campoNomeCriar.getText();
-        double saldo = Double.parseDouble(campoSaldoInicial.getText());
+        String saldoTexto = campoSaldoInicial.getText();
+
+        if (nome == null || nome.trim().isEmpty()) {
+            erroTroca.setText("Informe o nome do banco.");
+            return;
+        }
+        double saldo;
+        try {
+            saldo = Double.parseDouble(saldoTexto.trim());
+        }
+        catch (NumberFormatException e) {
+            erroTroca.setText("Informe um saldo inicial válido.");
+            return;
+        }
+
         String id = UUID.randomUUID().toString();
-
-        Conta novaConta = new Conta(nome, id, saldo);
-
+        Conta novaConta = new Conta(nome.trim(), id, saldo);
         usuarioAtual.getContas().add(novaConta);
         PersistenciaJSON.salvar(usuarioAtual);
+
+        tabelaContas.getItems().setAll(usuarioAtual.getContas());
+        campoNomeCriar.clear();
+        campoSaldoInicial.clear();
+        erroTroca.setText("Conta criada com sucesso.");
     }
 
     @FXML
     void onTransferir(){
-        //precisa adicionar um bgl pra fazer a transferencia entre contas dps da implementacao no back;
+        try {
+            double valor = Double.parseDouble(campoValor.getText());
+            String nomeContaOrigem = campoNomeConta1.getText();
+            String nomeContaDestino = campoNomeConta2.getText();
+
+            Conta contaOrigem = null;
+            Conta contaDestino = null;
+
+            for (Conta conta : usuarioAtual.getContas()) {
+                if (conta != null && nomeContaOrigem.equals(conta.getID())) {
+                    contaOrigem = conta;
+                }
+                if (conta != null && nomeContaDestino.equals(conta.getID())) {
+                    contaDestino = conta;
+                }
+            }
+
+            if (contaOrigem == null || contaDestino == null) {
+                erroTroca.setText("Informe IDs de contas válidos.");
+                return;
+            }
+
+            usuarioAtual.transferirEntreContas(valor, contaOrigem, contaDestino);
+            PersistenciaJSON.salvar(usuarioAtual);
+            erroTroca.setText("");
+            tabelaContas.getItems().setAll(usuarioAtual.getContas());
+        }
+        catch (NumberFormatException e) {
+            erroTroca.setText("Informe um valor numérico válido.");
+        }
+        catch (IllegalArgumentException e) {
+            erroTroca.setText(e.getMessage());
+        }
     }
 
     @FXML

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.FundosController" prefWidth="720.0" prefHeight="680.0">
+    <top>
+        <Label text="Gerenciar Fundos" style="-fx-font-size: 20px; -fx-font-weight: bold;" BorderPane.alignment="CENTER" />
+    </top>
+    <center>
+        <VBox spacing="16.0" padding="20.0">
+            <GridPane hgap="12.0" vgap="12.0">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="90.0" halignment="RIGHT" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                </columnConstraints>
+                <children>
+                    <Label text="Nome:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="campoNome" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label text="Tipo:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="comboTipo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Objetivo:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="campoObjetivo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label text="Taxa (%):" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="campoTaxa" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="Conta:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <ComboBox fx:id="comboConta" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                </children>
+            </GridPane>
+            <HBox spacing="12.0" alignment="CENTER_RIGHT">
+                <Button fx:id="botaoCriar" mnemonicParsing="false" onAction="#onCriarFundo" defaultButton="true" text="Criar" />
+                <Button fx:id="botaoVoltar" mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" />
+            </HBox>
+            <Label fx:id="erroTroca" textFill="RED" wrapText="true" />
+            <TableView fx:id="tabelaFundos" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colunaNome" text="Nome" prefWidth="180.0" />
+                    <TableColumn fx:id="colunaTipo" text="Tipo" prefWidth="140.0" />
+                    <TableColumn fx:id="colunaSaldo" text="Saldo" prefWidth="150.0" />
+                    <TableColumn fx:id="colunaObjetivo" text="Objetivo" prefWidth="150.0" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>
