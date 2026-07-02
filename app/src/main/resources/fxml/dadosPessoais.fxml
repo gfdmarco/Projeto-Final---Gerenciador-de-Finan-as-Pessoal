@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="757.0" prefWidth="1171.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.DadosPessoaisController">
+    <top>
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Dados Pessoais" />
+        <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+        </padding>
+    </top>
+    <center>
+        <HBox spacing="24.0">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <VBox prefWidth="420.0" spacing="18.0">
+                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Informações do usuário" />
+                <GridPane hgap="10.0" vgap="12.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" minWidth="90.0" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+                    <children>
+                        <Label text="Nome:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="labelNome" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Login:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label fx:id="labelLogin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Salário:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label fx:id="labelSalario" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    </children>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+                </GridPane>
+                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Contas" />
+                <ListView fx:id="listaContas" VBox.vgrow="ALWAYS" />
+            </VBox>
+            <VBox prefWidth="620.0" spacing="18.0">
+                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registrar salário" />
+                <Label text="Se o salário ou renda mensal não estiver definido, registre-o abaixo. A conta será criada automaticamente se não existir." wrapText="true" />
+                <GridPane hgap="10.0" vgap="12.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" minWidth="90.0" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+                    <children>
+                        <Label text="Valor:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="setaSalario" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Conta:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="contaSalario" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Recebimento:" GridPane.rowIndex="2" />
+                  <DatePicker fx:id="dataSalario" prefHeight="25.0" prefWidth="533.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    </children>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+               </rowConstraints>
+                </GridPane>
+                <Button defaultButton="true" mnemonicParsing="false" onAction="#onRegistrarSalario" text="Registrar" />
+                <Label fx:id="labelErro" textFill="RED" wrapText="true" />
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Editar salário" />
+            <GridPane hgap="10.0" vgap="12.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="RIGHT" minWidth="90.0" />
+                  <ColumnConstraints hgrow="ALWAYS" />
+               </columnConstraints>
+               <children>
+                  <Label text="Novo valor:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <TextField fx:id="editaSalario" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+               </children>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+            </GridPane>
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#onEditarSalario" text="Salvar" />
+            <Label fx:id="labelErro1" textFill="RED" wrapText="true" />
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Remover salário" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#onRemoverSalario" text="Remover" />
+            </VBox>
+        </HBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <Button mnemonicParsing="false" onAction="#onVoltar" text="Voltar" />
+        </HBox>
+    </bottom>
+</BorderPane>

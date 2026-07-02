@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gerenciador.sistema.DashboardController"
+            stylesheets="@app.css, @dashboard.css"
+            prefHeight="920.0" prefWidth="1310.0">
+
+    <top>
+        <Label text="Dashboard" styleClass="header-title" BorderPane.alignment="CENTER_LEFT">
+            <BorderPane.margin>
+                <Insets top="20" right="0" bottom="10" left="30"/>
+            </BorderPane.margin>
+        </Label>
+    </top>
+    <left>
+        <VBox spacing="14.0" styleClass="card, saldo-panel">
+            <BorderPane.margin>
+                <Insets top="10" right="10" bottom="20" left="20"/>
+            </BorderPane.margin>
+            <padding>
+                <Insets top="24" right="24" bottom="24" left="24"/>
+            </padding>
+            <Label fx:id="labelNome" wrapText="true" styleClass="body-text, label-nome" />
+            <Label text="Saldo Geral" styleClass="subtitle" />
+            <Label fx:id="labelSaldoGeral" styleClass="label-saldo-valor" />
+            <Button mnemonicParsing="false" onAction="#onSair" text="Sair" styleClass="exit-button" />
+        </VBox>
+    </left>
+    <right>
+        <VBox spacing="8.0" styleClass="dark-panel, acoes-panel">
+            <BorderPane.margin>
+                <Insets top="10" right="20" bottom="20" left="10"/>
+            </BorderPane.margin>
+            <padding>
+                <Insets top="24" right="20" bottom="24" left="20"/>
+            </padding>
+            <Label text="Ações Rápidas" styleClass="actions-title" />
+            <Button mnemonicParsing="false" onAction="#onDadosPessoais" text="Dados Pessoais" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onTransacoes" text="Transações" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onCategorias" text="Categorias" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onContas" text="Contas" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onTags" text="Tags" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onFundos" text="Fundos" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onRelatorios" text="Relatórios" styleClass="action-button" />
+        </VBox>
+    </right>
+    <center>
+        <VBox spacing="16.0" styleClass="card">
+            <BorderPane.margin>
+                <Insets top="10" right="10" bottom="20" left="10"/>
+            </BorderPane.margin>
+            <padding>
+                <Insets top="24" right="24" bottom="24" left="24"/>
+            </padding>
+            <Label text="Contas" styleClass="section-title" />
+            <TableView fx:id="tabelaContas" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colunaNome" prefWidth="200.0" text="Nome" />
+                    <TableColumn fx:id="colunaMontante" prefWidth="180.0" text="Montante" />
+                    <TableColumn fx:id="colunaID" prefWidth="180.0" text="ID" />
+                    <TableColumn fx:id="colunaTransacoes" prefWidth="200.0" text="Transações" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+    <bottom>
+        <VBox>
+            <padding>
+                <Insets top="12" right="30" bottom="20" left="30"/>
+            </padding>
+            <Label fx:id="labelErro" styleClass="error-label" />
+        </VBox>
+    </bottom>
+</BorderPane>

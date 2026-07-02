@@ -1,7 +1,7 @@
 package gerenciador.exceptions;
 
 public class LoginExistenteException extends RuntimeException{
-    public LoginExistenteException(String mensagem){
-        super(mensagem);
+    public LoginExistenteException(String login){
+        super("O login " + login + "já existe! Tente um novo nome de usuário.");
     }
 }

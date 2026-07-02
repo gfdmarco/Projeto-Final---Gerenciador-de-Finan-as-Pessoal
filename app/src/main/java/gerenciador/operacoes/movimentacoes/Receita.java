@@ -5,16 +5,15 @@ import java.util.ArrayList;
 
 import gerenciador.suporte.*;
 
-public class Receita extends Transacao{
-    private String fonte;
+public class Receita extends Transacao{;
 
-    public Receita(String nome, String id, double valor, ArrayList<Tag> tags, Categoria categoria, LocalDate data, Conta conta, String fonte){
-        super(nome, id, valor, tags, categoria, data, conta);
-        this.fonte = fonte;
+    //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
+    public Receita(){
+        super();
     }
 
-    public String getFonte(){
-        return this.fonte;
+    public Receita(String nome, String id, double valor, ArrayList<Tag> tags, Categoria categoria, LocalDate data, Conta conta){
+        super(nome, id, valor, tags, categoria, data, conta);
     }
 
     @Override

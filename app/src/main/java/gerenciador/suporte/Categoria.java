@@ -1,13 +1,22 @@
 package gerenciador.suporte;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import gerenciador.operacoes.movimentacoes.Transacao;
 
 public class Categoria {
     private String nome;
     private double orcamento;
-    HistoricoTransacoes transacoes;
+    //JSON ignora esta serialização para não duplicar dados, salvando apenas o histórico geral do usuário
+    @JsonIgnore
+    private HistoricoTransacoes transacoes;
+
+    public Categoria(){
+        this.transacoes = new HistoricoTransacoes();
+    }
 
     public Categoria(String nome, double orcamento){
         this.nome = nome;
@@ -24,10 +33,52 @@ public class Categoria {
     }
 
     public ArrayList<Transacao> getTransacoesAssociadas(){
-        return this.transacoes.getHistorico(this);
+        return this.transacoes.getHistorico();
     }
 
     public void adicionarTransacao(Transacao transacao){
-        this.transacoes.getHistorico(this).add(transacao);
+        if (this.transacoes == null){
+            this.transacoes = new HistoricoTransacoes();
+        }
+        this.transacoes.getHistorico().add(transacao);
+    }
+    
+    public void editarOrcamento(double novoOrcamento){
+        this.orcamento = novoOrcamento;
+    }
+
+    public double gastoNoMes(){
+        double gasto = 0;
+        for (Transacao t : this.getTransacoesAssociadas()){
+            gasto += t.getValor();
+        }
+        return gasto;
+    }
+
+    public double getPercentualUso() {
+        return this.gastoNoMes() / this.orcamento;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj){
+            return true;
+        }
+        if (!(obj instanceof Categoria)){
+            return false;
+        }
+        Categoria outra = (Categoria) obj;
+        return Objects.equals(this.nome, outra.nome);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.nome);
+    }
+
+    //método necessário para exibir o nome e não o objeto no front
+    @Override
+    public String toString(){
+        return this.nome;
     }
 }

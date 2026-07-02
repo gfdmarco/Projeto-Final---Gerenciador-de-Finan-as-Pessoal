@@ -1,0 +1,25 @@
+.saldo-panel {
+    -fx-pref-width: 260;
+    -fx-alignment: TOP_LEFT;
+}
+
+.label-nome {
+    -fx-font-weight: 600;
+}
+
+.label-saldo-valor {
+    -fx-font-size: 26px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #2F6FED;
+}
+
+.acoes-panel {
+    -fx-pref-width: 220;
+}
+
+.actions-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 0 0 6 0;
+}

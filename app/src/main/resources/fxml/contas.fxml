@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<ScrollPane fitToWidth="true" fitToHeight="true" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.ContasController">
+    <content>
+        <BorderPane prefWidth="980.0" prefHeight="720.0">
+            <top>
+                <Label text="Contas" style="-fx-font-size: 24px; -fx-font-weight: bold;" BorderPane.alignment="CENTER" />
+            </top>
+            <center>
+                <HBox spacing="20.0">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+                    <VBox spacing="14.0" prefWidth="320.0">
+                        <Label text="Adição de Conta" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                        <GridPane hgap="10.0" vgap="10.0">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="90.0" halignment="RIGHT" />
+                                <ColumnConstraints hgrow="ALWAYS" />
+                            </columnConstraints>
+                            <children>
+                                <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <TextField fx:id="campoNomeCriar" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                <Label text="Saldo inicial:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                <TextField fx:id="campoSaldoInicial" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                            </children>
+                        </GridPane>
+                        <HBox spacing="10.0">
+                            <Button mnemonicParsing="false" onAction="#onAdicionar" defaultButton="true" text="Adicionar" />
+                            <Button mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" />
+                        </HBox>
+                        <Label fx:id="erroTroca" textFill="RED" wrapText="true" />
+                        <Label text="Transferência entre Contas" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                        <GridPane hgap="10.0" vgap="10.0">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="90.0" halignment="RIGHT" />
+                                <ColumnConstraints hgrow="ALWAYS" />
+                            </columnConstraints>
+                            <children>
+                                <Label text="Valor:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <TextField fx:id="campoValor" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                <Label text="Conta de envio:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                <TextField fx:id="campoNomeConta1" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                                <Label text="Conta destino:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                <TextField fx:id="campoNomeConta2" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                            </children>
+                        </GridPane>
+                        <HBox spacing="10.0">
+                            <Button mnemonicParsing="false" onAction="#onTransferir" defaultButton="true" text="Transferir" />
+                        </HBox>
+                    </VBox>
+                    <VBox spacing="12.0" HBox.hgrow="ALWAYS">
+                        <Label text="Lista de Contas" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                        <TableView fx:id="tabelaContas" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colunaNome" prefWidth="150.0" text="Nome" />
+                                <TableColumn fx:id="colunaMontante" prefWidth="120.0" text="Montante" />
+                                <TableColumn fx:id="colunaID" prefWidth="170.0" text="ID" />
+                                <TableColumn fx:id="colunaTransacoes" prefWidth="170.0" text="Transações" />
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </HBox>
+            </center>
+        </BorderPane>
+    </content>
+</ScrollPane>

@@ -4,21 +4,39 @@ import java.time.LocalDate;
 
 import gerenciador.base.Usuario;
 import gerenciador.enums.TipoFundo;
+import gerenciador.interfaces.GastoMensalListener;
 
-public class FundoEmergencia extends Fundo {
-    private Usuario usuarioAssociado;
+public class FundoEmergencia extends Fundo implements GastoMensalListener {
     private int mesesDeCoberturaIdeal;
 
-    public FundoEmergencia(String nome, TipoFundo tipo, double valorObjetivo, double taxaDeValorizacao, LocalDate dataInicio, 
-        Usuario usuarioAssociado){
-        super(nome, tipo, valorObjetivo, taxaDeValorizacao, dataInicio);
-        this.usuarioAssociado = usuarioAssociado;
+    //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
+    public FundoEmergencia(){
+        super();
     }
 
-    public int coberturaMeses(){
-        //olhar o que escrevi na classe do usuario
-        /*gasto mensal: 6 vezes as despesas recorrentes num periodo de mes (1x mensais, 2x quinzenais, 1x mensal, 1/3x trimestral,
-        1/6x semestral e 1/12x anual)*/
-        return 6; //só colocando qualquer valor pra não ficar aparecendo um erro aqui
+    public FundoEmergencia(String nome, TipoFundo tipo, double valorObjetivo, double taxaDeValorizacao, LocalDate dataInicio,
+        int mesesDeCoberturaIdeal){
+
+        super(nome, tipo, valorObjetivo, taxaDeValorizacao, dataInicio);
+        this.mesesDeCoberturaIdeal = mesesDeCoberturaIdeal;
+    }
+
+    public int coberturaMeses(Usuario u){
+        if (u.calcularGastoMensal() <= 0.0){
+            return 0;
+        }
+        return (int) (this.getSaldo() / u.calcularGastoMensal());
+    }
+
+    public void updateGastoMensal(double novoGastoMensal, Usuario u) {
+        this.setObjetivo(coberturaMeses(u) * novoGastoMensal);
+    }
+
+    public int coberturaIdeal(Usuario u){
+        return (int)(6 * u.calcularGastoMensal());
+    }
+
+    public double getValorObjetivo() {
+        return this.getObjetivo();
     }
 }
