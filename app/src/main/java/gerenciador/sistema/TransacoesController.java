@@ -55,6 +55,7 @@ public class TransacoesController implements UsuarioNecessario{
 
         }
         catch (Exception e){
+            e.printStackTrace();
             erroTroca.setText("Erro ao trocar de tela");
         }
     }
@@ -66,6 +67,7 @@ public class TransacoesController implements UsuarioNecessario{
 
         }
         catch (Exception e){
+            e.printStackTrace();
             erroTroca.setText("Erro ao trocar de tela");
         }
     }
@@ -77,6 +79,7 @@ public class TransacoesController implements UsuarioNecessario{
 
         }
         catch (Exception e){
+            e.printStackTrace();
             erroTroca.setText("Erro ao trocar de tela");
         }
     }

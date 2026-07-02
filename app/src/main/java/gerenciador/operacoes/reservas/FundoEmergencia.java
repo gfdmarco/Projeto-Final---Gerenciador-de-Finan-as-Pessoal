@@ -2,6 +2,7 @@ package gerenciador.operacoes.reservas;
 
 import java.time.LocalDate;
 
+import gerenciador.base.Usuario;
 import gerenciador.enums.TipoFundo;
 import gerenciador.interfaces.GastoMensalListener;
 
@@ -20,12 +21,19 @@ public class FundoEmergencia extends Fundo implements GastoMensalListener {
         this.mesesDeCoberturaIdeal = mesesDeCoberturaIdeal;
     }
 
-    public int coberturaMeses(){
-        return this.mesesDeCoberturaIdeal;
+    public int coberturaMeses(Usuario u){
+        if (u.calcularGastoMensal() <= 0.0){
+            return 0;
+        }
+        return (int) (this.getSaldo() / u.calcularGastoMensal());
     }
 
-    public void updateGastoMensal(double novoGastoMensal) {
-        this.setObjetivo(coberturaMeses() * novoGastoMensal);
+    public void updateGastoMensal(double novoGastoMensal, Usuario u) {
+        this.setObjetivo(coberturaMeses(u) * novoGastoMensal);
+    }
+
+    public int coberturaIdeal(Usuario u){
+        return (int)(6 * u.calcularGastoMensal());
     }
 
     public double getValorObjetivo() {

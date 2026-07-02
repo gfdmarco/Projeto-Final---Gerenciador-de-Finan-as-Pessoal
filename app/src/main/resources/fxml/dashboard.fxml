@@ -8,12 +8,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.DashboardController" prefHeight="920.0" prefWidth="1310.0">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.DashboardController" prefHeight="920.0" prefWidth="1310.0">
     <top>
         <Label text="Dashboard" style="-fx-font-size: 28px; -fx-font-weight: bold;" BorderPane.alignment="CENTER" />
     </top>
     <left>
-        <VBox spacing="12.0" padding="20.0">
+        <VBox spacing="12.0">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
             <Label fx:id="labelNome" wrapText="true" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
             <Label text="Saldo Geral:" style="-fx-font-size: 16px;" />
             <Label fx:id="labelSaldoGeral" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
@@ -21,7 +24,10 @@
         </VBox>
     </left>
     <right>
-        <VBox spacing="12.0" padding="20.0">
+        <VBox spacing="12.0">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
             <Label text="Ações Rápidas" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
             <Button mnemonicParsing="false" onAction="#onDadosPessoais" text="Dados Pessoais" />
             <Button mnemonicParsing="false" onAction="#onTransacoes" text="Transações" />
@@ -33,7 +39,10 @@
         </VBox>
     </right>
     <center>
-        <VBox spacing="12.0" padding="20.0">
+        <VBox spacing="12.0">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
             <Label text="Contas" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
             <TableView fx:id="tabelaContas" VBox.vgrow="ALWAYS">
                 <columns>
@@ -46,6 +55,9 @@
         </VBox>
     </center>
     <bottom>
-        <Label fx:id="labelErro" textFill="RED" padding="20.0" />
+        <Label fx:id="labelErro" textFill="RED" />
+            <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
     </bottom>
 </BorderPane>

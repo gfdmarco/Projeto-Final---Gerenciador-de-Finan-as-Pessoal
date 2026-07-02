@@ -9,11 +9,14 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import gerenciador.interfaces.GastoMensalListener;
+import gerenciador.interfaces.Recorrencia;
 import gerenciador.operacoes.movimentacoes.*;
 import gerenciador.operacoes.reservas.*;
 import gerenciador.suporte.*;
 import gerenciador.interfaces.Relatorio;
 import gerenciador.enums.*;
+import gerenciador.exceptions.SaldoInsuficienteException;
+
 import java.util.UUID;
 
 public class Usuario {
@@ -114,7 +117,7 @@ public class Usuario {
             throw new IllegalArgumentException("As contas devem pertencer ao usuário.");
         }
         if (c1.getMontante() < valor){
-            throw new IllegalArgumentException("Saldo insuficiente na conta de origem.");
+            throw new SaldoInsuficienteException(c1.getMontante(), valor);
         }
 
         c1.debitar(valor);
@@ -194,16 +197,33 @@ public class Usuario {
         relatorio.gerar(this.transacoes.getHistorico(), this);
     }
 
-    public void registrarSalario(Conta conta, double valor){
+    public void registrarSalario(Conta conta, double valor, LocalDate dataRecebimento){
         Categoria categoria = new Categoria("Salário", valor);
         String id = UUID.randomUUID().toString();
-        this.salario = new ReceitaRecorrente("Salário", id, valor, new ArrayList<>(), categoria, LocalDate.now(), conta, Frequencia.MENSAL, LocalDate.now());
+        this.salario = new ReceitaRecorrente("Salário", id, valor, new ArrayList<>(), categoria, dataRecebimento, conta, Frequencia.MENSAL, dataRecebimento);
         conta.creditar(valor);
         conta.adicionarTransacao((Transacao) this.salario);
         this.getHistorico().add(this.salario);
     }
 
-    public void adicionarTransacao(Transacao transacao){
+    public void editarSalario(double novoValor){
+        this.salario.setValor(novoValor);
+    }
+
+    public void removerSalario(){
+        this.salario = null;
+    }
+
+    public void adicionarTransacao(Transacao transacao) {
+        adicionarTransacao(transacao, false);
+    }
+
+    public void adicionarTransacao(Transacao transacao, boolean ignorarOrcamento) {
+        if (transacao instanceof Despesa && ignorarOrcamento) {
+            ((Despesa) transacao).realizarTransacao(true);
+        } else {
+            transacao.realizarTransacao(); // lança OrcamentoExcedidoException normalmente
+        }
         this.transacoes.getHistorico().add(transacao);
         if (transacao.getConta() != null){
             transacao.getConta().adicionarTransacao(transacao);
@@ -234,7 +254,7 @@ public class Usuario {
         this.gastoMensalListeners.add(listener);
     }
 
-    private double calcularGastoMensal() {
+    public double calcularGastoMensal() {
         double gastoMensal = 0;
 
         for(DespesaRecorrente despesaRecorrente : despesasRecorrentes) {
@@ -270,7 +290,35 @@ public class Usuario {
             return;
         }
         for (GastoMensalListener gastoMensalListener : gastoMensalListeners) {
-            gastoMensalListener.updateGastoMensal(novoGastoMensal);
+            gastoMensalListener.updateGastoMensal(novoGastoMensal, this);
+        }
+    }
+
+    // Usuario.java
+    public void processarRecorrencias() {
+        LocalDate hoje = LocalDate.now();
+        List<Transacao> novasOcorrencias = new ArrayList<>();
+
+        for (Transacao t : this.transacoes.getHistorico()) {
+            if (!(t instanceof Recorrencia rec)){
+                continue;
+            }
+            if (!rec.isAtivo()){
+                //ja foi concluida
+                continue;
+            }
+
+            LocalDate proxima = rec.calcularProximaData(rec.getUltimaDataAplicada(), rec.getRecorrencia());
+
+            while (!proxima.isAfter(hoje)) {
+                novasOcorrencias.add(rec.gerarTransacaoRecorrente(proxima));
+                rec.setUltimaDataAplicada(proxima);
+                proxima = rec.calcularProximaData(proxima, rec.getRecorrencia());
+            }
+        }
+
+        for (Transacao nova : novasOcorrencias) {
+            this.adicionarTransacao(nova);
         }
     }
 
@@ -289,6 +337,13 @@ public class Usuario {
 
         for (Transacao transacao : aRemoverGeral) {
             if (transacao.getConta() != null) {
+                //precisamos reverter a cobranca ou aumento de saldo por conta da transacao antes de remove-la
+                if (transacao instanceof Despesa){
+                    transacao.getConta().creditar(transacao.getValor());
+                }
+                if (transacao instanceof Receita){
+                    transacao.getConta().debitar(transacao.getValor());
+                }
                 transacao.getConta().getTransacoesAssociadas().remove(transacao);
             }
             if (transacao.getCategoria() != null) {

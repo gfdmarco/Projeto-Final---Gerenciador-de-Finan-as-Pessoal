@@ -1,8 +1,10 @@
 package gerenciador.sistema;
 
 import gerenciador.base.GerenciadorUsuarios;
+import gerenciador.base.PersistenciaJSON;
 import gerenciador.base.Usuario;
 import gerenciador.exceptions.LoginInvalidoException;
+import gerenciador.operacoes.reservas.Fundo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -21,6 +23,13 @@ public class LoginController {
         try {
             labelErro.setText("");
             Usuario u = GerenciadorUsuarios.autenticar(campoLogin.getText(), campoSenha.getText());
+            for (Fundo f : u.getFundos()){
+                f.jurosCompostos();
+            }
+            u.processarRecorrencias();
+            u.setCategorias();
+            u.setTags();
+            PersistenciaJSON.salvar(u);
             try {
                 App.trocarTela("dashboard", u);
             }

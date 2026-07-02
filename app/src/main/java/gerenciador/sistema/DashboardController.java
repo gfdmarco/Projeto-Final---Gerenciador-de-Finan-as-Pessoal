@@ -87,6 +87,7 @@ public class DashboardController implements UsuarioNecessario {
             App.trocarTela("fundos", this.usuarioAtual);
         }
         catch (Exception e){
+            e.printStackTrace();
             labelErro.setText("Erro ao trocar de tela");
         }
     }

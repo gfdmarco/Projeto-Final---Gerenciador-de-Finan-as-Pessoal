@@ -1,14 +1,11 @@
 package gerenciador.sistema;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 import gerenciador.base.Usuario;
 import gerenciador.interfaces.UsuarioNecessario;
 import gerenciador.operacoes.relatorios.RelatorioCategoria;
 import gerenciador.operacoes.relatorios.RelatorioPeriodo;
 import gerenciador.suporte.Categoria;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,7 +13,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
 public class RelatoriosController implements UsuarioNecessario {
 

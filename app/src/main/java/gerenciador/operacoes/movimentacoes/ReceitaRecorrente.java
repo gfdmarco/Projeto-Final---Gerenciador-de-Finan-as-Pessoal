@@ -13,6 +13,7 @@ public class ReceitaRecorrente extends Receita implements Recorrencia {
     private LocalDate dataInicio;
     private boolean ativo;
     private Frequencia frequencia;
+    private LocalDate ultimaDataAplicada;
 
     //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
     public ReceitaRecorrente(){
@@ -24,6 +25,7 @@ public class ReceitaRecorrente extends Receita implements Recorrencia {
         this.dataInicio = dataInicio;
         this.ativo = true;
         this.frequencia = frequencia;
+        this.ultimaDataAplicada = dataInicio; //inicialmente
     }
 
     public boolean isAtivo() {
@@ -36,6 +38,14 @@ public class ReceitaRecorrente extends Receita implements Recorrencia {
     
     public Frequencia getRecorrencia() {
         return frequencia;
+    }
+
+    public LocalDate getUltimaDataAplicada(){
+        return this.ultimaDataAplicada;
+    }
+
+    public void setUltimaDataAplicada(LocalDate data){
+        this.ultimaDataAplicada = data;
     }
 
     @Override

@@ -13,15 +13,21 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.AdicionarTransacaoController" prefWidth="1100.0" prefHeight="820.0">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.AdicionarTransacaoController" prefWidth="1100.0" prefHeight="820.0">
     <top>
-        <VBox spacing="8.0" padding="20.0">
+        <VBox spacing="8.0">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
             <Label text="Adicionar Transação" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
             <Label text="Informe os dados da transação que deseja adicionar." wrapText="true" />
         </VBox>
     </top>
     <center>
-        <VBox spacing="18.0" padding="20.0">
+        <VBox spacing="18.0">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
             <GridPane hgap="16.0" vgap="16.0">
                 <columnConstraints>
                     <ColumnConstraints minWidth="120.0" halignment="RIGHT" />
@@ -74,7 +80,10 @@
         </VBox>
     </center>
     <bottom>
-        <VBox spacing="12.0" padding="20.0">
+        <VBox spacing="12.0">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
             <Label fx:id="labelErro" textFill="RED" wrapText="true" />
             <HBox spacing="12.0" alignment="CENTER_RIGHT">
                 <Button mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" />
