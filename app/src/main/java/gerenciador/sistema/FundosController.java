@@ -10,6 +10,7 @@ import gerenciador.interfaces.UsuarioNecessario;
 import gerenciador.operacoes.reservas.Fundo;
 import gerenciador.operacoes.reservas.FundoEmergencia;
 import gerenciador.operacoes.reservas.FundoInvestimento;
+import gerenciador.suporte.Categoria;
 import gerenciador.suporte.Conta;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,9 +19,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ProgressBarTableCell;
 
 public class FundosController implements UsuarioNecessario {
 
@@ -30,12 +33,18 @@ public class FundosController implements UsuarioNecessario {
     @FXML private TableColumn<Fundo, String> colunaTipo;
     @FXML private TableColumn<Fundo, Double> colunaSaldo;
     @FXML private TableColumn<Fundo, Double> colunaObjetivo;
+    @FXML private TableColumn<Fundo, Double> colunaProgresso;
 
     @FXML private TextField campoNome;
     @FXML private ComboBox<TipoFundo> comboTipo;
     @FXML private TextField campoObjetivo;
     @FXML private TextField campoTaxa;
     @FXML private ComboBox<Conta> comboConta;
+
+    @FXML private TextField campoValorOperacao;
+    @FXML private RadioButton radioDeposito;
+    @FXML private RadioButton radioSaque;
+
     @FXML private Button botaoCriar;
     @FXML private Button botaoVoltar;
 
@@ -49,6 +58,8 @@ public class FundosController implements UsuarioNecessario {
         colunaTipo.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getTipo().name()));
         colunaSaldo.setCellValueFactory(cell -> new SimpleDoubleProperty(cell.getValue().getSaldo()).asObject());
         colunaObjetivo.setCellValueFactory(cell -> new SimpleDoubleProperty(cell.getValue().getObjetivo()).asObject());
+        colunaProgresso.setCellValueFactory(cell -> new SimpleDoubleProperty(cell.getValue() != null ? cell.getValue().getProgresso() : 0.0).asObject());
+        colunaProgresso.setCellFactory(ProgressBarTableCell.forTableColumn());
 
         comboTipo.setItems(FXCollections.observableArrayList(TipoFundo.values()));
         comboConta.setItems(FXCollections.observableArrayList(usuarioAtual.getContas()));
@@ -95,6 +106,40 @@ public class FundosController implements UsuarioNecessario {
         campoObjetivo.clear();
         campoTaxa.clear();
         erroTroca.setText("Fundo criado com sucesso.");
+    }
+
+    @FXML
+    void onRealizarOperacao(){
+        double valor = Double.parseDouble(campoValorOperacao.getText());
+        Fundo fundoSelecionado = tabelaFundos.getSelectionModel().getSelectedItem();
+        if (fundoSelecionado == null){
+            erroTroca.setText("Selecione um fundo na tabela primeiramente, por favor.");
+            return;
+        }
+        try {
+            if (valor <= 0){
+                erroTroca.setText("Digite um valor válido, por favor.");
+                return;
+            }
+            if (radioDeposito.isSelected()){
+                fundoSelecionado.depositar(valor);
+                erroTroca.setText("Depósito realizado com sucesso!");
+            }
+            else if (radioSaque.isSelected()){
+                fundoSelecionado.sacar(valor);
+                erroTroca.setText("Saque realizado com sucesso!");
+            }
+            else {
+                erroTroca.setText("Selecione uma operação, por favor.");
+            }
+            PersistenciaJSON.salvar(usuarioAtual);
+            campoValorOperacao.clear();
+            //apenas atualiza os campos (dados de cada fundo). não precisa reconstruir a tabela que nem nas outras telas
+            tabelaFundos.refresh();
+        }
+        catch (NumberFormatException e){
+            erroTroca.setText("Digite um valor válido, por favor (Exemplo: 100.00).");
+        }
     }
 
     @FXML

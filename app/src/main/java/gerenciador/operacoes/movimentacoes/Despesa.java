@@ -30,6 +30,6 @@ public class Despesa extends Transacao{
             throw new OrcamentoExcedidoException(this.getCategoria(), gastoAtual + this.getValor());
         }
 
-        this.getConta().debitar(this.getValor()); // ainda lança SaldoInsuficienteException normalmente
+        this.getConta().debitar(this.getValor());
     }
 }

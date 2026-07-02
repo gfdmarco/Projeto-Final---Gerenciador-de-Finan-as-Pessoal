@@ -12,6 +12,7 @@ public class DespesaRecorrente extends Despesa implements Recorrencia {
     private LocalDate dataInicio;
     private boolean ativo;
     private Frequencia frequencia;
+    private LocalDate ultimaDataAplicada;
 
     //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
     public DespesaRecorrente(){
@@ -22,7 +23,8 @@ public class DespesaRecorrente extends Despesa implements Recorrencia {
         super(nome, id, valor, tags, categoria, data, conta);
         this.dataInicio = dataInicio;
         this.ativo = true;
-        this.frequencia = frequencia;//ERRO DE NULL NA EXIBICAO TALVEZ
+        this.frequencia = frequencia;
+        this.ultimaDataAplicada = dataInicio; //inicialmente
     }
 
     public boolean isAtivo() {
@@ -35,6 +37,14 @@ public class DespesaRecorrente extends Despesa implements Recorrencia {
 
     public Frequencia getRecorrencia() {
         return frequencia;
+    }
+
+    public LocalDate getUltimaDataAplicada(){
+        return this.ultimaDataAplicada;
+    }
+
+    public void setUltimaDataAplicada(LocalDate data){
+        this.ultimaDataAplicada = data;
     }
 
     @Override

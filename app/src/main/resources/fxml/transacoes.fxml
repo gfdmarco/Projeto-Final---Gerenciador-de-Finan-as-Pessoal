@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="922.0" prefWidth="1155.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.TransacoesController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="922.0" prefWidth="1155.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.TransacoesController">
    <children>
       <AnchorPane prefHeight="925.0" prefWidth="1155.0">
          <children>
@@ -32,6 +32,7 @@
             <Button layoutX="320.0" layoutY="28.0" mnemonicParsing="false" onAction="#onAdicionar" prefHeight="59.0" prefWidth="156.0" text="Adicionar" />
             <Button layoutX="554.0" layoutY="28.0" mnemonicParsing="false" onAction="#onRemover" prefHeight="59.0" prefWidth="156.0" text="Remover" />
             <Button layoutX="554.0" layoutY="850.0" mnemonicParsing="false" onAction="#onVoltar" text="Voltar" />
+            <Label fx:id="erroTroca" textFill="RED" wrapText="true" />
          </children>
       </AnchorPane>
    </children>

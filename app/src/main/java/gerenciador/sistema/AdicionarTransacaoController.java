@@ -143,8 +143,7 @@ public class AdicionarTransacaoController implements UsuarioNecessario {
         alert.showAndWait().ifPresent(resposta -> {
             if (resposta == botaoSim) {
                 try {
-                    despesa.realizarTransacao(true); // ignora orçamento, mas ainda verifica saldo
-                    usuarioAtual.adicionarTransacao(despesa);
+                    usuarioAtual.adicionarTransacao(despesa, true);
                     PersistenciaJSON.salvar(usuarioAtual);
                     try {
                         App.trocarTela("transacoes", usuarioAtual);

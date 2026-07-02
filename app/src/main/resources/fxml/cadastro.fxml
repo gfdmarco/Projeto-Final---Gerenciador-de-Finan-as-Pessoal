@@ -8,14 +8,20 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.CadastroController" prefWidth="600.0" prefHeight="400.0">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.CadastroController" prefWidth="600.0" prefHeight="400.0">
     <top>
-        <VBox alignment="CENTER" spacing="10.0" padding="20.0">
+        <VBox alignment="CENTER" spacing="10.0">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
             <Label text="Crie seu cadastro" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
         </VBox>
     </top>
     <center>
-        <VBox alignment="CENTER" spacing="16.0" padding="20.0">
+        <VBox alignment="CENTER" spacing="16.0">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
             <GridPane hgap="10.0" vgap="14.0">
                 <children>
                     <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />

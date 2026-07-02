@@ -19,16 +19,16 @@ import gerenciador.suporte.Tag;
     @JsonSubTypes.Type(value = DespesaRecorrente.class, name = "despesaRecorrente")
 })
 public abstract class Transacao {
-    protected String nome;
-    protected String id;
-    protected double valor;
-    protected ArrayList<Tag> tags;
-    protected Categoria categoria;
-    protected LocalDate data;
-    protected Conta contaAtrelada;
+    private String nome;
+    private String id;
+    private double valor;
+    private ArrayList<Tag> tags;
+    private Categoria categoria;
+    private LocalDate data;
+    private Conta contaAtrelada;
 
     //JSON precisa de um construtor padrão para conseguir construir os objetos quando carregar
-    protected Transacao(){
+    public Transacao(){
         this.tags = new ArrayList<>();
     }
 
@@ -67,6 +67,13 @@ public abstract class Transacao {
 
     public double getValor(){
         return this.valor;
+    }
+
+    public void setValor(double valor){
+        if (valor <= 0){
+            throw new IllegalArgumentException("O valor da transferência deve ser positivo.");
+        }
+        this.valor = valor;
     }
 
     public abstract void realizarTransacao();

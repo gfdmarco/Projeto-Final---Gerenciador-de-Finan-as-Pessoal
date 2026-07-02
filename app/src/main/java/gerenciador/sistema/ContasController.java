@@ -89,16 +89,16 @@ public class ContasController implements UsuarioNecessario{
             Conta contaDestino = null;
 
             for (Conta conta : usuarioAtual.getContas()) {
-                if (conta != null && nomeContaOrigem.equals(conta.getID())) {
+                if (conta != null && nomeContaOrigem.equals(conta.getBanco())) {
                     contaOrigem = conta;
                 }
-                if (conta != null && nomeContaDestino.equals(conta.getID())) {
+                if (conta != null && nomeContaDestino.equals(conta.getBanco())) {
                     contaDestino = conta;
                 }
             }
 
             if (contaOrigem == null || contaDestino == null) {
-                erroTroca.setText("Informe IDs de contas válidos.");
+                erroTroca.setText("Informe contas válidas, por favor.");
                 return;
             }
 

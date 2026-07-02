@@ -25,7 +25,7 @@ public abstract class Fundo {
     private LocalDate dataInicio;
 
     //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
-    protected Fundo(){
+    public Fundo(){
     }
 
     public Fundo(String nome, TipoFundo tipo, double valorObjetivo, double taxaDeValorizacao, LocalDate dataInicio){
@@ -65,9 +65,8 @@ public abstract class Fundo {
         this.valorObjetivo = objetivo;
     }
 
-    public String getProgresso(){
-        double progressoNum = this.valorAcumulado / this.valorObjetivo;
-        String progresso = (progressoNum + "%");
+    public double getProgresso(){
+        double progresso = this.valorAcumulado / this.valorObjetivo;
         return progresso;
     }
 

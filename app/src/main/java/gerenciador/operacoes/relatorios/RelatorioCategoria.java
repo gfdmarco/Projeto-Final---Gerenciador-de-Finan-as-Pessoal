@@ -48,6 +48,11 @@ public class RelatorioCategoria implements Relatorio{
                 + "Receitas: R$ " + receitas + "\n"
                 + "Despesas: R$ " + despesas + "\n"
                 + "Evolução de Saldo: R$ " + circulacao + "\n"
+                + "Projeção de Saldo: \n"
+                + "Daqui a 1 mes: R$ " + usuario.projetarSaldoFuturo(1) + "\n"
+                + "Daqui a 3 meses: R$ " + usuario.projetarSaldoFuturo(3) + "\n"
+                + "Daqui a 6 meses: R$ " + usuario.projetarSaldoFuturo(6) + "\n"
+                + "Daqui a 12 meses: R$ " + usuario.projetarSaldoFuturo(12) + "\n"
                 + "Status orçamento: " + statusOrcamento + "\n \n";
         return conteudoExibir;
     }
