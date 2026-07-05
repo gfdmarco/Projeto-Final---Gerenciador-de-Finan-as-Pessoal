@@ -7,38 +7,46 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.RemoverTransacaoController" prefWidth="1155.0" prefHeight="925.0">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gerenciador.sistema.RemoverTransacaoController"
+            stylesheets="@app.css"
+            prefWidth="1155.0" prefHeight="925.0">
     <top>
         <VBox spacing="8.0">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="20" right="20" bottom="10" left="20"/>
             </padding>
-            <Label text="Remover Transação" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
-            <Label text="Selecione a transação que deseja remover e use a opção de remoção no menu de contexto." wrapText="true" />
+            <Label text="Remover Transação" styleClass="header-title" />
+            <Label text="Selecione a transação que deseja remover e use a opção de remoção no menu de contexto." wrapText="true" styleClass="instruction-text" />
         </VBox>
     </top>
     <center>
-        <TableView fx:id="tabelaTransacoes" VBox.vgrow="ALWAYS">
+        <VBox spacing="12.0" styleClass="card">
+            <BorderPane.margin>
+                <Insets top="10" right="20" bottom="20" left="20"/>
+            </BorderPane.margin>
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="24" right="24" bottom="24" left="24"/>
             </padding>
-            <columns>
-                <TableColumn fx:id="colunaNome" prefWidth="120.0" text="Nome" />
-                <TableColumn fx:id="colunaID" prefWidth="90.0" text="ID" />
-                <TableColumn fx:id="colunaValor" prefWidth="110.0" text="Valor" />
-                <TableColumn fx:id="colunaTags" prefWidth="280.0" text="Tags" />
-                <TableColumn fx:id="colunaCategoria" prefWidth="160.0" text="Categoria" />
-                <TableColumn fx:id="colunaData" prefWidth="140.0" text="Data" />
-                <TableColumn fx:id="colunaConta" prefWidth="160.0" text="Conta" />
-            </columns>
-        </TableView>
+            <TableView fx:id="tabelaTransacoes" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colunaNome" prefWidth="120.0" text="Nome" />
+                    <TableColumn fx:id="colunaID" prefWidth="90.0" text="ID" />
+                    <TableColumn fx:id="colunaValor" prefWidth="110.0" text="Valor" />
+                    <TableColumn fx:id="colunaTags" prefWidth="280.0" text="Tags" />
+                    <TableColumn fx:id="colunaCategoria" prefWidth="160.0" text="Categoria" />
+                    <TableColumn fx:id="colunaData" prefWidth="140.0" text="Data" />
+                    <TableColumn fx:id="colunaConta" prefWidth="160.0" text="Conta" />
+                </columns>
+            </TableView>
+        </VBox>
     </center>
     <bottom>
         <HBox alignment="CENTER_RIGHT">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="10" right="20" bottom="20" left="20"/>
             </padding>
-            <Button mnemonicParsing="false" onAction="#onVoltar" text="Voltar" />
+            <Button mnemonicParsing="false" onAction="#onVoltar" text="Voltar" styleClass="secondary-button" />
         </HBox>
     </bottom>
 </BorderPane>

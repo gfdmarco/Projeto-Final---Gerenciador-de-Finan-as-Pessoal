@@ -3,14 +3,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.GridPane?>
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.RelatoriosController" prefWidth="720.0" prefHeight="720.0">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gerenciador.sistema.RelatoriosController"
+            stylesheets="@app.css"
+            prefWidth="720.0" prefHeight="720.0">
     <top>
-        <Label text="Relatórios" style="-fx-font-size: 20px; -fx-font-weight: bold;" BorderPane.alignment="CENTER" />
+        <Label text="Relatórios" styleClass="header-title" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </BorderPane.margin>
+        </Label>
     </top>
     <center>
-        <VBox spacing="16.0">
+        <VBox spacing="16.0" styleClass="card">
+            <BorderPane.margin>
+                <Insets top="10" right="20" bottom="20" left="20"/>
+            </BorderPane.margin>
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="24" right="24" bottom="24" left="24"/>
             </padding>
             <GridPane hgap="12.0" vgap="12.0">
                 <columnConstraints>
@@ -20,21 +30,21 @@
                     <ColumnConstraints hgrow="ALWAYS" />
                 </columnConstraints>
                 <children>
-                    <Label text="Categoria:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label text="Categoria:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <ComboBox fx:id="comboCategoria" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    <Button fx:id="botaoGerarCategoria" mnemonicParsing="false" onAction="#onGerarCategoria" text="Gerar" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                    <Label text="Período:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <Label text="Início:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Button fx:id="botaoGerarCategoria" mnemonicParsing="false" onAction="#onGerarCategoria" text="Gerar" styleClass="primary-button" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                    <Label text="Período:" styleClass="group-title" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label text="Início:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                     <DatePicker fx:id="campoInicio" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <Label text="Fim:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                    <Label text="Fim:" styleClass="form-label" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                     <DatePicker fx:id="campoFim" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                    <Button fx:id="botaoGerarPeriodo" mnemonicParsing="false" onAction="#onGerarPeriodo" text="Gerar" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                    <Button fx:id="botaoGerarPeriodo" mnemonicParsing="false" onAction="#onGerarPeriodo" text="Gerar" styleClass="primary-button" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                 </children>
             </GridPane>
             <TextArea fx:id="areaRelatorio" wrapText="true" editable="false" prefHeight="400.0" VBox.vgrow="ALWAYS" />
-            <Label fx:id="erroTroca" textFill="RED" wrapText="true" />
+            <Label fx:id="erroTroca" styleClass="error-label" wrapText="true" />
             <HBox alignment="CENTER_RIGHT">
-                <Button fx:id="botaoVoltar" mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" />
+                <Button fx:id="botaoVoltar" mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" styleClass="secondary-button" />
             </HBox>
         </VBox>
     </center>

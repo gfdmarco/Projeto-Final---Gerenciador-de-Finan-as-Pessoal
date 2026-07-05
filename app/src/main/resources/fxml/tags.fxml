@@ -13,35 +13,45 @@
 <?import javafx.scene.layout.VBox?>
 <ScrollPane fitToWidth="true" fitToHeight="true" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.TagsController">
     <content>
-        <BorderPane prefWidth="980.0" prefHeight="700.0">
+        <BorderPane prefWidth="980.0" prefHeight="700.0" stylesheets="@app.css">
             <top>
-                <Label text="Tags" style="-fx-font-size: 24px; -fx-font-weight: bold;" BorderPane.alignment="CENTER" />
+                <Label text="Tags" styleClass="header-title" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets top="20" right="20" bottom="10" left="20"/>
+                    </BorderPane.margin>
+                </Label>
             </top>
             <center>
                 <HBox spacing="24.0">
                     <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
+                        <Insets top="10" right="20" bottom="20" left="20"/>
                     </padding>
-                    <VBox spacing="16.0" prefWidth="340.0">
-                        <Label text="Criação de Tag" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                    <VBox spacing="16.0" prefWidth="340.0" styleClass="card">
+                        <padding>
+                            <Insets top="24" right="24" bottom="24" left="24"/>
+                        </padding>
+                        <Label text="Criação de Tag" styleClass="group-title" />
                         <GridPane hgap="10.0" vgap="10.0">
                             <columnConstraints>
                                 <ColumnConstraints minWidth="100.0" halignment="RIGHT" />
                                 <ColumnConstraints hgrow="ALWAYS" />
                             </columnConstraints>
                             <children>
-                                <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <Label text="Nome:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
                                 <TextField fx:id="campoNomeCriar" GridPane.rowIndex="0" GridPane.columnIndex="1" />
                             </children>
                         </GridPane>
                         <HBox spacing="10.0">
-                            <Button mnemonicParsing="false" onAction="#onCriar" defaultButton="true" text="Criar" />
-                            <Button mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" />
+                            <Button mnemonicParsing="false" onAction="#onCriar" defaultButton="true" text="Criar" styleClass="primary-button" />
+                            <Button mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" styleClass="secondary-button" />
                         </HBox>
-                        <Label fx:id="erroTroca" textFill="RED" wrapText="true" />
+                        <Label fx:id="erroTroca" styleClass="error-label" wrapText="true" />
                     </VBox>
-                    <VBox spacing="12.0" HBox.hgrow="ALWAYS">
-                        <Label text="Suas Tags" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                    <VBox spacing="12.0" HBox.hgrow="ALWAYS" styleClass="card">
+                        <padding>
+                            <Insets top="24" right="24" bottom="24" left="24"/>
+                        </padding>
+                        <Label text="Suas Tags" styleClass="group-title" />
                         <TableView fx:id="tabelaTags" VBox.vgrow="ALWAYS">
                             <columns>
                                 <TableColumn fx:id="colunaNome" prefWidth="280.0" text="Nome" />
