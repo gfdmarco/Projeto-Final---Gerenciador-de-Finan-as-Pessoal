@@ -1,87 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="908.0" prefWidth="1310.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.DashboardController">
-   <children>
-      <AnchorPane prefHeight="915.0" prefWidth="1310.0">
-         <children>
-            <Label layoutX="14.0" layoutY="196.0" text="Saldo Geral:" />
-            <Label layoutX="14.0" layoutY="260.0" text="Contas:" />
-            <Label layoutX="806.0" layoutY="45.0" text="Menu de Navegacão">
-               <font>
-                  <Font size="45.0" />
-               </font>
-            </Label>
-            <Button layoutX="964.0" layoutY="177.0" mnemonicParsing="false" onAction="#onDadosPessoais" text="Ir Até Lá" />
-            <Label layoutX="945.0" layoutY="245.0" text="Transacões">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="947.0" layoutY="367.0" text="Categorias">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button layoutX="964.0" layoutY="413.0" mnemonicParsing="false" onAction="#onCategorias" text="Ir Até Lá" />
-            <Label layoutX="926.0" layoutY="132.0" text="Dados Pessoais">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button layoutX="964.0" layoutY="298.0" mnemonicParsing="false" onAction="#onTransacoes" text="Ir Até Lá" />
-            <Label layoutX="963.0" layoutY="590.0" text="Fundos">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button layoutX="964.0" layoutY="643.0" mnemonicParsing="false" onAction="#onFundos" text="Ir Até Lá" />
-            <Label layoutX="950.0" layoutY="482.0" text="Relatórios">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button layoutX="964.0" layoutY="533.0" mnemonicParsing="false" onAction="#onRelatorios" text="Ir Até Lá" />
-            <TableView fx:id="tabelaContas" layoutX="85.0" layoutY="252.0" prefHeight="561.0" prefWidth="669.0">
-              <columns>
-                <TableColumn fx:id="colunaNome" prefWidth="165.0" text="Nome" />
-                  <TableColumn fx:id="colunaMontante" prefWidth="185.0" text="Montante" />
-                <TableColumn fx:id="colunaID" prefWidth="163.0" text="ID" />
-                  <TableColumn fx:id="colunaTransacoes" prefWidth="155.0" text="Transacões Associadas" />
-              </columns>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gerenciador.sistema.DashboardController"
+            stylesheets="@app.css, @dashboard.css"
+            prefHeight="920.0" prefWidth="1310.0">
+
+    <top>
+        <Label text="Dashboard" styleClass="header-title" BorderPane.alignment="CENTER_LEFT">
+            <BorderPane.margin>
+                <Insets top="20" right="0" bottom="10" left="30"/>
+            </BorderPane.margin>
+        </Label>
+    </top>
+    <left>
+        <VBox spacing="14.0" styleClass="card, saldo-panel">
+            <BorderPane.margin>
+                <Insets top="10" right="10" bottom="20" left="20"/>
+            </BorderPane.margin>
+            <padding>
+                <Insets top="24" right="24" bottom="24" left="24"/>
+            </padding>
+            <Label fx:id="labelNome" wrapText="true" styleClass="body-text, label-nome" />
+            <Label text="Saldo Geral" styleClass="subtitle" />
+            <Label fx:id="labelSaldoGeral" styleClass="label-saldo-valor" />
+            <Button mnemonicParsing="false" onAction="#onSair" text="Sair" styleClass="exit-button" />
+        </VBox>
+    </left>
+    <right>
+        <VBox spacing="8.0" styleClass="dark-panel, acoes-panel">
+            <BorderPane.margin>
+                <Insets top="10" right="20" bottom="20" left="10"/>
+            </BorderPane.margin>
+            <padding>
+                <Insets top="24" right="20" bottom="24" left="20"/>
+            </padding>
+            <Label text="Ações Rápidas" styleClass="actions-title" />
+            <Button mnemonicParsing="false" onAction="#onDadosPessoais" text="Dados Pessoais" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onTransacoes" text="Transações" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onCategorias" text="Categorias" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onContas" text="Contas" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onTags" text="Tags" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onFundos" text="Fundos" styleClass="action-button" />
+            <Button mnemonicParsing="false" onAction="#onRelatorios" text="Relatórios" styleClass="action-button" />
+        </VBox>
+    </right>
+    <center>
+        <VBox spacing="16.0" styleClass="card">
+            <BorderPane.margin>
+                <Insets top="10" right="10" bottom="20" left="10"/>
+            </BorderPane.margin>
+            <padding>
+                <Insets top="24" right="24" bottom="24" left="24"/>
+            </padding>
+            <Label text="Contas" styleClass="section-title" />
+            <TableView fx:id="tabelaContas" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colunaNome" prefWidth="200.0" text="Nome" />
+                    <TableColumn fx:id="colunaMontante" prefWidth="180.0" text="Montante" />
+                    <TableColumn fx:id="colunaID" prefWidth="180.0" text="ID" />
+                    <TableColumn fx:id="colunaTransacoes" prefWidth="200.0" text="Transações" />
+                </columns>
             </TableView>
-            <Label fx:id="labelSaldoGeral" layoutX="93.0" layoutY="189.0" prefHeight="30.0" prefWidth="399.0" />
-            <Label fx:id="labelNome" layoutX="19.0" layoutY="59.0" prefHeight="123.0" prefWidth="766.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="labelErro" layoutX="83.0" layoutY="851.0" prefHeight="30.0" prefWidth="669.0" textFill="RED">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="965.0" layoutY="713.0" text="Contas">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button layoutX="966.0" layoutY="759.0" mnemonicParsing="false" onAction="#onContas" text="Ir Até Lá" />
-            <Button layoutX="629.0" layoutY="854.0" mnemonicParsing="false" onAction="#onSair" prefHeight="25.0" prefWidth="88.0" text="Sair" />
-            <Label layoutX="976.0" layoutY="813.0" text="Tags">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button layoutX="967.0" layoutY="854.0" mnemonicParsing="false" onAction="#onTags" text="Ir Até Lá" />
-         </children>
-      </AnchorPane>
-   </children>
-</VBox>
+        </VBox>
+    </center>
+    <bottom>
+        <VBox>
+            <padding>
+                <Insets top="12" right="30" bottom="20" left="30"/>
+            </padding>
+            <Label fx:id="labelErro" styleClass="error-label" />
+        </VBox>
+    </bottom>
+</BorderPane>
