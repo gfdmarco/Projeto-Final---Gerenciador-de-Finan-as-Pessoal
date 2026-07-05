@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -16,66 +15,72 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="708.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.FundosController">
+<BorderPane prefHeight="708.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gerenciador.sistema.FundosController"
+            stylesheets="@app.css">
     <top>
-        <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Gerenciar Fundos" BorderPane.alignment="CENTER" />
+        <Label styleClass="header-title" text="Gerenciar Fundos" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </BorderPane.margin>
+        </Label>
     </top>
     <center>
-        <VBox prefWidth="720.0" spacing="16.0">
+        <VBox prefWidth="720.0" spacing="16.0" styleClass="card">
             <padding>
-                <Insets bottom="20" left="20" right="20" top="20" />
+                <Insets bottom="24" left="24" right="24" top="24" />
             </padding>
             <GridPane hgap="12.0" vgap="12.0">
                 <columnConstraints>
                     <ColumnConstraints halignment="RIGHT" minWidth="90.0" />
                     <ColumnConstraints hgrow="ALWAYS" />
                 </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
                 <children>
-                    <Label text="Nome:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label text="Nome:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <TextField fx:id="campoNome" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    <Label text="Tipo:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label text="Tipo:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <ComboBox fx:id="comboTipo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <Label text="Objetivo:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label text="Objetivo:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                     <TextField fx:id="campoObjetivo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <Label text="Taxa (%):" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label text="Taxa (%):" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                     <TextField fx:id="campoTaxa" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                    <Label text="Conta:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label text="Conta:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                     <ComboBox fx:id="comboConta" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                 </children>
-            <rowConstraints>
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-            </rowConstraints>
             </GridPane>
             <HBox alignment="CENTER_RIGHT" spacing="12.0">
-            <Label text="Para depositar ou sacar, selecione o  fundo na tabela, insira os dados da operacão e clique em &quot;Realizar&quot;." />
-                <Button fx:id="botaoCriar" defaultButton="true" mnemonicParsing="false" onAction="#onCriarFundo" text="Criar" />
-                <Button fx:id="botaoVoltar" cancelButton="true" mnemonicParsing="false" onAction="#onVoltar" text="Voltar" />
+                <Label text="Para depositar ou sacar, selecione o fundo na tabela, insira os dados da operação e clique em &quot;Realizar&quot;." wrapText="true" styleClass="helper-text" HBox.hgrow="ALWAYS" />
+                <Button fx:id="botaoCriar" defaultButton="true" mnemonicParsing="false" onAction="#onCriarFundo" text="Criar" styleClass="primary-button" />
+                <Button fx:id="botaoVoltar" cancelButton="true" mnemonicParsing="false" onAction="#onVoltar" text="Voltar" styleClass="secondary-button" />
             </HBox>
-            <Label fx:id="erroTroca" textFill="RED" wrapText="true" />
-         <HBox alignment="CENTER_RIGHT" spacing="12.0">
-            <children>
-               <Label text="Valor da Operacão:" />
-               <TextField onAction="#campoValorOperacao" />
-               <RadioButton mnemonicParsing="false" onAction="#radioDeposito" text="Depositar">
-                  <toggleGroup>
-                     <ToggleGroup fx:id="groupOperacao" />
-                  </toggleGroup>
-               </RadioButton>
-               <RadioButton mnemonicParsing="false" onAction="#radioSaque" text="Sacar" toggleGroup="$groupOperacao" />
-               <Button cancelButton="true" mnemonicParsing="false" onAction="#onRealizarOperacao" text="Realizar" />
-            </children>
-         </HBox>
+            <Label fx:id="erroTroca" styleClass="error-label" wrapText="true" />
+            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                <children>
+                    <Label text="Valor da Operação:" styleClass="form-label" />
+                    <TextField onAction="#campoValorOperacao" />
+                    <RadioButton mnemonicParsing="false" onAction="#radioDeposito" text="Depositar" styleClass="radio-button">
+                        <toggleGroup>
+                            <ToggleGroup fx:id="groupOperacao" />
+                        </toggleGroup>
+                    </RadioButton>
+                    <RadioButton mnemonicParsing="false" onAction="#radioSaque" text="Sacar" toggleGroup="$groupOperacao" styleClass="radio-button" />
+                    <Button cancelButton="true" mnemonicParsing="false" onAction="#onRealizarOperacao" text="Realizar" styleClass="primary-button" />
+                </children>
+            </HBox>
             <TableView fx:id="tabelaFundos" prefHeight="374.0" prefWidth="680.0" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="colunaNome" prefWidth="104.0" text="Nome" />
                     <TableColumn fx:id="colunaTipo" prefWidth="141.0" text="Tipo" />
                     <TableColumn fx:id="colunaSaldo" prefWidth="139.0" text="Saldo" />
                     <TableColumn fx:id="colunaObjetivo" prefWidth="150.0" text="Objetivo" />
-               <TableColumn fx:id="colunaProgresso" prefWidth="161.0" text="Progresso" />
+                    <TableColumn fx:id="colunaProgresso" prefWidth="161.0" text="Progresso" />
                 </columns>
             </TableView>
         </VBox>

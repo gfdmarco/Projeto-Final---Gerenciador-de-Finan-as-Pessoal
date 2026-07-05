@@ -13,20 +13,26 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.AdicionarTransacaoController" prefWidth="1100.0" prefHeight="820.0">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gerenciador.sistema.AdicionarTransacaoController"
+            stylesheets="@app.css"
+            prefWidth="1100.0" prefHeight="820.0">
     <top>
         <VBox spacing="8.0">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="20" right="20" bottom="10" left="20"/>
             </padding>
-            <Label text="Adicionar Transação" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
-            <Label text="Informe os dados da transação que deseja adicionar." wrapText="true" />
+            <Label text="Adicionar Transação" styleClass="header-title" />
+            <Label text="Informe os dados da transação que deseja adicionar." wrapText="true" styleClass="instruction-text" />
         </VBox>
     </top>
     <center>
-        <VBox spacing="18.0">
+        <VBox spacing="18.0" styleClass="card">
+            <BorderPane.margin>
+                <Insets top="10" right="20" bottom="20" left="20"/>
+            </BorderPane.margin>
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="24" right="24" bottom="24" left="24"/>
             </padding>
             <GridPane hgap="16.0" vgap="16.0">
                 <columnConstraints>
@@ -36,44 +42,44 @@
                     <ColumnConstraints hgrow="ALWAYS" />
                 </columnConstraints>
                 <children>
-                    <Label text="Valor:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <Label text="Valor:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
                     <TextField fx:id="campoValor" GridPane.rowIndex="0" GridPane.columnIndex="1" />
-                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+                    <Label text="Nome:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="2" />
                     <TextField fx:id="campoNome" GridPane.rowIndex="0" GridPane.columnIndex="3" />
-                    <Label text="Data:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                    <Label text="Data:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
                     <DatePicker fx:id="campoData" GridPane.rowIndex="1" GridPane.columnIndex="1" />
-                    <Label text="Categoria:" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+                    <Label text="Categoria:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="2" />
                     <ComboBox fx:id="comboCategoria" GridPane.rowIndex="1" GridPane.columnIndex="3" />
-                    <Label text="Conta:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                    <Label text="Conta:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
                     <ComboBox fx:id="comboConta" GridPane.rowIndex="2" GridPane.columnIndex="1" />
                 </children>
             </GridPane>
             <HBox spacing="24.0">
                 <VBox spacing="10.0" prefWidth="300.0">
-                    <Label text="Tipo" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                    <RadioButton fx:id="radioDespesa" mnemonicParsing="false" text="Despesa">
+                    <Label text="Tipo" styleClass="group-title" />
+                    <RadioButton fx:id="radioDespesa" mnemonicParsing="false" text="Despesa" styleClass="radio-button">
                         <toggleGroup>
                             <ToggleGroup fx:id="tipoGroup" />
                         </toggleGroup>
                     </RadioButton>
-                    <RadioButton fx:id="radioReceita" mnemonicParsing="false" text="Receita" toggleGroup="$tipoGroup" />
+                    <RadioButton fx:id="radioReceita" mnemonicParsing="false" text="Receita" toggleGroup="$tipoGroup" styleClass="radio-button" />
                 </VBox>
                 <VBox spacing="10.0" prefWidth="320.0">
-                    <Label text="Frequência" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                    <RadioButton fx:id="radioUnica" mnemonicParsing="false" text="Única">
+                    <Label text="Frequência" styleClass="group-title" />
+                    <RadioButton fx:id="radioUnica" mnemonicParsing="false" text="Única" styleClass="radio-button">
                         <toggleGroup>
                             <ToggleGroup fx:id="frequenciaGroup" />
                         </toggleGroup>
                     </RadioButton>
-                    <RadioButton fx:id="radioSemanal" mnemonicParsing="false" text="Semanal" toggleGroup="$frequenciaGroup" />
-                    <RadioButton fx:id="radioQuinzenal" mnemonicParsing="false" text="Quinzenal" toggleGroup="$frequenciaGroup" />
-                    <RadioButton fx:id="radioMensal" mnemonicParsing="false" text="Mensal" toggleGroup="$frequenciaGroup" />
-                    <RadioButton fx:id="radioTrimestral" mnemonicParsing="false" text="Trimestral" toggleGroup="$frequenciaGroup" />
-                    <RadioButton fx:id="radioSemestral" mnemonicParsing="false" text="Semestral" toggleGroup="$frequenciaGroup" />
-                    <RadioButton fx:id="radioAnual" mnemonicParsing="false" text="Anual" toggleGroup="$frequenciaGroup" />
+                    <RadioButton fx:id="radioSemanal" mnemonicParsing="false" text="Semanal" toggleGroup="$frequenciaGroup" styleClass="radio-button" />
+                    <RadioButton fx:id="radioQuinzenal" mnemonicParsing="false" text="Quinzenal" toggleGroup="$frequenciaGroup" styleClass="radio-button" />
+                    <RadioButton fx:id="radioMensal" mnemonicParsing="false" text="Mensal" toggleGroup="$frequenciaGroup" styleClass="radio-button" />
+                    <RadioButton fx:id="radioTrimestral" mnemonicParsing="false" text="Trimestral" toggleGroup="$frequenciaGroup" styleClass="radio-button" />
+                    <RadioButton fx:id="radioSemestral" mnemonicParsing="false" text="Semestral" toggleGroup="$frequenciaGroup" styleClass="radio-button" />
+                    <RadioButton fx:id="radioAnual" mnemonicParsing="false" text="Anual" toggleGroup="$frequenciaGroup" styleClass="radio-button" />
                 </VBox>
                 <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-                    <Label text="Tags (selecione múltiplas):" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                    <Label text="Tags (selecione múltiplas):" styleClass="group-title" />
                     <ListView fx:id="listaTags" prefHeight="240.0" />
                 </VBox>
             </HBox>
@@ -82,12 +88,12 @@
     <bottom>
         <VBox spacing="12.0">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="10" right="20" bottom="20" left="20"/>
             </padding>
-            <Label fx:id="labelErro" textFill="RED" wrapText="true" />
+            <Label fx:id="labelErro" styleClass="error-label" wrapText="true" />
             <HBox spacing="12.0" alignment="CENTER_RIGHT">
-                <Button mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" />
-                <Button mnemonicParsing="false" onAction="#onConfirmar" defaultButton="true" text="Adicionar" />
+                <Button mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" styleClass="secondary-button" />
+                <Button mnemonicParsing="false" onAction="#onConfirmar" defaultButton="true" text="Adicionar" styleClass="primary-button" />
             </HBox>
         </VBox>
     </bottom>

@@ -16,20 +16,23 @@
 <?import javafx.scene.layout.VBox?>
 <ScrollPane fitToWidth="true" fitToHeight="true" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.BuscarTransacaoController">
     <content>
-        <BorderPane prefWidth="1080.0" prefHeight="720.0">
+        <BorderPane prefWidth="1080.0" prefHeight="720.0" stylesheets="@app.css">
             <top>
                 <VBox spacing="10.0">
                     <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
+                        <Insets top="20" right="20" bottom="10" left="20"/>
                     </padding>
-                    <Label text="Buscar Transações" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
-                    <Label text="Use um critério de busca e clique em Buscar. Se nenhum critério for selecionado, todas as transações serão exibidas." wrapText="true" />
+                    <Label text="Buscar Transações" styleClass="header-title" />
+                    <Label text="Use um critério de busca e clique em Buscar. Se nenhum critério for selecionado, todas as transações serão exibidas." wrapText="true" styleClass="instruction-text" />
                 </VBox>
             </top>
             <center>
-                <VBox spacing="16.0">
+                <VBox spacing="16.0" styleClass="card">
+                    <BorderPane.margin>
+                        <Insets top="10" right="20" bottom="10" left="20"/>
+                    </BorderPane.margin>
                     <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
+                        <Insets top="24" right="24" bottom="24" left="24"/>
                     </padding>
                     <GridPane hgap="16.0" vgap="14.0">
                         <columnConstraints>
@@ -39,31 +42,34 @@
                             <ColumnConstraints hgrow="ALWAYS" />
                         </columnConstraints>
                         <children>
-                            <Label text="Data:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                            <Label text="Data:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
                             <DatePicker fx:id="campoData" GridPane.rowIndex="0" GridPane.columnIndex="1" />
-                            <Label text="Conta:" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+                            <Label text="Conta:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="2" />
                             <ComboBox fx:id="comboConta" GridPane.rowIndex="0" GridPane.columnIndex="3" />
-                            <Label text="Categoria:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                            <Label text="Categoria:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
                             <ComboBox fx:id="comboCategoria" GridPane.rowIndex="1" GridPane.columnIndex="1" />
-                            <Label text="Valor:" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+                            <Label text="Valor:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="2" />
                             <TextField fx:id="campoValor" GridPane.rowIndex="1" GridPane.columnIndex="3" />
-                            <Label text="Tags:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                            <Label text="Tags:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
                             <ListView fx:id="listaTags" prefHeight="120.0" prefWidth="240.0" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="3" />
                         </children>
                     </GridPane>
-                    <HBox spacing="12.0">
-                        <Button mnemonicParsing="false" onAction="#onBuscar" defaultButton="true" text="Buscar" />
-                        <Button mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" />
-                        <Label fx:id="labelErro" textFill="RED" wrapText="true" />
+                    <HBox spacing="12.0" alignment="CENTER_LEFT">
+                        <Button mnemonicParsing="false" onAction="#onBuscar" defaultButton="true" text="Buscar" styleClass="primary-button" />
+                        <Button mnemonicParsing="false" onAction="#onVoltar" cancelButton="true" text="Voltar" styleClass="secondary-button" />
+                        <Label fx:id="labelErro" styleClass="error-label" wrapText="true" />
                     </HBox>
                 </VBox>
             </center>
             <bottom>
-                <VBox spacing="12.0">
+                <VBox spacing="12.0" styleClass="card">
+                    <BorderPane.margin>
+                        <Insets top="10" right="20" bottom="20" left="20"/>
+                    </BorderPane.margin>
                     <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
+                        <Insets top="24" right="24" bottom="24" left="24"/>
                     </padding>
-                    <Label text="Transações encontradas:" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                    <Label text="Transações encontradas:" styleClass="section-title" />
                     <TableView fx:id="tabelaTransacoes" prefHeight="320.0">
                         <columns>
                             <TableColumn fx:id="colunaNome" prefWidth="100.0" text="Nome" />

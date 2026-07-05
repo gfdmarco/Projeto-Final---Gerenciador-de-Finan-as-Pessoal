@@ -8,34 +8,40 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.CadastroController" prefWidth="600.0" prefHeight="400.0">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gerenciador.sistema.CadastroController"
+            stylesheets="@app.css"
+            prefWidth="600.0" prefHeight="400.0">
     <top>
         <VBox alignment="CENTER" spacing="10.0">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
-            <Label text="Crie seu cadastro" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <Label text="Crie seu cadastro" styleClass="header-title" />
         </VBox>
     </top>
     <center>
-        <VBox alignment="CENTER" spacing="16.0">
+        <VBox alignment="CENTER" spacing="16.0" styleClass="card">
+            <BorderPane.margin>
+                <Insets top="10" right="60" bottom="20" left="60"/>
+            </BorderPane.margin>
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="28" right="28" bottom="28" left="28"/>
             </padding>
             <GridPane hgap="10.0" vgap="14.0">
                 <children>
-                    <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <Label text="Nome:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
                     <TextField fx:id="campoNome" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="260.0" />
-                    <Label text="Login:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                    <Label text="Login:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
                     <TextField fx:id="campoLogin" GridPane.rowIndex="1" GridPane.columnIndex="1" />
-                    <Label text="Senha:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                    <Label text="Senha:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
                     <PasswordField fx:id="campoSenha" GridPane.rowIndex="2" GridPane.columnIndex="1" />
                 </children>
             </GridPane>
-            <HBox spacing="10.0">
-                <Button mnemonicParsing="false" onAction="#onCadastro" defaultButton="true" text="Cadastrar" />
+            <HBox spacing="10.0" alignment="CENTER">
+                <Button mnemonicParsing="false" onAction="#onCadastro" defaultButton="true" text="Cadastrar" styleClass="primary-button" />
             </HBox>
-            <Label fx:id="labelErro" textFill="RED" wrapText="true" textAlignment="CENTER" />
+            <Label fx:id="labelErro" styleClass="error-label" wrapText="true" textAlignment="CENTER" />
         </VBox>
     </center>
 </BorderPane>
