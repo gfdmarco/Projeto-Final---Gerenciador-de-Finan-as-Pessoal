@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import gerenciador.operacoes.movimentacoes.Despesa;
-import gerenciador.operacoes.movimentacoes.Receita;
 import gerenciador.operacoes.movimentacoes.Transacao;
 import gerenciador.suporte.Categoria;
 import gerenciador.suporte.Conta;
