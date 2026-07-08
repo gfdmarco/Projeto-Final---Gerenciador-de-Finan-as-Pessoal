@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import gerenciador.base.Usuario;
 import gerenciador.suporte.Categoria;
 import gerenciador.suporte.Conta;
-import gerenciador.suporte.Tag;
 
 class ReceitaDespesaTest {
 
@@ -26,12 +26,13 @@ class ReceitaDespesaTest {
 
     @Test
     void despesaDeveDebitarConta() {
-        Conta conta = new Conta("Banco", "1", 100.0);
+        Usuario u = new Usuario();
+        u.abrirConta("Banco", "1", 100);
         Categoria categoria = new Categoria("Mercado", 0.0);
-        Despesa despesa = new Despesa("Mercado", "d1", 40.0, new ArrayList<>(), categoria, LocalDate.now(), conta);
+        Despesa despesa = new Despesa("Mercado", "d1", 40.0, new ArrayList<>(), categoria, LocalDate.now(), u.getContas().get(0));
 
         despesa.realizarTransacao();
 
-        assertEquals(60.0, conta.getMontante(), 0.0001);
+        assertEquals(60.0, u.getContas().get(0).getMontante(), 0.0001);
     }
 }

@@ -7,11 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="922.0" prefWidth="1155.0"
-      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="gerenciador.sistema.TransacoesController"
-      stylesheets="@app.css">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="922.0" prefWidth="1155.0" stylesheets="@app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gerenciador.sistema.TransacoesController">
    <children>
       <AnchorPane prefHeight="925.0" prefWidth="1155.0">
          <children>
@@ -26,11 +22,11 @@
                   <TableColumn fx:id="colunaConta" prefWidth="166.0" text="Conta Atrelada" />
               </columns>
             </TableView>
-            <Label layoutX="27.0" layoutY="40.0" text="Ações em Transações:" styleClass="header-title" />
-            <Button layoutX="320.0" layoutY="28.0" mnemonicParsing="false" onAction="#onAdicionar" prefHeight="59.0" prefWidth="156.0" text="Adicionar" styleClass="primary-button" />
-            <Button layoutX="554.0" layoutY="28.0" mnemonicParsing="false" onAction="#onRemover" prefHeight="59.0" prefWidth="156.0" text="Remover" styleClass="exit-button" />
-            <Button layoutX="791.0" layoutY="28.0" mnemonicParsing="false" onAction="#onBuscar" prefHeight="59.0" prefWidth="156.0" text="Buscar" styleClass="secondary-button" />
-            <Button layoutX="554.0" layoutY="850.0" mnemonicParsing="false" onAction="#onVoltar" text="Voltar" styleClass="secondary-button" />
+            <Label layoutX="27.0" layoutY="40.0" styleClass="header-title" text="Menus em Transações:" />
+            <Button layoutX="320.0" layoutY="28.0" mnemonicParsing="false" onAction="#onAdicionar" prefHeight="59.0" prefWidth="156.0" styleClass="primary-button" text="Adicionar" />
+            <Button layoutX="554.0" layoutY="28.0" mnemonicParsing="false" onAction="#onRemover" prefHeight="59.0" prefWidth="156.0" styleClass="exit-button" text="Remover" />
+            <Button layoutX="791.0" layoutY="28.0" mnemonicParsing="false" onAction="#onBuscar" prefHeight="59.0" prefWidth="156.0" styleClass="secondary-button" text="Buscar" />
+            <Button layoutX="554.0" layoutY="850.0" mnemonicParsing="false" onAction="#onVoltar" styleClass="secondary-button" text="Voltar" />
             <Label fx:id="erroTroca" layoutX="27.0" layoutY="815.0" styleClass="error-label" wrapText="true" />
          </children>
       </AnchorPane>

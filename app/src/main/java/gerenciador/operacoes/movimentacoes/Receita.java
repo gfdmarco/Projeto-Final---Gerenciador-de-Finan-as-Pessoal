@@ -2,7 +2,6 @@ package gerenciador.operacoes.movimentacoes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import gerenciador.suporte.*;
 
 public class Receita extends Transacao{;
@@ -18,6 +17,8 @@ public class Receita extends Transacao{;
 
     @Override
     public void realizarTransacao(){
-        this.getConta().creditar(this.getValor());
+        if (!this.getData().isAfter(LocalDate.now())){
+            this.getConta().creditar(this.getValor());
+        }
     }
 }

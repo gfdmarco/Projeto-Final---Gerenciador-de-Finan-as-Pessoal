@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 import gerenciador.suporte.Categoria;
 import gerenciador.suporte.Conta;
 import gerenciador.suporte.Tag;

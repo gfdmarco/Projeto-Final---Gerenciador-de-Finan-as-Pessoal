@@ -66,12 +66,20 @@ public abstract class Fundo {
     }
 
     public double getProgresso(){
-        double progresso = this.valorAcumulado / this.valorObjetivo;
-        return progresso;
+        if (valorObjetivo > 0.0){
+            double progresso = this.valorAcumulado / this.valorObjetivo;
+            return progresso;
+        }
+        return 0;
     }
 
     public void depositar(double valor){
-        this.valorAcumulado += valor;
+        if (valor > 0){
+            this.valorAcumulado += valor;
+        }
+        else {
+            throw new NumberFormatException("Insira um valor válido");
+        }
     }
 
     public void sacar(double valor){
@@ -79,7 +87,12 @@ public abstract class Fundo {
             throw new SaldoInsuficienteException(valorAcumulado, valor);
         }
         else {
-            valorAcumulado -= valor;
+            if (valor > 0){
+                this.valorAcumulado -= valor;
+            }
+            else {
+                throw new NumberFormatException("Insira um valor válido");
+            }
         }
     }
 }
