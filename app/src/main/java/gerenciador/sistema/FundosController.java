@@ -1,22 +1,17 @@
 package gerenciador.sistema;
 
 import java.time.LocalDate;
-import java.util.List;
-
 import gerenciador.base.PersistenciaJSON;
 import gerenciador.base.Usuario;
 import gerenciador.enums.TipoFundo;
+import gerenciador.exceptions.SaldoInsuficienteException;
 import gerenciador.interfaces.UsuarioNecessario;
 import gerenciador.operacoes.reservas.Fundo;
-import gerenciador.operacoes.reservas.FundoEmergencia;
-import gerenciador.operacoes.reservas.FundoInvestimento;
-import gerenciador.suporte.Categoria;
 import gerenciador.suporte.Conta;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -28,6 +23,9 @@ import javafx.scene.control.cell.ProgressBarTableCell;
 public class FundosController implements UsuarioNecessario {
 
     @FXML private Label erroTroca;
+    @FXML private Label sucessoAcao;
+
+
     @FXML private TableView<Fundo> tabelaFundos;
     @FXML private TableColumn<Fundo, String> colunaNome;
     @FXML private TableColumn<Fundo, String> colunaTipo;
@@ -44,9 +42,6 @@ public class FundosController implements UsuarioNecessario {
     @FXML private TextField campoValorOperacao;
     @FXML private RadioButton radioDeposito;
     @FXML private RadioButton radioSaque;
-
-    @FXML private Button botaoCriar;
-    @FXML private Button botaoVoltar;
 
     private Usuario usuarioAtual;
 
@@ -105,29 +100,29 @@ public class FundosController implements UsuarioNecessario {
         campoNome.clear();
         campoObjetivo.clear();
         campoTaxa.clear();
-        erroTroca.setText("Fundo criado com sucesso.");
+        sucessoAcao.setText("Fundo criado com sucesso.");
     }
 
     @FXML
     void onRealizarOperacao(){
-        double valor = Double.parseDouble(campoValorOperacao.getText());
         Fundo fundoSelecionado = tabelaFundos.getSelectionModel().getSelectedItem();
         if (fundoSelecionado == null){
             erroTroca.setText("Selecione um fundo na tabela primeiramente, por favor.");
             return;
         }
         try {
+            double valor = Double.parseDouble(campoValorOperacao.getText());
             if (valor <= 0){
                 erroTroca.setText("Digite um valor válido, por favor.");
                 return;
             }
             if (radioDeposito.isSelected()){
                 fundoSelecionado.depositar(valor);
-                erroTroca.setText("Depósito realizado com sucesso!");
+                sucessoAcao.setText("Depósito realizado com sucesso!");
             }
             else if (radioSaque.isSelected()){
                 fundoSelecionado.sacar(valor);
-                erroTroca.setText("Saque realizado com sucesso!");
+                sucessoAcao.setText("Saque realizado com sucesso!");
             }
             else {
                 erroTroca.setText("Selecione uma operação, por favor.");
@@ -139,6 +134,9 @@ public class FundosController implements UsuarioNecessario {
         }
         catch (NumberFormatException e){
             erroTroca.setText("Digite um valor válido, por favor (Exemplo: 100.00).");
+        }
+        catch (SaldoInsuficienteException e){
+            erroTroca.setText(e.getMessage());
         }
     }
 

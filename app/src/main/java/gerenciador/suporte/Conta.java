@@ -44,12 +44,22 @@ public class Conta {
             throw new SaldoInsuficienteException(this.montante, valor);
         }
         else {
-            this.montante -= valor;
+            if (valor > 0){
+                this.montante -= valor;
+            }
+            else {
+                throw new NumberFormatException("Insira um valor válido");
+            }
         }
     }
 
     public void creditar(double valor){
-        this.montante += valor;
+        if (valor > 0){
+            this.montante += valor;
+        }
+        else {
+            throw new NumberFormatException("Insira um valor válido");
+        }
     }
 
     public ArrayList<Transacao> getTransacoesAssociadas(){

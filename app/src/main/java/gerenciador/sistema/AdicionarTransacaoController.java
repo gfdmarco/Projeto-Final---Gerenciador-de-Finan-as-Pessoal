@@ -47,6 +47,7 @@ public class AdicionarTransacaoController implements UsuarioNecessario {
     @FXML private RadioButton radioSemestral;
     @FXML private RadioButton radioAnual;
     @FXML private Label labelErro;
+    @FXML private Label labelSucesso;
 
     private Usuario usuarioAtual;
 
@@ -155,7 +156,7 @@ public class AdicionarTransacaoController implements UsuarioNecessario {
                     labelErro.setText(e2.getMessage());
                 }
             } else {
-                labelErro.setText("Transação cancelada.");
+                labelSucesso.setText("Transação cancelada.");
             }
         });
     }

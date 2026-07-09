@@ -15,7 +15,7 @@ public class App extends Application{
     public void start(Stage primaryStage) throws Exception{
         stage = primaryStage;
         stage.setTitle("Ice Delthios: Gerenciador de Financas Pessoais");
-        this.trocarTela("login");
+        App.trocarTela("login");
         stage.show();
     }
 

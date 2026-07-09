@@ -4,10 +4,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 import gerenciador.base.Usuario;
-import gerenciador.enums.Frequencia;
 import gerenciador.interfaces.Relatorio;
 import gerenciador.operacoes.movimentacoes.*;
 import java.util.ArrayList;
@@ -34,64 +32,16 @@ public class RelatorioPeriodo implements Relatorio{
         }
 
         //2a parte: construção da evolução do saldo
-        long diferencaDias = ChronoUnit.DAYS.between(this.inicioPeriodo, this.fimPeriodo);
         double receitas = 0.0;
         double despesas = 0.0;
         for (Transacao transacaoP : transacoesPeriodo){
-            if (transacaoP instanceof DespesaRecorrente){
-                DespesaRecorrente despesa = (DespesaRecorrente) transacaoP;
-                switch(despesa.getRecorrencia()){
-                    case SEMANAL:
-                        despesas += despesa.getValor() * (diferencaDias / 7.0);
-                        break;
-                    case QUINZENAL:
-                        despesas += despesa.getValor() * (diferencaDias / 15.0);
-                        break;
-                    case MENSAL:
-                        despesas += despesa.getValor() * (diferencaDias / 30.0);
-                        break;
-                    case TRIMESTRAL:
-                        despesas += despesa.getValor() * (diferencaDias / 90.0);
-                        break;
-                    case SEMESTRAL:
-                        despesas += despesa.getValor() * (diferencaDias / 180.0);
-                        break;
-                    case ANUAL:
-                        despesas += despesa.getValor() * (diferencaDias / 360.0);
-                        break;
-                }
-            }
-            else if (transacaoP instanceof ReceitaRecorrente){
-                ReceitaRecorrente receita = (ReceitaRecorrente) transacaoP;
-                switch(receita.getRecorrencia()){
-                    case SEMANAL:
-                        receitas += receita.getValor() * (diferencaDias / 7.0);
-                        break;
-                    case QUINZENAL:
-                        receitas += receita.getValor() * (diferencaDias / 15.0);
-                        break;
-                    case MENSAL:
-                        receitas += receita.getValor() * (diferencaDias / 30.0);
-                        break;
-                    case TRIMESTRAL:
-                        receitas += receita.getValor() * (diferencaDias / 90.0);
-                        break;
-                    case SEMESTRAL:
-                        receitas += receita.getValor() * (diferencaDias / 180.0);
-                        break;
-                    case ANUAL:
-                        receitas += receita.getValor() * (diferencaDias / 360.0);
-                        break;
-                }
-            }
-            else if (transacaoP instanceof Despesa){
+            if (transacaoP instanceof Despesa){
                 despesas += transacaoP.getValor();
             }
             else if (transacaoP instanceof Receita){
                 receitas += transacaoP.getValor();
             }
         }
-        //ERRO DE NULL NA EXIBICAO TALVEZ
         double circulacao = receitas - despesas;
         String conteudoExibir =
                 "Período: " + inicioPeriodo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " até " 

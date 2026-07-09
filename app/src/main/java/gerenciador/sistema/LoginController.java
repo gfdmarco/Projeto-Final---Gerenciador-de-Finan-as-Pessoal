@@ -1,11 +1,14 @@
 package gerenciador.sistema;
 
+import java.util.List;
+
 import gerenciador.base.GerenciadorUsuarios;
 import gerenciador.base.PersistenciaJSON;
 import gerenciador.base.Usuario;
 import gerenciador.exceptions.LoginInvalidoException;
 import gerenciador.operacoes.reservas.Fundo;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -26,10 +29,16 @@ public class LoginController {
             for (Fundo f : u.getFundos()){
                 f.jurosCompostos();
             }
-            u.processarRecorrencias();
+            List<String> avisos = u.processarRecorrencias();
             u.setCategorias();
             u.setTags();
             PersistenciaJSON.salvar(u);
+            if (!avisos.isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Recorrências com pendências");
+                alert.setContentText(String.join("\n", avisos));
+                alert.showAndWait();
+            }
             try {
                 App.trocarTela("dashboard", u);
             }

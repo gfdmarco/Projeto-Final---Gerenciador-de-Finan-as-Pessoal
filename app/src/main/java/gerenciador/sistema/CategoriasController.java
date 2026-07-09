@@ -17,6 +17,8 @@ import javafx.scene.control.cell.ProgressBarTableCell;
 public class CategoriasController implements UsuarioNecessario{
 
     @FXML private Label erroTroca;
+    @FXML private Label sucessoAcao;
+
     @FXML private TableView<Categoria> tabelaCategorias;
     @FXML private TableColumn<Categoria, String> colunaNome;
     @FXML private TableColumn<Categoria, Double> colunaOrcamento;
@@ -73,7 +75,7 @@ public class CategoriasController implements UsuarioNecessario{
         tabelaCategorias.getItems().setAll(usuarioAtual.categoriasSistema());
         campoNomeCriar.clear();
         campoOrcamentoCriar.clear();
-        erroTroca.setText("Categoria criada com sucesso.");
+        sucessoAcao.setText("Categoria criada com sucesso.");
     }
 
     @FXML
@@ -95,7 +97,7 @@ public class CategoriasController implements UsuarioNecessario{
             tabelaCategorias.getItems().setAll(usuarioAtual.categoriasSistema());
             campoNomeProcurar.clear();
             campoOrcamentoEditar.clear();
-            erroTroca.setText("Orçamento atualizado com sucesso.");
+            sucessoAcao.setText("Orçamento atualizado com sucesso.");
         }
         else {
             erroTroca.setText("Categoria não encontrada. Digite um nome válido.");

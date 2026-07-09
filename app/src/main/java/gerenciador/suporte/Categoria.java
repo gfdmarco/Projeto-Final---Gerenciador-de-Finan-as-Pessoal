@@ -1,10 +1,11 @@
 package gerenciador.suporte;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import gerenciador.operacoes.movimentacoes.Despesa;
 import gerenciador.operacoes.movimentacoes.Transacao;
 
 public class Categoria {
@@ -50,13 +51,18 @@ public class Categoria {
     public double gastoNoMes(){
         double gasto = 0;
         for (Transacao t : this.getTransacoesAssociadas()){
-            gasto += t.getValor();
+            if (t instanceof Despesa && t.getData() != null && t.getData().getMonthValue() == LocalDate.now().getMonthValue() && t.getData().getYear() == LocalDate.now().getYear()){
+                gasto += t.getValor();
+            }
         }
         return gasto;
     }
 
     public double getPercentualUso() {
-        return this.gastoNoMes() / this.orcamento;
+        if (orcamento > 0.0){
+            return this.gastoNoMes() / this.orcamento;
+        }
+        return 0;
     }
 
     @Override
