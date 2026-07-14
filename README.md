@@ -49,7 +49,7 @@ O Ice Delthios possui uma suíte de testes unitários para garantir a confiabili
 Para rodar todos os testes automatizados, execute:
 ```bash
 ./gradlew test
-
+```
 ## 📁 Estrutura do Projeto (MVC) e Pastas
 
 O projeto segue a arquitetura Model-View-Controller (MVC) com pacotes bem definidos, organizados no padrão de projetos Gradle:
