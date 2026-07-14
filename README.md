@@ -54,6 +54,7 @@ Para rodar todos os testes automatizados, execute:
 
 O projeto segue a arquitetura Model-View-Controller (MVC) com pacotes bem definidos, organizados no padrão de projetos Gradle:
 
+```bash
 app/
 ├── build.gradle             # Configurações do Gradle e gerenciamento de dependências
 └── src/
@@ -63,10 +64,11 @@ app/
     │   │   ├── enums/       # Enumerações (Frequência, TipoFundo, etc.)
     │   │   ├── exceptions/  # Tratamento de exceções personalizadas
     │   │   ├── interfaces/  # Contratos e interfaces do sistema
-    │   │   ├── operacoes/   # Lógica de negócio (Transações, Movimentações, Reservas, Relatórios)
-    │   │   ├── sistema/     # Controllers da interface JavaFX
+    │   │   ├── operacoes/   # Lógica de negócio (Transações, Reservas, Relatórios)
+    │   │   ├── sistema/     # Controllers e telas da interface JavaFX
     │   │   └── suporte/     # Classes de apoio (Contas, Categorias, Tags, Histórico)
     │   └── resources/
     │       └── fxml/        # Arquivos de design da interface (.fxml) e estilos (.css)
     └── test/
         └── java/gerenciador/# Suíte de testes unitários (JUnit)
+```
