@@ -2,8 +2,8 @@ package gerenciador.operacoes.movimentacoes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import gerenciador.exceptions.OrcamentoExcedidoException;
+import gerenciador.exceptions.SaldoInsuficienteException;
 import gerenciador.suporte.*;
 
 public class Despesa extends Transacao{
@@ -30,6 +30,12 @@ public class Despesa extends Transacao{
             throw new OrcamentoExcedidoException(this.getCategoria(), gastoAtual + this.getValor());
         }
 
-        this.getConta().debitar(this.getValor());
+        if (this.getValor() > this.getConta().getMontante()){
+            throw new SaldoInsuficienteException(this.getConta().getMontante(), this.getValor());
+        }
+
+        if (!this.getData().isAfter(LocalDate.now())){
+            this.getConta().debitar(this.getValor());
+        }
     }
 }

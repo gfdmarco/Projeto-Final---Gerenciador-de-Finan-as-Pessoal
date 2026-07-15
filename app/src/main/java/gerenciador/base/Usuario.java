@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import gerenciador.interfaces.GanhoMensalListener;
 import gerenciador.interfaces.GastoMensalListener;
 import gerenciador.interfaces.Recorrencia;
 import gerenciador.operacoes.movimentacoes.*;
@@ -32,10 +33,13 @@ public class Usuario {
     private Set<Categoria> categorias;
     private Set<Tag> tags;
     private HistoricoTransacoes transacoes;
+    private ArrayList<ReceitaRecorrente> receitasRecorrentes; //para construir o ganho liquido mensal do usuario
     private ArrayList<DespesaRecorrente> despesasRecorrentes; //para construir o custo de vida mensal do usuario
     //JSON ignora esta serialização por não conter estado em si do usuário, mas ação durante a aplicação
     @JsonIgnore
     private List<GastoMensalListener> gastoMensalListeners;
+    @JsonIgnore
+    private List<GanhoMensalListener> ganhoMensalListeners;
 
     //JSON precisa de um construtor vazio para conseguir construir os objetos quando carregar
     public Usuario(){
@@ -44,8 +48,10 @@ public class Usuario {
             this.categorias = new HashSet<>();
             this.tags = new HashSet<>();
             this.transacoes = new HistoricoTransacoes();
+            this.receitasRecorrentes = new ArrayList<>();
             this.despesasRecorrentes = new ArrayList<>();
             this.gastoMensalListeners = new ArrayList<>();
+            this.ganhoMensalListeners = new ArrayList<>();
     }
 
     public Usuario(String nome, String login, String senhaHasheada){
@@ -57,8 +63,10 @@ public class Usuario {
             this.categorias = new HashSet<>();
             this.tags = new HashSet<>();
             this.transacoes = new HistoricoTransacoes();
+            this.receitasRecorrentes = new ArrayList<>();
             this.despesasRecorrentes = new ArrayList<>();
             this.gastoMensalListeners = new ArrayList<>();
+            this.ganhoMensalListeners = new ArrayList<>();
     }
 
     public String getNome(){
@@ -101,7 +109,7 @@ public class Usuario {
     }
 
     public double GanhoLiquidoMensal(){
-        double receitaMensal = (salario != null) ? salario.getValor() : 0.0;
+        double receitaMensal = ((salario != null) ? salario.getValor() : 0.0) + calcularGanhoMensal();
         double gastoMensal = calcularGastoMensal();
         return receitaMensal - gastoMensal;
     }
@@ -122,8 +130,9 @@ public class Usuario {
 
         c1.debitar(valor);
         c2.creditar(valor);
-
-        Transacao transferencia = new Receita("Transferência entre contas", UUID.randomUUID().toString(), valor, new ArrayList<>(), null, LocalDate.now(), c2);
+        
+        //orcamento dessas transferencias: nunca é checado, entao nao precisa ter orcamento definido valido
+        Transacao transferencia = new Receita("Transferência entre contas", UUID.randomUUID().toString(), valor, new ArrayList<>(), new Categoria("Transferências", 0.0), LocalDate.now(), c2);
         this.transacoes.getHistorico().add(transferencia);
         c2.adicionarTransacao(transferencia);
     }
@@ -136,9 +145,12 @@ public class Usuario {
 
     public Fundo criarFundo(String nome, TipoFundo tipo, double objetivo, double taxaDeValorizacao, LocalDate depositoInicial, Conta conta){
         Fundo novoFundo = switch (tipo){
-            case EMERGENCIA -> new FundoEmergencia(nome, TipoFundo.EMERGENCIA, objetivo, taxaDeValorizacao, depositoInicial, 6);
+            case EMERGENCIA -> new FundoEmergencia(nome, TipoFundo.EMERGENCIA, objetivo, taxaDeValorizacao, depositoInicial);
             case INVESTIMENTO -> new FundoInvestimento(nome, TipoFundo.INVESTIMENTO, objetivo, taxaDeValorizacao, depositoInicial);
         };
+        if (novoFundo.getTipo() != null && novoFundo.getTipo().equals(TipoFundo.EMERGENCIA)){
+            adicionarGastoMensalListener((FundoEmergencia) novoFundo);
+        }
         this.fundos.add(novoFundo);
         return novoFundo;
     }
@@ -186,7 +198,7 @@ public class Usuario {
 
     public Categoria buscarCategoria(String nome){
         for (Categoria c : this.categoriasSistema()){
-            if (c.getNome().equals(nome)){
+            if (c.getNome() != null && c.getNome().equals(nome)){
                 return c;
             }
         }
@@ -201,12 +213,15 @@ public class Usuario {
         Categoria categoria = new Categoria("Salário", valor);
         String id = UUID.randomUUID().toString();
         this.salario = new ReceitaRecorrente("Salário", id, valor, new ArrayList<>(), categoria, dataRecebimento, conta, Frequencia.MENSAL, dataRecebimento);
-        conta.creditar(valor);
+        this.salario.realizarTransacao();
         conta.adicionarTransacao((Transacao) this.salario);
         this.getHistorico().add(this.salario);
     }
 
     public void editarSalario(double novoValor){
+        if (this.salario == null){
+            throw new IllegalStateException("Nenhum salário registrado para editar.");
+        }
         this.salario.setValor(novoValor);
     }
 
@@ -240,6 +255,10 @@ public class Usuario {
             despesasRecorrentes.add((DespesaRecorrente) transacao);
             notificarGastoMensalListeners();
         }
+        if (transacao instanceof ReceitaRecorrente){
+            receitasRecorrentes.add((ReceitaRecorrente) transacao);
+            notificarGanhoMensalListeners();
+        }
     }
 
     public void adicionarDespesaRecorrente(DespesaRecorrente despesaRecorrente) {
@@ -247,11 +266,23 @@ public class Usuario {
         notificarGastoMensalListeners();
     }
 
+    public void adicionarReceitaRecorrente(ReceitaRecorrente receitaRecorrente){
+        this.receitasRecorrentes.add(receitaRecorrente);
+        notificarGanhoMensalListeners();
+    }
+
     public void adicionarGastoMensalListener(GastoMensalListener listener) {
         if (this.gastoMensalListeners == null){
             this.gastoMensalListeners = new ArrayList<>();
         }
         this.gastoMensalListeners.add(listener);
+    }
+
+    public void adicionarGanhoMensalListener(GanhoMensalListener listener) {
+        if (this.ganhoMensalListeners == null){
+            this.ganhoMensalListeners = new ArrayList<>();
+        }
+        this.ganhoMensalListeners.add(listener);
     }
 
     public double calcularGastoMensal() {
@@ -284,6 +315,36 @@ public class Usuario {
         return gastoMensal;
     }
 
+    public double calcularGanhoMensal(){
+        double ganhoMensal = 0;
+
+        for (ReceitaRecorrente receitaRecorrente : receitasRecorrentes){
+            switch(receitaRecorrente.getRecorrencia()){
+                case SEMANAL:
+                    ganhoMensal += 4 * receitaRecorrente.getValor();
+                    break;
+                case QUINZENAL:
+                    ganhoMensal += 2 * receitaRecorrente.getValor();
+                    break;
+                case MENSAL:
+                    ganhoMensal += receitaRecorrente.getValor();
+                    break;
+                case TRIMESTRAL:
+                    ganhoMensal += 0.34 * receitaRecorrente.getValor();
+                    break;
+                case SEMESTRAL:
+                    ganhoMensal += 0.167 * receitaRecorrente.getValor();
+                    break;
+                case ANUAL:
+                    ganhoMensal += 0.083 * receitaRecorrente.getValor();
+                    break;
+                default:
+                    break;
+            }
+        }
+        return ganhoMensal;
+    }
+
     public void notificarGastoMensalListeners() {
         double novoGastoMensal = calcularGastoMensal();
         if (gastoMensalListeners == null){
@@ -294,32 +355,47 @@ public class Usuario {
         }
     }
 
-    // Usuario.java
-    public void processarRecorrencias() {
-        LocalDate hoje = LocalDate.now();
-        List<Transacao> novasOcorrencias = new ArrayList<>();
+    public void notificarGanhoMensalListeners(){
+        double novoGanhoMensal = calcularGanhoMensal();
+        if (ganhoMensalListeners == null){
+            return;
+        }
+        for (GanhoMensalListener ganhoMensalListener : ganhoMensalListeners){
+            ganhoMensalListener.updateGanhoMensal(novoGanhoMensal, this);
+        }
+    }
 
-        for (Transacao t : this.transacoes.getHistorico()) {
-            if (!(t instanceof Recorrencia rec)){
-                continue;
-            }
-            if (!rec.isAtivo()){
-                //ja foi concluida
+    public List<String> processarRecorrencias() {
+        //retornamos list para, na tela de login, serem exibidos avisos de transacoes recorrente que deram algum problema no saldo durante a recorrencia
+        LocalDate hoje = LocalDate.now();
+        List<String> avisos = new ArrayList<>();
+
+        // iteramos uma cópia porque adicionarTransacao() logo abaixo insere na mesma lista viva
+        // do histórico -- iterar a lista original causaria erro assim que qualquer ocorrência recorrente fosse aplicada com sucesso
+        for (Transacao t : new ArrayList<>(this.transacoes.getHistorico())) {
+            if (!(t instanceof Recorrencia rec) || !rec.isAtivo()){
                 continue;
             }
 
             LocalDate proxima = rec.calcularProximaData(rec.getUltimaDataAplicada(), rec.getRecorrencia());
 
             while (!proxima.isAfter(hoje)) {
-                novasOcorrencias.add(rec.gerarTransacaoRecorrente(proxima));
-                rec.setUltimaDataAplicada(proxima);
+                Transacao ocorrencia = rec.gerarTransacaoRecorrente(proxima);
+                try {
+                    if (ocorrencia instanceof Despesa despesa) {
+                        this.adicionarTransacao(despesa, true); // ignora orçamento: já é compromisso existente
+                    } else {
+                        this.adicionarTransacao(ocorrencia);
+                    }
+                    rec.setUltimaDataAplicada(proxima); // só avança se realmente aplicou
+                } catch (SaldoInsuficienteException e) {
+                    avisos.add(ocorrencia.getNome() + " (" + proxima + "): " + e.getMessage());
+                    rec.setUltimaDataAplicada(proxima); // decide se quer parar aqui em vez de avançar — te explico a troca abaixo
+                }
                 proxima = rec.calcularProximaData(proxima, rec.getRecorrencia());
             }
         }
-
-        for (Transacao nova : novasOcorrencias) {
-            this.adicionarTransacao(nova);
-        }
+        return avisos;
     }
 
     public void removerTransacao(String id){
@@ -339,10 +415,14 @@ public class Usuario {
             if (transacao.getConta() != null) {
                 //precisamos reverter a cobranca ou aumento de saldo por conta da transacao antes de remove-la
                 if (transacao instanceof Despesa){
-                    transacao.getConta().creditar(transacao.getValor());
+                    if (!transacao.getData().isAfter(LocalDate.now())){
+                        transacao.getConta().creditar(transacao.getValor());
+                    }
                 }
                 if (transacao instanceof Receita){
-                    transacao.getConta().debitar(transacao.getValor());
+                    if (!transacao.getData().isAfter(LocalDate.now())){
+                        transacao.getConta().debitar(transacao.getValor());
+                    }
                 }
                 transacao.getConta().getTransacoesAssociadas().remove(transacao);
             }
@@ -360,6 +440,11 @@ public class Usuario {
             if (transacao instanceof DespesaRecorrente) {
                 despesasRecorrentes.remove(transacao);
                 notificarGastoMensalListeners();
+            }
+
+            if (transacao instanceof ReceitaRecorrente){
+                receitasRecorrentes.remove(transacao);
+                notificarGanhoMensalListeners();
             }
         }
 

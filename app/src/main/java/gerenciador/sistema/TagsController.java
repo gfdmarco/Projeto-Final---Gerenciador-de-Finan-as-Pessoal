@@ -15,6 +15,8 @@ import javafx.scene.control.TextField;
 public class TagsController implements UsuarioNecessario {
 
     @FXML private Label erroTroca;
+    @FXML private Label sucessoAcao;
+
     @FXML private TableView<Tag> tabelaTags;
     @FXML private TableColumn<Tag, String> colunaNome;
     @FXML private TableColumn<Tag, Integer> colunaTransacoes;
@@ -52,7 +54,7 @@ public class TagsController implements UsuarioNecessario {
 
         tabelaTags.getItems().setAll(usuarioAtual.tagsSistema());
         campoNomeCriar.clear();
-        erroTroca.setText("Tag criada com sucesso.");
+        sucessoAcao.setText("Tag criada com sucesso.");
     }
 
     @FXML

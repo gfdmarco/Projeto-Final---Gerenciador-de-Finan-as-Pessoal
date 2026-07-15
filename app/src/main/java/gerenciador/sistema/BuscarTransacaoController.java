@@ -114,6 +114,9 @@ public class BuscarTransacaoController implements UsuarioNecessario{
             labelErro.setText("Selecione pelo menos um critério de busca ou deixe em branco para listar tudo.");
             resultado = this.usuarioAtual.getHistorico();
         }
+        if (resultado.isEmpty()){
+            labelErro.setText("Não foram encontradas transações associadas ou não há histórico.");
+        }
 
         tabelaTransacoes.getItems().clear();
         tabelaTransacoes.getItems().addAll(resultado);

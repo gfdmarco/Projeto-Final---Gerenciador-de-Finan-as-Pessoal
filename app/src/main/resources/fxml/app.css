@@ -136,3 +136,70 @@
     -fx-text-fill: #2E9E6C;
     -fx-font-weight: 600;
 }
+
+.form-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #5B6785;
+}
+
+.group-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #1E2A45;
+}
+
+.combo-box, .date-picker {
+    -fx-background-color: #F4F6FB;
+    -fx-background-radius: 8;
+    -fx-border-color: #D8DEEC;
+    -fx-border-radius: 8;
+    -fx-padding: 2 8;
+}
+
+.combo-box:focused, .date-picker:focused {
+    -fx-border-color: #2F6FED;
+}
+
+.list-view {
+    -fx-background-color: #F4F6FB;
+    -fx-background-radius: 8;
+    -fx-border-color: #D8DEEC;
+    -fx-border-radius: 8;
+}
+.list-view .list-cell:filled:selected {
+    -fx-background-color: #E8F0FF;
+    -fx-text-fill: #2F6FED;
+}
+
+.radio-button {
+    -fx-font-size: 13px;
+    -fx-text-fill: #1E2A45;
+}
+
+.instruction-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #8892A6;
+}
+
+.brand-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #1E2A45;
+}
+
+.helper-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #8892A6;
+}
+
+.text-area {
+    -fx-background-color: #F4F6FB;
+    -fx-background-radius: 8;
+    -fx-border-color: #D8DEEC;
+    -fx-border-radius: 8;
+}
+.text-area .content {
+    -fx-background-color: #F4F6FB;
+    -fx-background-radius: 8;
+}

@@ -5,9 +5,12 @@ import java.util.UUID;
 
 import gerenciador.base.PersistenciaJSON;
 import gerenciador.base.Usuario;
+import gerenciador.exceptions.SaldoInsuficienteException;
 import gerenciador.interfaces.UsuarioNecessario;
 import gerenciador.suporte.Conta;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -27,6 +30,7 @@ public class DadosPessoaisController implements UsuarioNecessario{
 
     @FXML private ListView<Conta> listaContas;
     @FXML private Label labelErro;
+    @FXML private Label labelSucesso;
 
     private Usuario usuarioAtual;
 
@@ -76,6 +80,10 @@ public class DadosPessoaisController implements UsuarioNecessario{
     @FXML
     void onEditarSalario(){
         String textoNovoSalario = editaSalario.getText();
+        if (this.usuarioAtual.getSalario() <= 0.00000001){
+            labelErro.setText("Salário não definido. Primeiro defina um, por favor.");
+            return;
+        }
         try {
             double salario = Double.parseDouble(textoNovoSalario);
             this.usuarioAtual.editarSalario(salario);
@@ -86,19 +94,50 @@ public class DadosPessoaisController implements UsuarioNecessario{
         catch (NumberFormatException e){
             labelErro.setText("Digite um valor válido, por favor.");
         }
+        catch (IllegalArgumentException e){
+            labelErro.setText(e.getMessage());
+        }
     }
 
     @FXML
     void onRemoverSalario(){
         try {
-            this.usuarioAtual.removerSalario();
-            PersistenciaJSON.salvar(usuarioAtual);
-            listaContas.refresh();
-            labelSalario.setText("Não registrado");
+            confirmarRemoverSalario();
         }
         catch (Exception e){
             labelErro.setText("Não foi possível remover o salário.");
         }
+    }
+
+    private void confirmarRemoverSalario() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Remoção definitiva do salário registrado");
+        alert.setContentText("Deseja mesmo removê-lo?");
+
+        ButtonType botaoSim = new ButtonType("Sim");
+        ButtonType botaoNao = new ButtonType("Não");
+        alert.getButtonTypes().setAll(botaoSim, botaoNao);
+
+        alert.showAndWait().ifPresent(resposta -> {
+            if (resposta == botaoSim) {
+                try {
+                    this.usuarioAtual.removerSalario();
+                    PersistenciaJSON.salvar(usuarioAtual);
+                    listaContas.refresh();
+                    labelSalario.setText("Não registrado");
+                    try {
+                        App.trocarTela("dadosPessoais", usuarioAtual);
+                    }
+                    catch (Exception e1){
+                        labelErro.setText("Erro ao trocar de tela");
+                    }
+                } catch (SaldoInsuficienteException e2) {
+                    labelErro.setText(e2.getMessage());
+                }
+            } else {
+                labelSucesso.setText("Salário mantido.");
+            }
+        });
     }
 
     @FXML
@@ -110,4 +149,5 @@ public class DadosPessoaisController implements UsuarioNecessario{
             labelErro.setText("Erro ao trocar de tela");
         }
     }
+    
 }

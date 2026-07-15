@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import gerenciador.base.PersistenciaJSON;
 import gerenciador.base.Usuario;
+import gerenciador.exceptions.SaldoInsuficienteException;
 import gerenciador.interfaces.UsuarioNecessario;
 import gerenciador.operacoes.movimentacoes.Transacao;
 import gerenciador.suporte.Tag;
@@ -56,15 +57,19 @@ public class RemoverTransacaoController implements UsuarioNecessario {
         menuContexto.getItems().add(itemRemover);
 
         itemRemover.setOnAction(event -> {
-        Transacao selecionada = tabelaTransacoes.getSelectionModel().getSelectedItem();
-        if (selecionada != null) {
-            this.usuarioAtual.removerTransacao(selecionada.getID());
-            tabelaTransacoes.getItems().remove(selecionada);
-        }
+            Transacao selecionada = tabelaTransacoes.getSelectionModel().getSelectedItem();
+            if (selecionada != null) {
+                try {
+                    this.usuarioAtual.removerTransacao(selecionada.getID());
+                    tabelaTransacoes.getItems().remove(selecionada);
+                    PersistenciaJSON.salvar(this.usuarioAtual);
+                }
+                catch (SaldoInsuficienteException e) {
+                    erroTroca.setText(e.getMessage());
+                }
+            }
         });
         tabelaTransacoes.setContextMenu(menuContexto);
-        
-        PersistenciaJSON.salvar(usuario);
     }
 
     @FXML

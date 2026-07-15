@@ -1,10 +1,10 @@
-//preciso adicionar um bgl pra fazer a transferencia entre contas dps da implementacao no backpackage gerenciador.sistema;
 package gerenciador.sistema;
 
 import java.util.UUID;
 
 import gerenciador.base.PersistenciaJSON;
 import gerenciador.base.Usuario;
+import gerenciador.exceptions.SaldoInsuficienteException;
 import gerenciador.interfaces.UsuarioNecessario;
 import gerenciador.suporte.Conta;
 import javafx.beans.property.SimpleObjectProperty;
@@ -18,6 +18,8 @@ import javafx.scene.control.TextField;
 public class ContasController implements UsuarioNecessario{
 
     @FXML private Label erroTroca;
+    @FXML private Label sucessoAcao;
+
     @FXML private TableView<Conta> tabelaContas;
     @FXML private TableColumn<Conta, String> colunaNome;
     @FXML private TableColumn<Conta, Double> colunaMontante;
@@ -75,7 +77,7 @@ public class ContasController implements UsuarioNecessario{
         tabelaContas.getItems().setAll(usuarioAtual.getContas());
         campoNomeCriar.clear();
         campoSaldoInicial.clear();
-        erroTroca.setText("Conta criada com sucesso.");
+        sucessoAcao.setText("Conta criada com sucesso.");
     }
 
     @FXML
@@ -111,6 +113,9 @@ public class ContasController implements UsuarioNecessario{
             erroTroca.setText("Informe um valor numérico válido.");
         }
         catch (IllegalArgumentException e) {
+            erroTroca.setText(e.getMessage());
+        }
+        catch (SaldoInsuficienteException e){
             erroTroca.setText(e.getMessage());
         }
     }
